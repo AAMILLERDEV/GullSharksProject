@@ -16,6 +16,8 @@ pids
 *.seed
 *.pid.lock
 
+.vscode
+
 bin/
 obj/
 **.angular
