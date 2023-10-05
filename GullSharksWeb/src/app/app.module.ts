@@ -8,6 +8,16 @@ import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { LoginComponent } from './login/login.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RecaptchaFormsModule } from 'ng-recaptcha';
+import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from "ng-recaptcha";
+
+import {
+  RECAPTCHA_SETTINGS,
+  RecaptchaModule,
+  RecaptchaSettings,
+} from 'ng-recaptcha';
+
+const globalSettings: RecaptchaSettings = { siteKey: '6LcOuyYTAAAAAHTjFuqhA52fmfJ_j5iFk5PsfXaU' };
 
 @NgModule({
   declarations: [
@@ -22,9 +32,16 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     ReactiveFormsModule,
     FormsModule,
     ToastrModule.forRoot(),
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    RecaptchaFormsModule,
+    RecaptchaModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: RECAPTCHA_SETTINGS,
+      useValue: globalSettings,
+    },
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

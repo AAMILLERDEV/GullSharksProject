@@ -4,6 +4,7 @@ export const LoginForm = new FormGroup ({
 
     usernameControl: new FormControl(null),
     passwordControl: new FormControl(null),
+    recaptchaControl: new FormControl(null, Validators.required),
     loginBtnControl: new FormControl("Login") 
 
 })

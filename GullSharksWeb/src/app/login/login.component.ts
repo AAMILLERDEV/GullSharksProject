@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ReCaptchaV3Service, RecaptchaErrorParameters } from 'ng-recaptcha';
 import { ToastrService } from 'ngx-toastr';
 import { LoginForm } from 'src/form-models/login-form';
 import { User } from 'src/models/User';
@@ -43,5 +44,13 @@ export class LoginComponent implements OnInit {
 
 
     this.router.navigateByUrl("home");
+  }
+
+  public resolved(captchaResponse: string): void {
+    console.log(`Resolved captcha with response: ${captchaResponse}`);
+  }
+
+  public onError(errorDetails: RecaptchaErrorParameters): void {
+    console.log(`reCAPTCHA error encountered; details:`, errorDetails);
   }
 }
