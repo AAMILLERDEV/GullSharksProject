@@ -1,6 +1,6 @@
 ﻿namespace GullSharksLib;
 
-public class AppSettings
+public class AppSetting
 {
     public string DbConn {set;get;}
 }

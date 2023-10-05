@@ -4,12 +4,12 @@ using Microsoft.Extensions.Options;
 try {
     var builder = WebApplication.CreateBuilder(args);
 
-    builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("ConnectionStrings"));
+    builder.Services.Configure<AppSetting>(builder.Configuration.GetSection("ConnectionStrings"));
 
     builder.Services.AddEndpointsApiExplorer();
     builder.Services.AddSwaggerGen();
 
-    builder.Services.AddSingleton<IUserRepository, UserRepository>(x => new UserRepository(x.GetRequiredService<IOptionsMonitor<AppSettings>>()));
+    builder.Services.AddSingleton<IUserRepository, UserRepository>(x => new UserRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
 
     builder.Services.AddCors(c =>
     {
