@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace GullSharksLib.Models;
 
-namespace GullSharksLib.Models
+public class Asset // lookup table
 {
-    public class Asset // lookup table
-    {
-        int ID { get; set; }
-        string Asset_URL { get; set; }
-    }
+    public int ID { get; set; }
+    public string Asset_URL { get; set; }
 }
+

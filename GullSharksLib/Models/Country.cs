@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace GullSharksLib.Models;
 
-namespace GullSharksLib.Models
+public class Country // lookup table
 {
-    public class Country // lookup table
-    {
-        int ID { get; set; }
-        string Country_Name { get; set; }
-        string Country_AB { get; set; }
-    }
+    public int ID { get; set; }
+    public string Country_Name { get; set; }
+    public string Country_AB { get; set; }
 }
+

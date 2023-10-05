@@ -3,7 +3,7 @@ using Microsoft.Extensions.Options;
 
 namespace GullSharksLib.Repositories
 {
-    public class CredentialRepository : ICredentialRepository
+    public class CredentialRepository //: ICredentialRepository
     {
         private readonly DBRepository db;
 

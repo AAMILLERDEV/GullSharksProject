@@ -3,7 +3,7 @@ using Microsoft.Extensions.Options;
 
 namespace GullSharksLib.Repositories
 {
-    public class PreferenceRepository : IPreferenceRepository
+    public class PreferenceRepository //: IPreferenceRepository
     {
         private readonly DBRepository db;
 

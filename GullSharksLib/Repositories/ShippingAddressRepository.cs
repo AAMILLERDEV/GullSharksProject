@@ -3,7 +3,7 @@ using Microsoft.Extensions.Options;
 
 namespace GullSharksLib.Repositories
 {
-    public class ShippingAddressRepository : IShippingAddressRepository
+    public class ShippingAddressRepository //: IShippingAddressRepository
     {
         private readonly DBRepository db;
 

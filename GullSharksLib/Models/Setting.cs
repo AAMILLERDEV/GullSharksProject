@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿namespace GullSharksLib.Models;
 
-namespace GullSharksLib.Models
+public class Setting // lookup table
 {
-    public class Setting // lookup table
-    {
-        int ID { get; set; }
-        string SettingKey { get; set; }
-        string SettingValue { get; set; }
-        bool IsReadOnly { get; set; }
-    }
+    public int ID { get; set; }
+    public string SettingKey { get; set; }
+    public string SettingValue { get; set; }
+    public bool IsReadOnly { get; set; }
 }
+
