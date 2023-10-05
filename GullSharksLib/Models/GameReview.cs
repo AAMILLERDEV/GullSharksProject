@@ -1,6 +1,6 @@
 ﻿namespace GullSharksLib;
 
-public class GameReviews
+public class GameReview
 {
     public int ID { set; get; }
     public int User_ID { set; get; }
