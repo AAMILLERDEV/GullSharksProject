@@ -6,7 +6,7 @@ public class UserRepository : IUserRepository
 {
     private readonly DBRepository db;
 
-    public UserRepository(IOptionsMonitor<AppSettings> options)
+    public UserRepository(IOptionsMonitor<AppSetting> options)
     {
         db = new DBRepository(options.CurrentValue.DbConn);
     }
