@@ -1,0 +1,26 @@
+<ng-container [formGroup]="signupForm">
+    <div class="form-group container">
+        <div class="row py-3 text-center">
+            <div class="col-2">
+                <label>Username:</label>
+            </div>
+            <div class="col-8">
+                <input text="input" formControlName="usernameControl" class="form-control">
+            </div>
+        </div>
+        <div class="row py-3 text-center">
+            <div class="col-2">
+                <label>Password:</label>
+            </div>
+            <div class="col-8">
+                <input text="input" formControlName="passwordControl" class="form-control">
+            </div>
+        </div>
+        <div class="row py-3 text-center">
+            <re-captcha (resolved)="resolved($event)" (errored)="onError($event)" errorMode="handled"></re-captcha>
+        </div>
+        <div class="row py-3 text-center">
+            <input text="button" formControlName="loginBtnControl" class="btn btn-success form-control">
+        </div>
+   </div>
+</ng-container>
