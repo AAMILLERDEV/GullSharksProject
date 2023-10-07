@@ -17,6 +17,9 @@ import {
   RecaptchaSettings,
 } from 'ng-recaptcha';
 import { SignUpComponent } from './sign-up/sign-up.component';
+import { AdminComponent } from './admin/admin.component';
+import { NavbarComponent } from './navbar/navbar.component';
+import { ProfileComponent } from './profile/profile.component';
 
 const globalSettings: RecaptchaSettings = { siteKey: '6LcOuyYTAAAAAHTjFuqhA52fmfJ_j5iFk5PsfXaU' };
 
@@ -25,7 +28,10 @@ const globalSettings: RecaptchaSettings = { siteKey: '6LcOuyYTAAAAAHTjFuqhA52fmf
     AppComponent,
     HomeComponent,
     LoginComponent,
-    SignUpComponent
+    SignUpComponent,
+    AdminComponent,
+    NavbarComponent,
+    ProfileComponent
   ],
   imports: [
     BrowserModule,

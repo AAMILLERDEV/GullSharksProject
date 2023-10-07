@@ -21,6 +21,8 @@ export class LoginComponent implements OnInit {
 
   public user!: User | undefined;
 
+  public loginCounter: number = 0;
+
   constructor(public router: Router,
     public userService: UserService,
     public toastr: ToastrService){
@@ -29,14 +31,29 @@ export class LoginComponent implements OnInit {
 
   public async ngOnInit() {
     this.users = await this.userService.getAllUsers();
+    this.loginCounter = JSON.parse(sessionStorage.getItem("LoginCounter")!);
   }
 
   public submitUserLoginCredentials(){
 
+    if (this.loginCounter >= 3){
+      this.toastr.error("Error, no more login attempts are allowed. Please reset your password to proceed.");
+      return;
+    }
+
+    if (!this.loginForm.valid){
+      this.toastr.error("Username, password and captcha is required.");
+      this.loginCounter++;
+      this.saveLoginAttempt();
+      return;
+    }
+
     this.user = this.users.find(x => x.email == this.loginForm.controls['passwordControl'].value && x.username == this.loginForm.controls['usernameControl'].value);
 
     if (this.user == null || this.user == undefined){
-      this.toastr.error("Invalid Username/Email Combination");
+      this.toastr.error("No login found for the details provided.");
+      this.loginCounter++;
+      this.saveLoginAttempt();
       return;
     }
 
@@ -53,4 +70,14 @@ export class LoginComponent implements OnInit {
   public onError(errorDetails: RecaptchaErrorParameters): void {
     console.log(`reCAPTCHA error encountered; details:`, errorDetails);
   }
+
+  public sendLoginDetailsReset(){
+    this.loginCounter = 0;
+    this.saveLoginAttempt();
+  }
+
+  public saveLoginAttempt(){
+    sessionStorage.setItem("LoginCounter", JSON.stringify(this.loginCounter));
+  }
+
 }

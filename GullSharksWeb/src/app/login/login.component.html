@@ -1,28 +1,56 @@
-<ng-container [formGroup]="loginForm">
-    <div class="form-group container">
+<ng-container [formGroup]="loginForm" >
+    <div class="form-group container shadow p-5" style="width: 35%">
+        <div class="text-center">
+            <img src="/assets/CVGS.png" alt="Logo"  height="160">
+        </div>
         <div class="row py-3 text-center">
             <div class="col-2">
                 <label>Username:</label>
             </div>
-            <div class="col-8">
-                <input text="input" formControlName="usernameControl" class="form-control">
+            <div class="col-10">
+                <input text="input" formControlName="usernameControl" class="form-control" required>
             </div>
         </div>
         <div class="row py-3 text-center">
             <div class="col-2">
                 <label>Password:</label>
             </div>
-            <div class="col-8">
-                <input text="input" formControlName="passwordControl" class="form-control">
+            <div class="col-10">
+                <input text="input" formControlName="passwordControl" class="form-control" required>
             </div>
         </div>
-        <div class="row py-3 text-center">
-            <re-captcha (resolved)="resolved($event)" (errored)="onError($event)" errorMode="handled"></re-captcha>
+        <div class="row justify-content-center">
+            <div class="col-2"></div>
+            <div class="col-4">
+                <re-captcha *ngIf="loginForm.controls['passwordControl'].valid && loginForm.controls['usernameControl'].valid" (resolved)="resolved($event)" (errored)="onError($event)" formControlName="recaptchaControl" errorMode="handled" required></re-captcha>
+            </div>
+            <div class="col-4"></div>
         </div>
         <div class="row py-3 text-center">
             <input text="button" formControlName="loginBtnControl" class="btn btn-success form-control" (click)="submitUserLoginCredentials()">
         </div>
+        <hr>
+        <div class="row">
+            <div class="col-4">
+                <label>Forgot your password?</label>
+            </div>
+            <div class="col-6">
+                <input text="button" formControlName="forgotCredentialsBtnControl" class="btn btn-danger form-control" (click)="sendLoginDetailsReset()">
+            </div>
+            <div class="col-2"></div>
+        </div>
+        <hr>
+        <div class="row text-center">
+            <div class="col-4">
+                <label>New User?</label>
+            </div>
+            <div class="col-6">
+                <input text="button" formControlName="signupBtnControl" class="btn btn-primary form-control" [routerLink]="'signup'">
+            </div>
+            <div class="col-2"></div>
+        </div>
    </div>
 </ng-container>
+
 
  
