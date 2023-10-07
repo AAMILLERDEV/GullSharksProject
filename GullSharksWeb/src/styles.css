@@ -1,1 +1,27 @@
-/* You can add global styles to this file, and also import other style files */
+.lightblue {
+    background-color: lightblue;
+}
+
+.lightblue:hover {
+    background-color: rgb(63, 197, 241);
+    color:white;
+}
+
+.gradient {
+    background-image: linear-gradient(to right bottom, #002f74, #565c95, #8f8eb7, #c7c5db, #ffffff);
+}
+
+.customBorder1 {
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+}
+
+.customBorder2 {
+    box-shadow: rgba(0, 0, 0, 0.12) 0px 1px 3px, rgba(0, 0, 0, 0.24) 0px 1px 2px;
+    background-color: #f8f9fa;
+}
+
+.accordion-button:hover {
+    background-color: #f8f9fa;
+}
+
+

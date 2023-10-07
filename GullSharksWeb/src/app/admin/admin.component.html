@@ -1,209 +1,277 @@
 <app-navbar></app-navbar>
-<ng-container>
-    <div class="form-group container shadow p-5">
-        <h2>Welcome to the Admin Panel, {{user?.username}}</h2>
-        <div class="row">
-            <div class="col-3 border border-dark">
-                <h4 class="pt-2">Manage Games:</h4>
-                <hr>
-                <ul>
-                    <li class="pb-2 pt-2">
-                        <input type="button" value="Add Game" class="btn btn-primary btn-sm">
-                    </li>
-                    <li class="pb-2">
-                        <input type="button" value="Delete Game" class="btn btn-primary btn-sm">
-                    </li>
-                    <li>
-                        <input type="button" value="Edit Game" class="btn btn-primary btn-sm">
-                    </li>
-                </ul>
-            </div>
-            <div class="col-3 border border-dark">
-                <h4 class="pt-2">Manage Reviews:</h4>
-                <hr>
-                <ul>
-                    <li class="pb-2 pt-2">
-                        <input type="button" value="Review Game Reviews" class="btn btn-primary btn-sm">
-                    </li>
-                </ul>
-            </div>
-            <div class="col-3 border border-dark">
-                <h4 class="pt-2">Manage Events:</h4>
-                <hr>
-                <ul>
-                    <li class="pb-2 pt-2">
-                        <input type="button" value="Add Event" class="btn btn-primary btn-sm">
-                    </li>
-                    <li class="pb-2">
-                        <input type="button" value="Edit Events" class="btn btn-primary btn-sm">
-                    </li>
-                </ul>
-            </div>
-            <div class="col-3 border border-dark">
-                <h4 class="pt-2">Download Reports:</h4>
-                <hr>
-                <ul>
-                    <li class="pb-2 pt-2">
-                        <input type="button" value="Game List Report" class="btn btn-primary btn-sm">
-                    </li>
-                    <li class="pb-2">
-                        <input type="button" value="Game Detail Report" class="btn btn-primary btn-sm">
-                    </li>
-                    <li class="pb-2">
-                        <input type="button" value="Member List Report" class="btn btn-primary btn-sm">
-                    </li>
-                    <li class="pb-2">
-                        <input type="button" value="Wish List Report" class="btn btn-primary btn-sm">
-                    </li>
-                    <li class="pb-2">
-                        <input type="button" value="Sales Report" class="btn btn-primary btn-sm">
-                    </li>
-                </ul>
-            </div>
+<ng-container >
+    <div class="form-group container customBorder1 p-5">
+        <div class="text-left w-10">
+            <p class="bg-light rounded fs-2 fst-italic w-10">Administration Functions</p>
         </div>
 
-   </div>
-</ng-container>
-
-<ng-container [formGroup]="gamesForm">
-    <div class="form-group container shadow p-5">
-        <div class="text-center">
-            Games
-        </div>
-        <!--Name/Publisher-->
-        <div class="row py-3 text-center">
-            <div class="col-2">
-                <label>Game Name:</label>
-            </div>
-            <div class="col-4">
-                <input type="text" formControlName="gameNameControl" class="form-control" required>
-            </div>
-            <div class="col-2">
-                <label>Publisher:</label>
-            </div>
-            <div class="col-4">
-                <input type="text" formControlName="publisherControl" class="form-control" required>
-            </div>
-        </div>
-        <!--Category/Description-->
-        <div class="row py-3 text-center">
-            <div class="col-2">
-                <label>Category:</label>
-            </div>
-            <div class="col-4">
-                <input type="text" formControlName="categoryControl" class="form-control" required>
-            </div>
-            <div class="col-2">
-                <label>Description:</label>
-            </div>
-            <div class="col-4">
-                <input type="text" formControlName="descriptionControl" class="form-control" required>
-            </div>
-        </div>
-        <!--Price/Platforms-->
-        <div class="row py-3 text-center">
-            <div class="col-2">
-                <label>Price:</label>
-            </div>
-            <div class="col-4">
-                <input type="number" formControlName="priceControl" class="form-control" required>
-            </div>
-            <div class="col-2">
-                <label>Platforms:</label>
-            </div>
-            <div class="col-4">
-                <input type="text" formControlName="platformControl" class="form-control" required>
-            </div>
-        </div>
-        <!--Assets-->
-        <div class="row py-3 text-center">
-            <div class="col-2">
-                <label>Assets:</label>
-            </div>
-            <div class="col-4">
-                <input type="text" formControlName="assetControl" class="form-control" required>
-            </div>
-        </div>
+        <!--The According Component-->
         <div class="row">
-            <div class="col-12">
-                <input text="button" formControlName="submitControl" class="btn btn-primary form-control">
+            <div class="accordion" id="accordionExample">
+                <!--The Games Items-->
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="headingOne">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        Games
+                    </button>
+                  </h2>
+                  <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <ul>
+                            <li class="pb-2 pt-2">
+                                <input type="button" value="Add Game" class="btn lightblue btn-sm" (click)="openGamesModal('Add')">
+                            </li>
+                            <li class="pb-2">
+                                <input type="button" value="Edit Game" class="btn lightblue btn-sm" (click)="openGamesModal('Edit')">
+                            </li>
+                            <li>
+                                <input type="button" value="Delete Game" class="btn lightblue btn-sm">
+                            </li>
+                        </ul>
+                    </div>
+                  </div>
+                </div>
+                 <!--The Reviews Items-->               
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="headingTwo">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+                        Reviews
+                    </button>
+                  </h2>
+                  <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <li class="pb-2 pt-2">
+                            <input type="button" value="Review Game Reviews" class="btn lightblue btn-sm" data-bs-toggle="modal" data-bs-target="#reviewsModal">
+                        </li>                    
+                    </div>
+                  </div>
+                </div>
+                <!--The Events Items-->
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="headingThree">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                        Events
+                    </button>
+                  </h2>
+                  <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <li class="pb-2 pt-2">
+                            <input type="button" value="Add Event" class="btn lightblue btn-sm" (click)="openEventsModal('Add')">
+                        </li>
+                        <li class="pb-2">
+                            <input type="button" value="Edit Events" class="btn lightblue btn-sm" (click)="openEventsModal('Edit')">
+                        </li>                    
+                    </div>
+                  </div>
+                </div>
+                <!--The Reports Items-->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingFour">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                        Download / View Reports
+                      </button>
+                    </h2>
+                    <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
+                        <div class="accordion-body">
+                            <li class="pb-2 pt-2">
+                                <input type="button" value="Game List Report" class="btn lightblue btn-sm">
+                            </li>
+                            <li class="pb-2">
+                                <input type="button" value="Game Detail Report" class="btn lightblue btn-sm">
+                            </li>
+                            <li class="pb-2">
+                                <input type="button" value="Member List Report" class="btn lightblue btn-sm">
+                            </li>
+                            <li class="pb-2">
+                                <input type="button" value="Wish List Report" class="btn lightblue btn-sm">
+                            </li>
+                            <li class="pb-2">
+                                <input type="button" value="Sales Report" class="btn lightblue btn-sm">
+                            </li>                  
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
    </div>
 </ng-container>
 
-<ng-container [formGroup]="preferencesForm">
-    <div class="form-group container shadow p-5">
-        <div class="text-center">
-            Preferences
+<!--The Games Modal-->
+<div class="modal fade" #gamesModal id="gamesModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">{{gameOperation}} Games</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <!--Category/Description-->
-        <div class="row py-3 text-center">
-            <div class="col-2">
-                <label>Category:</label>
-            </div>
-            <div class="col-4">
-                <input type="text" formControlName="categoryControl" class="form-control" required>
-            </div>
-            <div class="col-2">
-                <label>Platforms:</label>
-            </div>
-            <div class="col-4">
-                <input type="text" formControlName="platformControl" class="form-control" required>
-            </div>
+        <div class="modal-body">
+            <form [formGroup]="gamesForm">
+                <div class="form-group p-5">
+                    <!--Name/Publisher-->
+                    <div class="row py-3 text-center">
+                        <div class="col-2">
+                            <label>Game Name:</label>
+                        </div>
+                        <div class="col-4">
+                            <input type="text" formControlName="gameNameControl" class="form-control" required>
+                        </div>
+                        <div class="col-2">
+                            <label>Publisher:</label>
+                        </div>
+                        <div class="col-4">
+                            <input type="text" formControlName="publisherControl" class="form-control" required>
+                        </div>
+                    </div>
+                    <!--Category/Description-->
+                    <div class="row py-3 text-center">
+                        <div class="col-2">
+                            <label>Category:</label>
+                        </div>
+                        <div class="col-4">
+                            <input type="text" formControlName="categoryControl" class="form-control" required>
+                        </div>
+                        <div class="col-2">
+                            <label>Description:</label>
+                        </div>
+                        <div class="col-4">
+                            <input type="text" formControlName="descriptionControl" class="form-control" required>
+                        </div>
+                    </div>
+                    <!--Price/Platforms-->
+                    <div class="row py-3 text-center">
+                        <div class="col-2">
+                            <label>Price:</label>
+                        </div>
+                        <div class="col-4">
+                            <input type="number" formControlName="priceControl" class="form-control" required>
+                        </div>
+                        <div class="col-2">
+                            <label>Platforms:</label>
+                        </div>
+                        <div class="col-4">
+                            <input type="text" formControlName="platformControl" class="form-control" required>
+                        </div>
+                    </div>
+                    <!--Assets-->
+                    <div class="row py-3 text-center">
+                        <div class="col-2">
+                            <label>Assets:</label>
+                        </div>
+                        <div class="col-4">
+                            <input type="text" formControlName="assetControl" class="form-control" required>
+                        </div>
+                    </div>
+               </div>
+            </form>
         </div>
-        <!--Language-->
-        <div class="row py-3 text-center">
-            <div class="col-2">
-                <label>Language:</label>
-            </div>
-            <div class="col-10">
-                <input type="number" formControlName="languageControl" class="form-control" required>
-            </div>
+        <div class="modal-footer justify-content-center">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
         </div>
-        <div class="row">
-            <div class="col-12">
-                <input text="button" formControlName="submitControl" class="btn btn-primary form-control">
-            </div>
-        </div>
-   </div>
-</ng-container>
+      </div>
+    </div>
+</div>
 
-<ng-container [formGroup]="reviewsForm">
-    <div class="form-group container shadow p-5">
-        <div class="text-center">
-            Game Reviews
+  <!--The Reviews Modal-->
+<div class="modal fade" #reviewsModal id="reviewsModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Game Reviews</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <!--Language-->
-        <div class="row py-3 text-center">
-            <div class="col-2">
-                <label>Game:</label>
-            </div>
-            <div class="col-10">
-                <input type="text" formControlName="gameControl" class="form-control" required>
-            </div>
+        <div class="modal-body">
+            <form [formGroup]="reviewsForm">
+                <div class="form-group container p-5">
+                    <!--Language-->
+                    <div class="row py-3 text-center">
+                        <div class="col-2">
+                            <label>Game:</label>
+                        </div>
+                        <div class="col-4">
+                            <input type="text" formControlName="gameControl" class="form-control" required>
+                        </div>
+                        <div class="col-2">
+                            <label>Rating:</label>
+                        </div>
+                        <div class="col-4">
+                            <input type="text" formControlName="ratingControl" class="form-control" required>
+                        </div>
+                    </div>
+                    <!--Rating/Description-->
+                    <div class="row py-3 text-center">
+                        <div class="col-2">
+                            <label>Description:</label>
+                        </div>
+                        <div class="col-10">
+                            <textarea rows="3" formControlName="descriptionControl" class="form-control" required></textarea>
+                        </div>
+                    </div>
+               </div>
+            </form>
         </div>
-        <!--Rating/Description-->
-        <div class="row py-3 text-center">
-            <div class="col-2">
-                <label>Description:</label>
-            </div>
-            <div class="col-4">
-                <input type="text" formControlName="descriptionControl" class="form-control" required>
-            </div>
-            <div class="col-2">
-                <label>Rating:</label>
-            </div>
-            <div class="col-4">
-                <input type="text" formControlName="ratingControl" class="form-control" required>
-            </div>
+        <div class="modal-footer justify-content-center">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
         </div>
+      </div>
+    </div>
+</div>
 
-        <div class="row">
-            <div class="col-12">
-                <input text="button" formControlName="submitControl" class="btn btn-primary form-control">
-            </div>
+<!--The Events Modal-->
+<div class="modal fade" #eventsModal id="eventsModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">{{eventOperation}} Events</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-   </div>
-</ng-container>
+        <div class="modal-body">
+            <form [formGroup]="eventsForm">
+                <div class="form-group container p-5">
+                    <!--Event Name-->
+                    <div class="row py-3 text-center">
+                        <div class="col-2">
+                            <label>Event Name:</label>
+                        </div>
+                        <div class="col-10">
+                            <input type="text" formControlName="eventNameControl" class="form-control" required>
+                        </div>
+                    </div>
+                    <!--Description-->
+                    <div class="row py-3 text-center">
+                        <div class="col-2">
+                            <label>Description:</label>
+                        </div>
+                        <div class="col-10">
+                            <textarea rows="3" formControlName="descriptionControl" class="form-control" required></textarea>
+                        </div>
+                    </div>
+                    <!--Start/End Dates-->
+                    <div class="row py-3 text-center">
+                        <div class="col-2">
+                            <label>Start Date:</label>
+                        </div>
+                        <div class="col-4">
+                            <input type="date" formControlName="startDateControl" class="form-control" required>
+                        </div>
+                        <div class="col-2">
+                            <label>End Date:</label>
+                        </div>
+                        <div class="col-4">
+                            <input type="date" formControlName="endDateControl" class="form-control" required>
+                        </div>
+                    </div>
+               </div>
+            </form>
+        </div>
+        <div class="modal-footer justify-content-center">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+
 

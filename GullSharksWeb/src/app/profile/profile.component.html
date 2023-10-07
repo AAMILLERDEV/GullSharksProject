@@ -1,1 +1,37 @@
-<p>profile works!</p>
+<app-navbar></app-navbar>
+<ng-container [formGroup]="preferencesForm">
+    <div class="form-group container customBorder2 p-5">
+        <div class="text-center">
+            Preferences
+        </div>
+        <!--Category/Description-->
+        <div class="row py-3 text-center">
+            <div class="col-2">
+                <label>Category:</label>
+            </div>
+            <div class="col-4">
+                <input type="text" formControlName="categoryControl" class="form-control" required>
+            </div>
+            <div class="col-2">
+                <label>Platforms:</label>
+            </div>
+            <div class="col-4">
+                <input type="text" formControlName="platformControl" class="form-control" required>
+            </div>
+        </div>
+        <!--Language-->
+        <div class="row py-3 text-center">
+            <div class="col-2">
+                <label>Language:</label>
+            </div>
+            <div class="col-10">
+                <input type="number" formControlName="languageControl" class="form-control" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <input text="button" formControlName="submitControl" class="btn btn-primary form-control">
+            </div>
+        </div>
+   </div>
+</ng-container>

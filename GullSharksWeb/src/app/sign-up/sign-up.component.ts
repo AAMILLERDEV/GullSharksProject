@@ -21,7 +21,6 @@ export class SignUpComponent implements OnInit {
     public router: Router) {
   }
 
-
   public async ngOnInit(){
 
   }
