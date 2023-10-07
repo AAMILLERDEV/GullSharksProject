@@ -1,1 +1,209 @@
-<p>admin works!</p>
+<app-navbar></app-navbar>
+<ng-container>
+    <div class="form-group container shadow p-5">
+        <h2>Welcome to the Admin Panel, {{user?.username}}</h2>
+        <div class="row">
+            <div class="col-3 border border-dark">
+                <h4 class="pt-2">Manage Games:</h4>
+                <hr>
+                <ul>
+                    <li class="pb-2 pt-2">
+                        <input type="button" value="Add Game" class="btn btn-primary btn-sm">
+                    </li>
+                    <li class="pb-2">
+                        <input type="button" value="Delete Game" class="btn btn-primary btn-sm">
+                    </li>
+                    <li>
+                        <input type="button" value="Edit Game" class="btn btn-primary btn-sm">
+                    </li>
+                </ul>
+            </div>
+            <div class="col-3 border border-dark">
+                <h4 class="pt-2">Manage Reviews:</h4>
+                <hr>
+                <ul>
+                    <li class="pb-2 pt-2">
+                        <input type="button" value="Review Game Reviews" class="btn btn-primary btn-sm">
+                    </li>
+                </ul>
+            </div>
+            <div class="col-3 border border-dark">
+                <h4 class="pt-2">Manage Events:</h4>
+                <hr>
+                <ul>
+                    <li class="pb-2 pt-2">
+                        <input type="button" value="Add Event" class="btn btn-primary btn-sm">
+                    </li>
+                    <li class="pb-2">
+                        <input type="button" value="Edit Events" class="btn btn-primary btn-sm">
+                    </li>
+                </ul>
+            </div>
+            <div class="col-3 border border-dark">
+                <h4 class="pt-2">Download Reports:</h4>
+                <hr>
+                <ul>
+                    <li class="pb-2 pt-2">
+                        <input type="button" value="Game List Report" class="btn btn-primary btn-sm">
+                    </li>
+                    <li class="pb-2">
+                        <input type="button" value="Game Detail Report" class="btn btn-primary btn-sm">
+                    </li>
+                    <li class="pb-2">
+                        <input type="button" value="Member List Report" class="btn btn-primary btn-sm">
+                    </li>
+                    <li class="pb-2">
+                        <input type="button" value="Wish List Report" class="btn btn-primary btn-sm">
+                    </li>
+                    <li class="pb-2">
+                        <input type="button" value="Sales Report" class="btn btn-primary btn-sm">
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+   </div>
+</ng-container>
+
+<ng-container [formGroup]="gamesForm">
+    <div class="form-group container shadow p-5">
+        <div class="text-center">
+            Games
+        </div>
+        <!--Name/Publisher-->
+        <div class="row py-3 text-center">
+            <div class="col-2">
+                <label>Game Name:</label>
+            </div>
+            <div class="col-4">
+                <input type="text" formControlName="gameNameControl" class="form-control" required>
+            </div>
+            <div class="col-2">
+                <label>Publisher:</label>
+            </div>
+            <div class="col-4">
+                <input type="text" formControlName="publisherControl" class="form-control" required>
+            </div>
+        </div>
+        <!--Category/Description-->
+        <div class="row py-3 text-center">
+            <div class="col-2">
+                <label>Category:</label>
+            </div>
+            <div class="col-4">
+                <input type="text" formControlName="categoryControl" class="form-control" required>
+            </div>
+            <div class="col-2">
+                <label>Description:</label>
+            </div>
+            <div class="col-4">
+                <input type="text" formControlName="descriptionControl" class="form-control" required>
+            </div>
+        </div>
+        <!--Price/Platforms-->
+        <div class="row py-3 text-center">
+            <div class="col-2">
+                <label>Price:</label>
+            </div>
+            <div class="col-4">
+                <input type="number" formControlName="priceControl" class="form-control" required>
+            </div>
+            <div class="col-2">
+                <label>Platforms:</label>
+            </div>
+            <div class="col-4">
+                <input type="text" formControlName="platformControl" class="form-control" required>
+            </div>
+        </div>
+        <!--Assets-->
+        <div class="row py-3 text-center">
+            <div class="col-2">
+                <label>Assets:</label>
+            </div>
+            <div class="col-4">
+                <input type="text" formControlName="assetControl" class="form-control" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <input text="button" formControlName="submitControl" class="btn btn-primary form-control">
+            </div>
+        </div>
+   </div>
+</ng-container>
+
+<ng-container [formGroup]="preferencesForm">
+    <div class="form-group container shadow p-5">
+        <div class="text-center">
+            Preferences
+        </div>
+        <!--Category/Description-->
+        <div class="row py-3 text-center">
+            <div class="col-2">
+                <label>Category:</label>
+            </div>
+            <div class="col-4">
+                <input type="text" formControlName="categoryControl" class="form-control" required>
+            </div>
+            <div class="col-2">
+                <label>Platforms:</label>
+            </div>
+            <div class="col-4">
+                <input type="text" formControlName="platformControl" class="form-control" required>
+            </div>
+        </div>
+        <!--Language-->
+        <div class="row py-3 text-center">
+            <div class="col-2">
+                <label>Language:</label>
+            </div>
+            <div class="col-10">
+                <input type="number" formControlName="languageControl" class="form-control" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <input text="button" formControlName="submitControl" class="btn btn-primary form-control">
+            </div>
+        </div>
+   </div>
+</ng-container>
+
+<ng-container [formGroup]="reviewsForm">
+    <div class="form-group container shadow p-5">
+        <div class="text-center">
+            Game Reviews
+        </div>
+        <!--Language-->
+        <div class="row py-3 text-center">
+            <div class="col-2">
+                <label>Game:</label>
+            </div>
+            <div class="col-10">
+                <input type="text" formControlName="gameControl" class="form-control" required>
+            </div>
+        </div>
+        <!--Rating/Description-->
+        <div class="row py-3 text-center">
+            <div class="col-2">
+                <label>Description:</label>
+            </div>
+            <div class="col-4">
+                <input type="text" formControlName="descriptionControl" class="form-control" required>
+            </div>
+            <div class="col-2">
+                <label>Rating:</label>
+            </div>
+            <div class="col-4">
+                <input type="text" formControlName="ratingControl" class="form-control" required>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <input text="button" formControlName="submitControl" class="btn btn-primary form-control">
+            </div>
+        </div>
+   </div>
+</ng-container>
+
