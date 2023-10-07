@@ -29,7 +29,5 @@ export class HomeComponent implements OnInit {
     if (!this.user){
       this.router.navigateByUrl("login");
     }
-
-    this.toastr.success("Hello!");
   }
 }
