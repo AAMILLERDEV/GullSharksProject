@@ -8,6 +8,7 @@ import { GamesForm } from 'src/form-models/games-form';
 import { PreferencesForm } from 'src/form-models/preferences-form';
 import { ReviewsForm } from 'src/form-models/reviews-form';
 import { Game } from 'src/models/Game';
+import { Platform } from 'src/models/Platform';
 import { User } from 'src/models/User';
 import { UserService } from 'src/services/user.service';
 
@@ -24,6 +25,7 @@ export class AdminComponent implements OnInit {
 
   public users: User[] = [];
   public games: Game[] = [];
+  public platforms: Platform[] = [];
 
   public user!: User | undefined;
 

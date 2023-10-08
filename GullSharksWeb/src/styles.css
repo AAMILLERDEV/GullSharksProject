@@ -39,4 +39,10 @@
     min-height: 38px;
 }
 
+.label {
+    text-align: center;
+}
 
+.alignRight {
+    text-align: right;
+}

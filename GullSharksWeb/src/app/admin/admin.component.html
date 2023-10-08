@@ -105,10 +105,10 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            <form [formGroup]="gamesForm">
+            <form [formGroup]="gamesForm" class="alignRight">
                 <div class="form-group p-5">
                     <!--Name/Publisher-->
-                    <div class="row py-3 text-center">
+                    <div class="row py-3">
                         <div class="col-2">
                             <label>Game Name:</label>
                         </div>
@@ -123,7 +123,7 @@
                         </div>
                     </div>
                     <!--Category/Description-->
-                    <div class="row py-3 text-center">
+                    <div class="row py-3">
                         <div class="col-2">
                             <label>Category:</label>
                         </div>
@@ -138,7 +138,7 @@
                         </div>
                     </div>
                     <!--Price/Platforms-->
-                    <div class="row py-3 text-center">
+                    <div class="row py-3">
                         <div class="col-2">
                             <label>Price:</label>
                         </div>
@@ -149,11 +149,11 @@
                             <label>Platforms:</label>
                         </div>
                         <div class="col-4">
-                            <input type="text" formControlName="platformControl" class="form-control customBorder2" required>
+                            <ng-select [items]="platforms" bindLabel="platform_name" bindValue="id" formControlName="platformControl" class="customNGSelect" required></ng-select>
                         </div>
                     </div>
                     <!--Assets-->
-                    <div class="row py-3 text-center">
+                    <div class="row py-3">
                         <div class="col-2">
                             <label>Assets:</label>
                         </div>
@@ -181,10 +181,10 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            <form [formGroup]="reviewsForm">
+            <form [formGroup]="reviewsForm" class="alignRight">
                 <div class="form-group container p-5">
                     <!--Language-->
-                    <div class="row py-3 text-center">
+                    <div class="row py-3">
                         <div class="col-2">
                             <label>Game:</label>
                         </div>
@@ -199,7 +199,7 @@
                         </div>
                     </div>
                     <!--Rating/Description-->
-                    <div class="row py-3 text-center">
+                    <div class="row py-3">
                         <div class="col-2">
                             <label>Description:</label>
                         </div>
@@ -227,10 +227,10 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            <form [formGroup]="eventsForm">
+            <form [formGroup]="eventsForm" class="alignRight">
                 <div class="form-group container p-5">
                     <!--Event Name-->
-                    <div class="row py-3 text-center">
+                    <div class="row py-3">
                         <div class="col-2">
                             <label>Event Name:</label>
                         </div>
@@ -239,7 +239,7 @@
                         </div>
                     </div>
                     <!--Description-->
-                    <div class="row py-3 text-center">
+                    <div class="row py-3">
                         <div class="col-2">
                             <label>Description:</label>
                         </div>
@@ -248,7 +248,7 @@
                         </div>
                     </div>
                     <!--Start/End Dates-->
-                    <div class="row py-3 text-center">
+                    <div class="row py-3">
                         <div class="col-2">
                             <label>Start Date:</label>
                         </div>
