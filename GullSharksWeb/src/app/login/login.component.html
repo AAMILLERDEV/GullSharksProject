@@ -27,7 +27,7 @@
             <div class="col-4"></div>
         </div>
         <div class="row py-3 text-center">
-            <input text="button" formControlName="loginBtnControl" class="btn btn-success form-control" (click)="submitUserLoginCredentials()">
+            <input text="button" formControlName="loginBtnControl" class="btn btn-success form-control" (click)="submitUserLoginCredentials()" readonly>
         </div>
         <hr>
         <div class="row">
@@ -35,7 +35,7 @@
                 <label>Forgot your password?</label>
             </div>
             <div class="col-6">
-                <input text="button" formControlName="forgotCredentialsBtnControl" class="btn btn-danger form-control" (click)="sendLoginDetailsReset()">
+                <input text="button" formControlName="forgotCredentialsBtnControl" class="btn btn-danger form-control" (click)="sendLoginDetailsReset()" readonly>
             </div>
             <div class="col-2"></div>
         </div>
@@ -53,4 +53,3 @@
 </ng-container>
 
 
- 
