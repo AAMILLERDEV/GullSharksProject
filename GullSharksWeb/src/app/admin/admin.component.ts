@@ -7,6 +7,7 @@ import { EventsForm } from 'src/form-models/events-form';
 import { GamesForm } from 'src/form-models/games-form';
 import { PreferencesForm } from 'src/form-models/preferences-form';
 import { ReviewsForm } from 'src/form-models/reviews-form';
+import { Game } from 'src/models/Game';
 import { User } from 'src/models/User';
 import { UserService } from 'src/services/user.service';
 
@@ -21,7 +22,8 @@ export class AdminComponent implements OnInit {
   public reviewsForm: FormGroup;
   public eventsForm: FormGroup;
 
-  public users!: User[];
+  public users: User[] = [];
+  public games: Game[] = [];
 
   public user!: User | undefined;
 
@@ -64,5 +66,9 @@ export class AdminComponent implements OnInit {
     this.gamesModal = bootstrap.Modal.getOrCreateInstance('#gamesModal', {keyboard: true});
     this.reviewsModal = bootstrap.Modal.getOrCreateInstance('#reviewsModal', {keyboard: true});
     this.eventsModal = bootstrap.Modal.getOrCreateInstance('#eventsModal', {keyboard: true});
+  }
+
+  public clearForms(){
+    this.gamesForm.reset();
   }
 }

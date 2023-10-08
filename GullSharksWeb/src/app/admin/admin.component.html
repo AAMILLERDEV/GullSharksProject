@@ -113,13 +113,13 @@
                             <label>Game Name:</label>
                         </div>
                         <div class="col-4">
-                            <input type="text" formControlName="gameNameControl" class="form-control" required>
+                            <ng-select type="text" [items]="games" bindLabel="game_name" bindValue="id" formControlName="gameNameControl" class="customNGSelect" required></ng-select>
                         </div>
                         <div class="col-2">
                             <label>Publisher:</label>
                         </div>
                         <div class="col-4">
-                            <input type="text" formControlName="publisherControl" class="form-control" required>
+                            <input type="text" formControlName="publisherControl" class="form-control customBorder2" required>
                         </div>
                     </div>
                     <!--Category/Description-->
@@ -128,13 +128,13 @@
                             <label>Category:</label>
                         </div>
                         <div class="col-4">
-                            <input type="text" formControlName="categoryControl" class="form-control" required>
+                            <input type="text" formControlName="categoryControl" class="form-control customBorder2" required>
                         </div>
                         <div class="col-2">
                             <label>Description:</label>
                         </div>
                         <div class="col-4">
-                            <input type="text" formControlName="descriptionControl" class="form-control" required>
+                            <input type="text" formControlName="descriptionControl" class="form-control customBorder2" required>
                         </div>
                     </div>
                     <!--Price/Platforms-->
@@ -143,13 +143,13 @@
                             <label>Price:</label>
                         </div>
                         <div class="col-4">
-                            <input type="number" formControlName="priceControl" class="form-control" required>
+                            <input type="number" formControlName="priceControl" class="form-control customBorder2" required>
                         </div>
                         <div class="col-2">
                             <label>Platforms:</label>
                         </div>
                         <div class="col-4">
-                            <input type="text" formControlName="platformControl" class="form-control" required>
+                            <input type="text" formControlName="platformControl" class="form-control customBorder2" required>
                         </div>
                     </div>
                     <!--Assets-->
@@ -158,21 +158,21 @@
                             <label>Assets:</label>
                         </div>
                         <div class="col-4">
-                            <input type="text" formControlName="assetControl" class="form-control" required>
+                            <input type="text" formControlName="assetControl" class="form-control customBorder2" required>
                         </div>
                     </div>
                </div>
             </form>
         </div>
         <div class="modal-footer justify-content-center">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="clearForms()">Close</button>
           <button type="button" class="btn btn-primary">Save changes</button>
         </div>
       </div>
     </div>
 </div>
 
-  <!--The Reviews Modal-->
+<!--The Reviews Modal-->
 <div class="modal fade" #reviewsModal id="reviewsModal" tabindex="-1">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
@@ -189,13 +189,13 @@
                             <label>Game:</label>
                         </div>
                         <div class="col-4">
-                            <input type="text" formControlName="gameControl" class="form-control" required>
+                            <input type="text" formControlName="gameControl" class="form-control customBorder2" required>
                         </div>
                         <div class="col-2">
                             <label>Rating:</label>
                         </div>
                         <div class="col-4">
-                            <input type="text" formControlName="ratingControl" class="form-control" required>
+                            <input type="text" formControlName="ratingControl" class="form-control customBorder2" required>
                         </div>
                     </div>
                     <!--Rating/Description-->
@@ -204,7 +204,7 @@
                             <label>Description:</label>
                         </div>
                         <div class="col-10">
-                            <textarea rows="3" formControlName="descriptionControl" class="form-control" required></textarea>
+                            <textarea rows="3" formControlName="descriptionControl" class="form-control customBorder2" required></textarea>
                         </div>
                     </div>
                </div>
@@ -235,7 +235,7 @@
                             <label>Event Name:</label>
                         </div>
                         <div class="col-10">
-                            <input type="text" formControlName="eventNameControl" class="form-control" required>
+                            <input type="text" formControlName="eventNameControl" class="form-control customBorder2" required>
                         </div>
                     </div>
                     <!--Description-->
@@ -244,7 +244,7 @@
                             <label>Description:</label>
                         </div>
                         <div class="col-10">
-                            <textarea rows="3" formControlName="descriptionControl" class="form-control" required></textarea>
+                            <textarea rows="3" formControlName="descriptionControl" class="form-control customBorder2" required></textarea>
                         </div>
                     </div>
                     <!--Start/End Dates-->
@@ -253,13 +253,13 @@
                             <label>Start Date:</label>
                         </div>
                         <div class="col-4">
-                            <input type="date" formControlName="startDateControl" class="form-control" required>
+                            <input type="date" formControlName="startDateControl" class="form-control customBorder2" required>
                         </div>
                         <div class="col-2">
                             <label>End Date:</label>
                         </div>
                         <div class="col-4">
-                            <input type="date" formControlName="endDateControl" class="form-control" required>
+                            <input type="date" formControlName="endDateControl" class="form-control customBorder2" required>
                         </div>
                     </div>
                </div>

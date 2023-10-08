@@ -21,6 +21,7 @@ import { SignUpComponent } from './sign-up/sign-up.component';
 import { AdminComponent } from './admin/admin.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { ProfileComponent } from './profile/profile.component';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 const globalSettings: RecaptchaSettings = { siteKey: '6LcOuyYTAAAAAHTjFuqhA52fmfJ_j5iFk5PsfXaU' };
 
@@ -43,7 +44,8 @@ const globalSettings: RecaptchaSettings = { siteKey: '6LcOuyYTAAAAAHTjFuqhA52fmf
     ToastrModule.forRoot(),
     BrowserAnimationsModule,
     RecaptchaFormsModule,
-    RecaptchaModule
+    RecaptchaModule,
+    NgSelectModule
   ],
   providers: [
     {

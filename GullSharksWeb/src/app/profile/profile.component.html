@@ -7,16 +7,16 @@
         <!--Category/Description-->
         <div class="row py-3 text-center">
             <div class="col-2">
-                <label>Category:</label>
+                <label>Game Categories:</label>
             </div>
             <div class="col-4">
-                <input type="text" formControlName="categoryControl" class="form-control" required>
+                <ng-select [items]="categories" bindLabel="category_name" bindValue="id" formControlName="categoryControl" class="customNGSelect" required></ng-select>
             </div>
             <div class="col-2">
                 <label>Platforms:</label>
             </div>
             <div class="col-4">
-                <input type="text" formControlName="platformControl" class="form-control" required>
+                <ng-select [items]="platforms" bindLabel="platform_name" bindValue="id" formControlName="platformControl" class="customNGSelect" required></ng-select>
             </div>
         </div>
         <!--Language-->
@@ -25,7 +25,7 @@
                 <label>Language:</label>
             </div>
             <div class="col-10">
-                <input type="number" formControlName="languageControl" class="form-control" required>
+                <ng-select [items]="languages" bindLabel="language_name" bindValue="id" formControlName="languageControl" class="customNGSelect" required></ng-select>
             </div>
         </div>
         <div class="row">
