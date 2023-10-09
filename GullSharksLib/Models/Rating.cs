@@ -5,4 +5,6 @@ public class Rating
     public int User_ID { set; get; }
     public int Game_ID { set; get; }
     public int RatingNumber { set; get; }
+
+    public bool IsDeleted { get; set; }
 }

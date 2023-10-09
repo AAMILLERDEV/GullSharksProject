@@ -10,5 +10,7 @@
         public string Birth_Date { get; set; }
         public bool ReceivesEmailUpdates { get; set; }
         public string PhoneNumber { get; set; }
+
+        public bool IsDeleted { get; set; }
     }
 }

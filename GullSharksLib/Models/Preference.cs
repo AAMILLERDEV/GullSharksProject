@@ -7,5 +7,7 @@ public class Preference
     public int Platform_ID { get; set; }
     public int GameCategory_ID { get; set; }
     public int LanguagePreferences_ID { get; set; }
+
+    public bool IsDeleted { get; set; }
 }
 

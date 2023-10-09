@@ -6,5 +6,7 @@ public class Setting // lookup table
     public string SettingKey { get; set; }
     public string SettingValue { get; set; }
     public bool IsReadOnly { get; set; }
+
+    public bool IsDeleted { get; set; }
 }
 

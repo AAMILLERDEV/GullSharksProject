@@ -8,4 +8,6 @@ public class GameReview
     public bool IsApproved { set; get; }
     public string Description { set; get; }
     public int Rating_ID { set; get; }
+
+    public bool IsDeleted { get; set; }
 }

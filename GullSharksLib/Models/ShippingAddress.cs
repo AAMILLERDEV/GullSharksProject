@@ -10,5 +10,7 @@ public class ShippingAddress
     public string PostalCode { get; set; }
     public string StreetAddress { get; set; }
     public string DeliveryInstructions { get; set; }
+
+    public bool IsDeleted { get; set; }
 }
 

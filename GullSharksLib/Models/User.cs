@@ -9,4 +9,6 @@ public class User
     public bool IsAdmin { set; get; }
     public int LoginCounter { set; get; }
     public bool IsValidated { set; get; }
+
+    public bool IsDeleted { get; set; }
 }

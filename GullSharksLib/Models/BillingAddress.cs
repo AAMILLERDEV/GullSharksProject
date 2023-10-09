@@ -9,5 +9,7 @@ public class BillingAddress
     public int Province_ID { get; set; }
     public string PostalCode { get; set; }
     public string StreetAddress { get; set; }
+
+    public bool IsDeleted { get; set; }
 }
 
