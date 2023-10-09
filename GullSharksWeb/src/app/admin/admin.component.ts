@@ -34,6 +34,7 @@ export class AdminComponent implements OnInit {
   public gamesModal!: bootstrap.Modal;
   public reviewsModal!: bootstrap.Modal;
   public eventsModal!: bootstrap.Modal;
+  public usersReportModal!: bootstrap.Modal;
 
   //template strings
   public gameOperation: string = 'Add';
@@ -68,9 +69,16 @@ export class AdminComponent implements OnInit {
     this.gamesModal = bootstrap.Modal.getOrCreateInstance('#gamesModal', {keyboard: true});
     this.reviewsModal = bootstrap.Modal.getOrCreateInstance('#reviewsModal', {keyboard: true});
     this.eventsModal = bootstrap.Modal.getOrCreateInstance('#eventsModal', {keyboard: true});
+    this.usersReportModal = bootstrap.Modal.getOrCreateInstance('#usersReportModal', {keyboard: true});
   }
-
+  
   public clearForms(){
     this.gamesForm.reset();
   }
+
+  public showReport(){
+    this.usersReportModal.toggle();
+  }
+
+  
 }

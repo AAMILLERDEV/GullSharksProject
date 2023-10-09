@@ -11,6 +11,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RecaptchaFormsModule } from 'ng-recaptcha';
 import { RECAPTCHA_V3_SITE_KEY, RecaptchaV3Module } from "ng-recaptcha";
 import jQuery from 'jquery';
+import { PowerBIEmbedModule } from 'powerbi-client-angular';
 
 import {
   RECAPTCHA_SETTINGS,
@@ -40,6 +41,7 @@ const globalSettings: RecaptchaSettings = { siteKey: '6LcOuyYTAAAAAHTjFuqhA52fmf
     AppRoutingModule,
     HttpClientModule,
     ReactiveFormsModule,
+    PowerBIEmbedModule,
     FormsModule,
     ToastrModule.forRoot(),
     BrowserAnimationsModule,

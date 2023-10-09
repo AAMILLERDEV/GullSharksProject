@@ -80,7 +80,7 @@
                                 <input type="button" value="Game Detail Report" class="btn lightblue btn-sm">
                             </li>
                             <li class="pb-2">
-                                <input type="button" value="Member List Report" class="btn lightblue btn-sm">
+                                <input type="button" value="Member List Report" class="btn lightblue btn-sm" (click)="showReport()">
                             </li>
                             <li class="pb-2">
                                 <input type="button" value="Wish List Report" class="btn lightblue btn-sm">
@@ -273,5 +273,18 @@
     </div>
 </div>
 
+<!--List of All Members Modal-->
+<div class="modal modal-xl fade" #usersReportModal id="usersReportModal" tabindex="-1">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">{{eventOperation}} Events</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body d-flex">
+            <iframe role="presentation" width="800" height="600" src="https://app.powerbi.com/rdlEmbed?reportId=b87d2082-3f25-4fec-8f56-8ab50e19d3a1&autoAuth=true&ctid=4ddd393a-e98a-4404-841f-c4becdd925a5&experience=power-bi" frameborder="0" allowFullScreen="true"></iframe>        </div>
+      </div>
+    </div>
+</div>
 
 
