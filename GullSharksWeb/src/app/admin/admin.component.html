@@ -24,6 +24,7 @@
                             <li class="pb-2">
                                 <input type="button" value="Edit Game" class="btn lightblue btn-sm" (click)="openGamesModal('Edit')">
                             </li>
+
                         </ul>
                     </div>
                   </div>
@@ -225,10 +226,10 @@
 
                     <div class="row">
                         <div class="col text-right">
-                            <button type="button" class="btn btn-success" formControlName="approveControl" (click)="updateReview(true)">Approve</button>
+                            <input type="button" class="btn btn-success" formControlName="approveControl" (click)="updateReview(true)">
                         </div>
                         <div class="col" style="text-align: left;">
-                            <button type="button" class="btn btn-danger" formControlName="rejectControl" (click)="updateReview(false)">Reject</button>
+                            <input type="button" class="btn btn-danger" formControlName="rejectControl" (click)="updateReview(false)">
                         </div>
                     </div>
                </div>
