@@ -13,7 +13,6 @@ public class GameReviewController : ControllerBase
         this.db = ch;
     }
 
-    /*
     [HttpGet]
     [Route("[controller]/GetGameReviews")]
     public Task<IEnumerable<GameReview>> GetGameReviews() => db.GetGameReviews();
@@ -24,6 +23,6 @@ public class GameReviewController : ControllerBase
 
     [HttpPost]
     [Route("[controller]/UpsertGameReview")]
-    public Task<int?> UpsertGameReview(GameReview gameReview) => db.UpsertUser(gameReview);
-    */
+    public Task<int?> UpsertGameReview(GameReview gameReview) => db.UpsertGameReview(gameReview);
+    
 }

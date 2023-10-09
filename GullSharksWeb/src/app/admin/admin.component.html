@@ -24,9 +24,6 @@
                             <li class="pb-2">
                                 <input type="button" value="Edit Game" class="btn lightblue btn-sm" (click)="openGamesModal('Edit')">
                             </li>
-                            <li>
-                                <input type="button" value="Delete Game" class="btn lightblue btn-sm">
-                            </li>
                         </ul>
                     </div>
                   </div>
@@ -112,8 +109,11 @@
                         <div class="col-2">
                             <label>Game Name:</label>
                         </div>
-                        <div class="col-4">
+                        <div class="col-4" *ngIf="gameOperation == 'Edit'">
                             <ng-select type="text" [items]="games" bindLabel="game_name" bindValue="id" formControlName="gameNameControl" class="customNGSelect" required></ng-select>
+                        </div>
+                        <div class="col-4" *ngIf="gameOperation == 'Add'">
+                            <input type="text" formControlName="gameNameControl" class="form-control customBorder2" required>
                         </div>
                         <div class="col-2">
                             <label>Publisher:</label>
@@ -161,6 +161,10 @@
                             <input type="text" formControlName="assetControl" class="form-control customBorder2" required>
                         </div>
                     </div>
+                    <hr>
+                    <div *ngIf="gameOperation == 'Edit'" class="text-center pt-5">
+                        <button type="button" class="btn btn-danger" (click)="deleteGame()">Delete Game</button>
+                    </div>
                </div>
             </form>
         </div>
@@ -183,7 +187,18 @@
         <div class="modal-body">
             <form [formGroup]="reviewsForm" class="alignRight">
                 <div class="form-group container p-5">
-                    <!--Language-->
+                     <!--Review Selector-->
+                     <div class="row py-3">
+                        <div class="col-2">
+                            <label>Select Review:</label>
+                        </div>
+                        <div class="col-10">
+                            <select formControlName="reviewsListControl" class="form-control customBorder2">
+                                <option *ngFor="let i of reviewsList" [value]="i.id">{{i.review_name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <!--Game/Rating-->
                     <div class="row py-3">
                         <div class="col-2">
                             <label>Game:</label>
@@ -198,7 +213,7 @@
                             <input type="text" formControlName="ratingControl" class="form-control customBorder2" required>
                         </div>
                     </div>
-                    <!--Rating/Description-->
+                    <!--Description-->
                     <div class="row py-3">
                         <div class="col-2">
                             <label>Description:</label>
@@ -207,13 +222,19 @@
                             <textarea rows="3" formControlName="descriptionControl" class="form-control customBorder2" required></textarea>
                         </div>
                     </div>
+
+                    <div class="row">
+                        <div class="col text-right">
+                            <button type="button" class="btn btn-success" formControlName="approveControl" (click)="updateReview(true)">Approve</button>
+                        </div>
+                        <div class="col" style="text-align: left;">
+                            <button type="button" class="btn btn-danger" formControlName="rejectControl" (click)="updateReview(false)">Reject</button>
+                        </div>
+                    </div>
                </div>
             </form>
         </div>
-        <div class="modal-footer justify-content-center">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
-        </div>
+
       </div>
     </div>
 </div>
@@ -229,6 +250,17 @@
         <div class="modal-body">
             <form [formGroup]="eventsForm" class="alignRight">
                 <div class="form-group container p-5">
+                    <!--Event Selector-->
+                    <div class="row py-3" *ngIf="eventOperation == 'Edit'">
+                        <div class="col-2">
+                            <label>Select Event:</label>
+                        </div>
+                        <div class="col-10">
+                            <select formControlName="eventsListControl" class="form-control customBorder2">
+                                <option *ngFor="let i of eventList" [value]="i.id">{{i.event_name}}</option>
+                            </select>
+                        </div>
+                    </div>
                     <!--Event Name-->
                     <div class="row py-3">
                         <div class="col-2">
@@ -278,11 +310,12 @@
     <div class="modal-dialog modal-xl">
       <div class="modal-content">
         <div class="modal-header">
-            <h5 class="modal-title">{{eventOperation}} Events</h5>
+            <h5 class="modal-title">All Members Report Kiosk</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body d-flex">
-            <iframe role="presentation" width="800" height="600" src="https://app.powerbi.com/rdlEmbed?reportId=b87d2082-3f25-4fec-8f56-8ab50e19d3a1&autoAuth=true&ctid=4ddd393a-e98a-4404-841f-c4becdd925a5&experience=power-bi" frameborder="0" allowFullScreen="true"></iframe>        </div>
+            <iframe role="presentation" width="1200" height="800" src="https://app.powerbi.com/rdlEmbed?reportId=b87d2082-3f25-4fec-8f56-8ab50e19d3a1&autoAuth=true&ctid=4ddd393a-e98a-4404-841f-c4becdd925a5&experience=power-bi" frameborder="0" allowFullScreen="true"></iframe>        
+        </div>
       </div>
     </div>
 </div>

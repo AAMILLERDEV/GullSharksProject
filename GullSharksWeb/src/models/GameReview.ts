@@ -5,4 +5,5 @@ export interface GameReview {
   isApproved: number;
   description: string;
   rating_id: number;
+  review_name: string;
 }

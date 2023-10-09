@@ -13,7 +13,6 @@ public class RatingController : ControllerBase
         this.db = ch;
     }
 
-    /*
     [HttpGet]
     [Route("[controller]/GetRatings")]
     public Task<IEnumerable<Rating>> GetRatings() => db.GetRatings();
@@ -25,6 +24,5 @@ public class RatingController : ControllerBase
     [HttpPost]
     [Route("[controller]/UpsertRating")]
     public Task<int?> UpsertRating(Rating rating) => db.UpsertRating(rating);
-    */
 }
 

@@ -13,10 +13,8 @@ public class PlatformGameLookUpController : ControllerBase
         this.db = ch;
     }
 
-    /*
     [HttpGet]
     [Route("[controller]/GetPlatformGameLookUp")]
     public Task<IEnumerable<PlatformGameLookUp>> GetPlatformsGamesLookUp() => db.GetPlatformsGamesLookUp();
-    */
 }
 

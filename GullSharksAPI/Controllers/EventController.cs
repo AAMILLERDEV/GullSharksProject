@@ -14,18 +14,18 @@ public class EventController : ControllerBase
         this.db = ch;
     }
 
-    /*
+    
     [HttpGet]
     [Route("[controller]/GetEvents")]
-    public Task<IEnumerable<Event>> GetEvents() => db.GetEvents();
+    public Task<IEnumerable<Events>> GetEvents() => db.GetEvents();
 
     [HttpGet]
     [Route("[controller]/GetEventByID/{id}")]
-    public Task<Event> GetEventByID(int id) => db.GetEventByID(id);
+    public Task<Events> GetEventByID(int id) => db.GetEventByID(id);
 
     [HttpPost]
     [Route("[controller]/UpsertEvent")]
-    public Task<int?> UpsertEvent(Event events) => db.UpsertEvent(events);
-    */
+    public Task<int?> UpsertEvent(Events events) => db.UpsertEvent(events);
+    
 
 }

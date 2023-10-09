@@ -1,6 +1,6 @@
 ﻿namespace GullSharksLib;
 
-public class Event
+public class Events
 {
     public int ID { set; get; }
     public string Event_Name { set; get; }

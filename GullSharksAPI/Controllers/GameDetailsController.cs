@@ -13,9 +13,10 @@ public class GameDetailsController : ControllerBase
         this.db = ch;
     }
 
-    /*
     [HttpGet]
     [Route("[controller]/GetGameDetails")]
     public Task<IEnumerable<GameDetails>> GetGameDetails() => db.GetGameDetails();
-    */
+    [HttpGet]
+    [Route("[controller]/UpsertGameDetail")]
+    public Task<int?> UpsertGameDetails(GameDetails gd) => db.UpsertGameDetails(gd);
 }

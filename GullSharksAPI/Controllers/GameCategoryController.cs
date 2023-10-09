@@ -13,9 +13,8 @@ public class GameCategoryController : ControllerBase
         this.db = ch;
     }
 
-    /*
     [HttpGet]
     [Route("[controller]/GetGameCategory")]
-    public Task<IEnumerable<GameCategory>> GetGameCategory() => db.GetGameCategory();
-    */
+    public Task<IEnumerable<GameCategory>> GetGameCategory() => db.GetGameCategories();
+    
 }

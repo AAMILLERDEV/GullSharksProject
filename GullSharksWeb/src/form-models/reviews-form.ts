@@ -4,5 +4,7 @@ export const ReviewsForm = new FormGroup ({
     gameControl: new FormControl(),
     descriptionControl: new FormControl(),
     ratingControl: new FormControl(),
-    submitControl: new FormControl("Submit")
+    reviewsListControl: new FormControl(),
+    approveControl: new FormControl("Approve"),
+    rejectControl: new FormControl("Reject")
 })

@@ -13,10 +13,9 @@ public class PlatformController : ControllerBase
         this.db = ch;
     }
 
-    /*
     [HttpGet]
     [Route("[controller]/GetPlatforms")]
     public Task<IEnumerable<Platform>> GetPlatforms() => db.GetPlatforms();
-    */
+    
 }
 
