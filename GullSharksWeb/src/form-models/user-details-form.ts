@@ -1,6 +1,6 @@
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 
-export const userDetailsForm = new FormGroup ({
+export const UserDetailsForm = new FormGroup ({
 
     firstNameControl: new FormControl(null),
     lastNameControl: new FormControl(null),

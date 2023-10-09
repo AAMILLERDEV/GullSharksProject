@@ -50,7 +50,6 @@ export class AdminComponent implements OnInit {
     this.gamesForm = GamesForm;
     this.reviewsForm = ReviewsForm;
     this.eventsForm = EventsForm;
-
   }
 
   public async ngOnInit() {
@@ -93,7 +92,7 @@ export class AdminComponent implements OnInit {
   }
 
   public async deleteGame(){
-    
+
   }
   
 }

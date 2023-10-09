@@ -1,6 +1,6 @@
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 
-export const addressForm = new FormGroup ({
+export const AddressForm = new FormGroup ({
 
     cityControl: new FormControl(),
     countryControl: new FormControl(),
@@ -8,6 +8,7 @@ export const addressForm = new FormGroup ({
     provinceControl: new FormControl(),
     postalCodeControl: new FormControl(),
     streetAddressControl: new FormControl(),
+    phoneNumberControl: new FormControl(),
     submitControl: new FormControl("Save Changes")
 
 })

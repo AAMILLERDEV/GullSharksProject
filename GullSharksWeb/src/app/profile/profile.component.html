@@ -1,37 +1,231 @@
 <app-navbar></app-navbar>
-<ng-container [formGroup]="preferencesForm">
-    <div class="form-group container customBorder2 p-5">
-        <div class="text-center">
-            Preferences
+
+<ng-container >
+        <!--The According Component-->
+        <div class="form-group container customBorder1 p-5">
+
+            <div class="customBorder2 m-5 p-5" style="width: 30%; min-height: 20em;">
+                <img src="/assets/Default_Profile.png" alt="Logo" style="max-height:100%; max-width:100%;">
+                <p class="text-center mt-5 customBorder2">Welcome, {{user?.username}}</p>
+            </div>
+
+            <div class="accordion" id="accordionExample">
+                <!--The Games Items-->
+                <div class="accordion-item">
+                  <h2 class="accordion-header" id="headingOne">
+                    <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                        Your User Details
+                    </button>
+                  </h2>
+                  <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
+                    <div class="accordion-body">
+                        <ul>
+                            <li class="pb-2 pt-2">
+                                <input type="button" value="Manage User Details" class="btn lightblue btn-sm" (click)="openUserDetailsModal()">
+                            </li>
+                            <li class="pb-2 pt-2">
+                                <input type="button" value="My Preferences" class="btn lightblue btn-sm" (click)="openPreferencesModal()">
+                            </li>
+                            <li class="pb-2 pt-2">
+                                <input type="button" value="Manage Address" class="btn lightblue btn-sm" (click)="openAddressModal()">
+                            </li>
+                        </ul>
+                    </div>
+                  </div>
+                </div>
+            </div>
         </div>
-        <!--Category/Description-->
-        <div class="row py-3 text-center">
-            <div class="col-2">
-                <label>Game Categories:</label>
-            </div>
-            <div class="col-4">
-                <ng-select [items]="categories" bindLabel="category_name" bindValue="id" formControlName="categoryControl" class="customNGSelect" required></ng-select>
-            </div>
-            <div class="col-2">
-                <label>Platforms:</label>
-            </div>
-            <div class="col-4">
-                <ng-select [items]="platforms" bindLabel="platform_name" bindValue="id" formControlName="platformControl" class="customNGSelect" required></ng-select>
-            </div>
-        </div>
-        <!--Language-->
-        <div class="row py-3 text-center">
-            <div class="col-2">
-                <label>Language:</label>
-            </div>
-            <div class="col-10">
-                <ng-select [items]="languages" bindLabel="language_name" bindValue="id" formControlName="languageControl" class="customNGSelect" required></ng-select>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12">
-                <input text="button" formControlName="submitControl" class="btn btn-primary form-control">
-            </div>
-        </div>
-   </div>
 </ng-container>
+
+<!--The User Details Modal-->
+<div class="modal fade" #preferencesModal id="preferencesModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Preferences</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form [formGroup]="preferencesForm" class="form-group container customBorder2 p-5 alignRight">
+                <!--Category/Description-->
+                <div class="row py-3">
+                    <div class="col-2">
+                        <label>Game Categories:</label>
+                    </div>
+                    <div class="col-4">
+                        <ng-select [items]="categories" bindLabel="category_name" bindValue="id" formControlName="categoryControl" class="customNGSelect" required></ng-select>
+                    </div>
+                    <div class="col-2">
+                        <label>Platforms:</label>
+                    </div>
+                    <div class="col-4">
+                        <ng-select [items]="platforms" bindLabel="platform_name" bindValue="id" formControlName="platformControl" class="customNGSelect" required></ng-select>
+                    </div>
+                </div>
+                <!--Language-->
+                <div class="row py-3">
+                    <div class="col-2">
+                        <label>Language:</label>
+                    </div>
+                    <div class="col-10">
+                        <ng-select [items]="languages" bindLabel="language_name" bindValue="id" formControlName="languageControl" class="customNGSelect" required></ng-select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-12">
+                        <input text="button" formControlName="submitControl" class="btn btn-primary form-control">
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer justify-content-center">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!--The Address Modal-->
+<div class="modal fade" #addressModal id="addressModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Mailing Address</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form [formGroup]="addressForm" class="form-group container customBorder2 p-5 alignRight">
+                <!--City/Country-->
+                <div class="row py-3">
+                    <div class="col-2">
+                        <label>Country:</label>
+                    </div>
+                    <div class="col-4">
+                        <select formControlName="countryControl" class="form-control customBorder2">
+                            <option *ngFor="let i of countries" [value]="i.id">{{i.country_name}}</option>
+                        </select>
+                    </div>
+                    <div class="col-2">
+                        <label>City:</label>
+                    </div>
+                    <div class="col-4">
+                        <input type="text" formControlName="cityControl" class="form-control customBorder2" required>
+                    </div>
+                </div>
+                <!--Province/Postal Code-->
+                <div class="row py-3" *ngIf="addressForm.controls['countryControl'].value == 1">
+                    <div class="col-2">
+                        <label>Province:</label>
+                    </div>
+                    <div class="col-4">
+                        <select formControlName="provinceControl" class="form-control customBorder2">
+                            <option *ngFor="let i of provinces" [value]="i.id">{{i.province_name}}</option>
+                        </select>
+                    </div>
+                    <div class="col-2">
+                        <label>Postal Code:</label>
+                    </div>
+                    <div class="col-4">
+                        <input type="text" formControlName="postalCodeControl" pattern="^(\d{5}(-\d{4})?|[A-Z]\d[A-Z] *\d[A-Z]\d)$" class="form-control customBorder2" required>
+                    </div>
+                </div>
+                <!--Phone Number-->
+                <div class="row py-3">
+                    <div class="col-2">
+                        <label>Phone Number:</label>
+                    </div>
+                    <div class="col-10">
+                        <input type="text" formControlName="phoneNumberControl" class="form-control customBorder2" required>
+                    </div>
+                </div>
+                <!--Street Address-->
+                <div class="row py-3">
+                    <div class="col-2">
+                        <label>Street Address:</label>
+                    </div>
+                    <div class="col-10">
+                        <input type="text" formControlName="streetAddressControl" class="form-control customBorder2" required>
+                    </div>
+                </div>
+                <!--Language-->
+                <div class="row py-3r">
+                    <div class="col-2">
+                        <label>Delivery Instructions:</label>
+                    </div>
+                    <div class="col-10">
+                        <textarea rows="3" class="form-control customBorder2" placeholder="Enter Instructions Here" formControlName="instructionsControl"></textarea>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer justify-content-center">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!--The AddressModal Modal-->
+<div class="modal fade" #userDetailsModal id="userDetailsModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Your Details</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form [formGroup]="userDetailsForm" class="form-group container customBorder2 p-5 alignRight">
+                <!--First/Last Name-->
+                <div class="row py-3">
+                    <div class="col-2">
+                        <label>First Name:</label>
+                    </div>
+                    <div class="col-4">
+                        <input type="text" formControlName="firstNameControl" class="form-control customBorder2" required>
+                    </div>
+                    <div class="col-2">
+                        <label>Last Name:</label>
+                    </div>
+                    <div class="col-4">
+                        <input type="text" formControlName="lastNameControl" class="form-control customBorder2" required>
+                    </div>
+                </div>
+                <!--Gender/Birth Date-->
+                <div class="row py-3">
+                    <div class="col-2">
+                        <label>Gender:</label>
+                    </div>
+                    <div class="col-4">
+                        <select formControlName="genderControl" class="form-control customBorder2">
+                            <option value="male" [selected]="true">Male</option>
+                            <option value="female">Female</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="col-2">
+                        <label>Birth Date:</label>
+                    </div>
+                    <div class="col-4">
+                        <input type="date" formControlName="birthDateControl" class="form-control customBorder2" required>
+                    </div>
+                </div>
+                <!--Email Updates-->
+                <div class="row py-3">
+                    <div class="col-10">
+                        <label>Would you like to recieve exclusive information such as discounts and special releases via email?</label>
+                    </div>
+                    <div class="col-2">
+                        <input type="checkbox" formControlName="emailUpdatesControl" class="form-control form-check-input" required>
+                    </div>
+                </div>
+           </form>
+        </div>
+        <div class="modal-footer justify-content-center">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+    </div>
+</div>
