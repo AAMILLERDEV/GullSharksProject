@@ -1,11 +1,12 @@
-﻿using Microsoft.Extensions.Options;
+﻿using GullSharksLib.Interfaces;
+using Microsoft.Extensions.Options;
 
 namespace GullSharksLib;
-public class PlatformsRepository
+public class PlatformRepository //: IPlatformRepository
 {
     private readonly DBRepository db;
 
-    public PlatformsRepository(IOptionsMonitor<AppSetting> options)
+    public PlatformRepository(IOptionsMonitor<AppSetting> options)
     {
         db = new DBRepository(options.CurrentValue.DbConn);
     }

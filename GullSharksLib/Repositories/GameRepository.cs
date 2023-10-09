@@ -1,15 +1,16 @@
-﻿using Microsoft.Extensions.Options;
+﻿using GullSharksLib.Interfaces;
+using Microsoft.Extensions.Options;
 
 namespace GullSharksLib;
 
-public class GamesRepository
+public class GameRepository //: IGameRepository
 {
     private readonly DBRepository db;
 
-    public GamesRepository(IOptionsMonitor<AppSetting> options)
+    public GameRepository(IOptionsMonitor<AppSetting> options)
     {
         db = new DBRepository(options.CurrentValue.DbConn);
     }
 
-    // public Task<IEnumerable<Game>> GetGames() => db.GetGames();
+    //public Task<IEnumerable<Game>> GetGames() => db.GetGames();
 }

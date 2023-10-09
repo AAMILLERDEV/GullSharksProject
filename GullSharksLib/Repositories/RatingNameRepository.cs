@@ -1,11 +1,12 @@
-﻿using Microsoft.Extensions.Options;
+﻿using GullSharksLib.Interfaces;
+using Microsoft.Extensions.Options;
 
 namespace GullSharksLib;
-public class RatingNamesRepository
+public class RatingNameRepository //: IRatingNameRepository
 {
     private readonly DBRepository db;
 
-    public RatingNamesRepository(IOptionsMonitor<AppSetting> options)
+    public RatingNameRepository(IOptionsMonitor<AppSetting> options)
     {
         db = new DBRepository(options.CurrentValue.DbConn);
     }

@@ -1,11 +1,12 @@
-﻿using Microsoft.Extensions.Options;
+﻿using GullSharksLib.Interfaces;
+using Microsoft.Extensions.Options;
 
 namespace GullSharksLib;
-public class GameCategoriesRepository
+public class GameCategoryRepository //: IGameCategoryRepository
 {
     private readonly DBRepository db;
 
-    public GameCategoriesRepository(IOptionsMonitor<AppSetting> options)
+    public GameCategoryRepository(IOptionsMonitor<AppSetting> options)
     {
         db = new DBRepository(options.CurrentValue.DbConn);
     }

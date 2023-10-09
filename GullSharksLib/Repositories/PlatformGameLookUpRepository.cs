@@ -1,7 +1,8 @@
-﻿using Microsoft.Extensions.Options;
+﻿using GullSharksLib.Interfaces;
+using Microsoft.Extensions.Options;
 
 namespace GullSharksLib;
-public class PlatformGameLookUpRepository
+public class PlatformGameLookUpRepository //: IPlatformGameLookUpRepository
 {
     private readonly DBRepository db;
 

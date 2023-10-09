@@ -1,17 +1,18 @@
-﻿using Microsoft.Extensions.Options;
+﻿using GullSharksLib.Interfaces;
+using Microsoft.Extensions.Options;
 
 namespace GullSharksLib;
-public class RatingsRepository
+public class RatingRepository //: IRatingRepository
 {
     private readonly DBRepository db;
 
-    public RatingsRepository(IOptionsMonitor<AppSetting> options)
+    public RatingRepository(IOptionsMonitor<AppSetting> options)
     {
         db = new DBRepository(options.CurrentValue.DbConn);
     }
 
     // public Task<IEnumerable<Rating>> GetRatings() => db.GetRatings();
     // public Task<Rating> GetRatingByID(int id) => db.GetRatingByID(id);
-    // public Task<int?> UpsertRating(Rating ins) => db.UpsertRating(rating);
+    // public Task<int?> UpsertRating(Rating rating) => db.UpsertRating(rating);
 }
 
