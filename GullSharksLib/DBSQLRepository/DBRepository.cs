@@ -709,4 +709,132 @@ public class DBRepository : IDBRepository
             return default;
         }
     }
+
+
+    // DB methods for preferences
+    public async Task<IEnumerable<LanguagePreference>> GetLanguagePreferences(int user_ID)
+    {
+        try
+        {
+            using IDbConnection connection = new SqlConnection(connectionString);
+            return await connection.QueryAsync<LanguagePreference>("hist.languagePref_lookUp_GET", new { user_ID }, commandType: CommandType.StoredProcedure);
+
+        }
+        catch (Exception ex)
+        {
+            return default;
+        }
+    }
+
+    public async Task<IEnumerable<PlatformPreference>> GetPlatformPreferences(int user_ID)
+    {
+        try
+        {
+            using IDbConnection connection = new SqlConnection(connectionString);
+            return await connection.QueryAsync<PlatformPreference>("hist.platformPref_lookUp_GET", new { user_ID }, commandType: CommandType.StoredProcedure);
+
+        }
+        catch (Exception ex)
+        {
+            return default;
+        }
+    }
+
+    public async Task<IEnumerable<CategoryPreference>> GetCategoryPreferences(int user_ID)
+    {
+        try
+        {
+            using IDbConnection connection = new SqlConnection(connectionString);
+            return await connection.QueryAsync<CategoryPreference>("hist.categoryPref_lookUp_GET", new { user_ID }, commandType: CommandType.StoredProcedure);
+
+        }
+        catch (Exception ex)
+        {
+            return default;
+        }
+    }
+
+    public async Task<int?> UpsertPlatformPreference(PlatformPreference ins)
+    {
+        int? insertedID = 0;
+
+        var parameters = new DynamicParameters(new Dictionary<string, object>
+        {
+            { "@id", ins.ID },
+            { "@platform_ID", ins.Platform_ID },
+            { "@user_ID", ins.User_ID },
+            { "@isDeleted", ins.IsDeleted }
+        });
+
+        parameters.Add("@insertedID", 0, direction: ParameterDirection.Output);
+
+        try
+        {
+            using IDbConnection connection = new SqlConnection(connectionString);
+            await connection.ExecuteAsync("hist.platformPref_lookUp_UPSERT", parameters, commandType: CommandType.StoredProcedure);
+            insertedID = parameters.Get<int?>("@insertedID");
+        }
+        catch (Exception ex)
+        {
+            return default;
+        }
+
+        return insertedID ?? ins.ID;
+    }
+
+    public async Task<int?> UpsertCategoryPreference(CategoryPreference ins)
+    {
+        int? insertedID = 0;
+
+        var parameters = new DynamicParameters(new Dictionary<string, object>
+        {
+            { "@id", ins.ID },
+            { "@category_ID", ins.Category_ID },
+            { "@user_ID", ins.User_ID },
+            { "@isDeleted", ins.IsDeleted }
+        });
+
+        parameters.Add("@insertedID", 0, direction: ParameterDirection.Output);
+
+        try
+        {
+            using IDbConnection connection = new SqlConnection(connectionString);
+            await connection.ExecuteAsync("hist.categoryPref_lookUp_UPSERT", parameters, commandType: CommandType.StoredProcedure);
+            insertedID = parameters.Get<int?>("@insertedID");
+        }
+        catch (Exception ex)
+        {
+            return default;
+        }
+
+        return insertedID ?? ins.ID;
+    }
+
+    public async Task<int?> UpsertLanguagePreference(LanguagePreference ins)
+    {
+        int? insertedID = 0;
+
+        var parameters = new DynamicParameters(new Dictionary<string, object>
+        {
+            { "@id", ins.ID },
+            { "@language_ID", ins.Language_ID },
+            { "@user_ID", ins.User_ID },
+            { "@isDeleted", ins.IsDeleted }
+        });
+
+        parameters.Add("@insertedID", 0, direction: ParameterDirection.Output);
+
+        try
+        {
+            using IDbConnection connection = new SqlConnection(connectionString);
+            await connection.ExecuteAsync("hist.languagePref_lookUp_UPSERT", parameters, commandType: CommandType.StoredProcedure);
+            insertedID = parameters.Get<int?>("@insertedID");
+        }
+        catch (Exception ex)
+        {
+            return default;
+        }
+
+        return insertedID ?? ins.ID;
+    }
 }

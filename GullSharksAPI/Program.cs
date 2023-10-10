@@ -29,6 +29,7 @@ try {
     builder.Services.AddSingleton<ICountryRepository, CountryRepository>(x => new CountryRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
     builder.Services.AddSingleton<IAssetRepository, AssetRepository>(x => new AssetRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
     builder.Services.AddSingleton<IUserDetailsRepository, UserDetailsRepository>(x => new UserDetailsRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
+    builder.Services.AddSingleton<IPreferenceRepository, PreferencesRepository>(x => new PreferencesRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
 
     builder.Services.AddCors(o => o.AddDefaultPolicy(builder =>
     {
