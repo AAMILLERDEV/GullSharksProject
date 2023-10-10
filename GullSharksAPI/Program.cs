@@ -1,6 +1,9 @@
 using GullSharksLib;
 using GullSharksLib.Interfaces;
+using GullSharksLib.Repositories;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Options;
+using static System.Net.Mime.MediaTypeNames;
 
 try {
     var builder = WebApplication.CreateBuilder(args);
@@ -20,13 +23,18 @@ try {
     builder.Services.AddSingleton<IGameReviewRepository, GameReviewRepository>(x => new GameReviewRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
     builder.Services.AddSingleton<IRatingRepository, RatingRepository>(x => new RatingRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
     builder.Services.AddSingleton<IEmailRepository, EmailRepository>(x => new EmailRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
+    builder.Services.AddSingleton<ICredentialRepository, CredentialRepository>(x => new CredentialRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
 
 
+    //builder.Services.AddCors(c =>
+    //{
+    //    c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
+    //});
 
-    builder.Services.AddCors(c =>
+    builder.Services.AddCors(o => o.AddDefaultPolicy(builder =>
     {
-        c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
-    });
+        builder.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin();
+    }));
 
     builder.Services.AddControllers();
 
@@ -41,9 +49,9 @@ try {
     //no comment
 
     app.UseHttpsRedirection();
-
+    app.UseRouting();
     app.UseAuthorization();
-    app.UseCors(options => options.AllowAnyOrigin());
+    app.UseCors();
     app.MapControllers();
 
     app.Run();

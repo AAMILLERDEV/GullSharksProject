@@ -5,6 +5,7 @@ import { ReCaptchaV3Service, RecaptchaErrorParameters } from 'ng-recaptcha';
 import { ToastrService } from 'ngx-toastr';
 import { LoginForm } from 'src/form-models/login-form';
 import { User } from 'src/models/User';
+import { CredentialService } from 'src/services/credential.service';
 import { UserService } from 'src/services/user.service';
 
 @Component({
@@ -25,7 +26,8 @@ export class LoginComponent implements OnInit {
 
   constructor(public router: Router,
     public userService: UserService,
-    public toastr: ToastrService){
+    public toastr: ToastrService,
+    public credentialService: CredentialService){
     this.loginForm = LoginForm;
   }
 
@@ -34,7 +36,7 @@ export class LoginComponent implements OnInit {
     this.loginCounter = JSON.parse(sessionStorage.getItem("LoginCounter")!);
   }
 
-  public submitUserLoginCredentials(){
+  public async submitUserLoginCredentials(){
 
     if (this.loginCounter >= 3){
       this.toastr.error("Error, no more login attempts are allowed. Please reset your password to proceed.");
@@ -48,7 +50,7 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    this.user = this.users.find(x => x.email == this.loginForm.controls['passwordControl'].value && x.username == this.loginForm.controls['usernameControl'].value);
+    this.user = this.users.find(x => x.username == this.loginForm.controls['usernameControl'].value);
 
     if (this.user == null || this.user == undefined){
       this.toastr.error("No login found for the details provided.");
@@ -57,9 +59,17 @@ export class LoginComponent implements OnInit {
       return;
     }
 
+    let check = await this.checkCredentials(this.user, btoa(this.loginForm.controls['usernameControl'].value));
+
+    if (check == false){
+      this.toastr.error("No login found for the details provided.");
+      this.loginCounter++;
+      this.saveLoginAttempt();
+      return;
+    }
+
     sessionStorage.setItem("User", JSON.stringify(this.user));
-
-
+    
     this.router.navigateByUrl("home");
   }
 
@@ -78,6 +88,10 @@ export class LoginComponent implements OnInit {
 
   public saveLoginAttempt(){
     sessionStorage.setItem("LoginCounter", JSON.stringify(this.loginCounter));
+  }
+
+  public async checkCredentials(user: User, cred: string){
+    return await this.credentialService.checkCredentials(user, cred);
   }
 
 }

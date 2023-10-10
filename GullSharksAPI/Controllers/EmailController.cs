@@ -14,11 +14,15 @@ public class EmailController : ControllerBase
         this.db = ch;
     }
 
-    
+
     [HttpPost]
     [Route("[controller]/SendValidationEmail")]
     public bool SendValidationEmail(User user) => db.SendValidationEmail(user);
 
-    
+    [HttpPost]
+    [Route("[controller]/SendResetPasswordEmail")]
+    public Task<bool> SendResetPasswordEmail(User user) => db.SendResetPasswordEmail(user);
+
+
 
 }

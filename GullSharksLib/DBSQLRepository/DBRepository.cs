@@ -69,7 +69,7 @@ public class DBRepository : IDBRepository
         var parameters = new DynamicParameters(new Dictionary<string, object>
         {
             { "@id", ins.ID },
-            { "@credentialValue", ins.Credential_Value },
+            { "@credentialValue", ins.CredentialValue },
             { "@userId", ins.User_ID },
             { "@isDeleted", ins.IsDeleted }
         });
