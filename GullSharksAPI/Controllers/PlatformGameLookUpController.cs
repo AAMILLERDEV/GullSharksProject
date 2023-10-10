@@ -14,7 +14,7 @@ public class PlatformGameLookUpController : ControllerBase
     }
 
     [HttpGet]
-    [Route("[controller]/GetPlatformGameLookUp")]
+    [Route("[controller]/GetPlatformGameLookUp/{platform_ID}")]
     public Task<IEnumerable<PlatformGameLookUp>> GetPlatformsGamesLookUp(int platform_ID) => db.GetPlatformsGamesLookUp(platform_ID);
 }
 

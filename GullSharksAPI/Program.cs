@@ -24,12 +24,9 @@ try {
     builder.Services.AddSingleton<IRatingRepository, RatingRepository>(x => new RatingRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
     builder.Services.AddSingleton<IEmailRepository, EmailRepository>(x => new EmailRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
     builder.Services.AddSingleton<ICredentialRepository, CredentialRepository>(x => new CredentialRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
-
-
-    //builder.Services.AddCors(c =>
-    //{
-    //    c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
-    //});
+    builder.Services.AddSingleton<ILanguageRepository, LanguageRepository>(x => new LanguageRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
+    builder.Services.AddSingleton<IProvinceRepository, ProvinceRepository>(x => new ProvinceRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
+    builder.Services.AddSingleton<ICountryRepository, CountryRepository>(x => new CountryRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
 
     builder.Services.AddCors(o => o.AddDefaultPolicy(builder =>
     {
