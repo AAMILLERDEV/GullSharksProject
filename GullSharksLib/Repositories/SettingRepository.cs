@@ -1,9 +1,10 @@
 ﻿using GullSharksLib.Interfaces;
+using GullSharksLib.Models;
 using Microsoft.Extensions.Options;
 
 namespace GullSharksLib.Repositories
 {
-    public class SettingRepository //: ISettingRepository
+    public class SettingRepository : ISettingRepository
     {
         private readonly DBRepository db;
 
@@ -12,6 +13,6 @@ namespace GullSharksLib.Repositories
             db = new DBRepository(options.CurrentValue.DbConn);
         }
 
-        // public Task<IEnumerable<Setting>> GetSettings() => db.GetSettings();
+        public Task<IEnumerable<Setting>> GetSettings() => db.GetSettings();
     }
 }

@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Options;
 
 namespace GullSharksLib;
-public class GameCategoryRepository //: IGameCategoryRepository
+public class GameCategoryRepository : IGameCategoryRepository
 {
     private readonly DBRepository db;
 
@@ -11,5 +11,5 @@ public class GameCategoryRepository //: IGameCategoryRepository
         db = new DBRepository(options.CurrentValue.DbConn);
     }
 
-    // public Task<IEnumerable<GameCategory>> GetGameCategories() => db.GetGameCategories();
+    public Task<IEnumerable<GameCategory>> GetGameCategories() => db.GetGameCategories();
 }

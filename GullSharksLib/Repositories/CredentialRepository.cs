@@ -3,7 +3,7 @@ using Microsoft.Extensions.Options;
 
 namespace GullSharksLib.Repositories
 {
-    public class CredentialRepository //: ICredentialRepository
+    public class CredentialRepository : ICredentialRepository
     {
         private readonly DBRepository db;
 
@@ -12,8 +12,8 @@ namespace GullSharksLib.Repositories
             db = new DBRepository(options.CurrentValue.DbConn);
         }
 
-        // public Task<IEnumerable<Credential>> GetCredientials() => db.GetCredentials();
-        // public Task<Credential> GetCredentialByID(int id) => db.GetCredentialByID(id);
-        // public Task<int?> UpsertCredential(Credential ins) => db.UpsertCredential(credential);
+        public Task<IEnumerable<Credential>> GetCredientials() => db.GetCredentials();
+        public Task<Credential> GetCredentialByID(int id) => db.GetCredentialByID(id);
+        public Task<int?> UpsertCredential(Credential ins) => db.UpsertCredential(credential);
     }
 }

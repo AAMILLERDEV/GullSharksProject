@@ -11,6 +11,7 @@ namespace GullSharksLib.Repositories
         {
             db = new DBRepository(options.CurrentValue.DbConn);
         }
-        // public Task<IEnumerable<Asset>> GetAssets() => db.GetAssets();
+
+        public Task<IEnumerable<Asset>> GetAssets() => db.GetAssets();
     }
 }

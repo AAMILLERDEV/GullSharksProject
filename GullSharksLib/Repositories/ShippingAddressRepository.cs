@@ -1,9 +1,10 @@
 ﻿using GullSharksLib.Interfaces;
+using GullSharksLib.Models;
 using Microsoft.Extensions.Options;
 
 namespace GullSharksLib.Repositories
 {
-    public class ShippingAddressRepository //: IShippingAddressRepository
+    public class ShippingAddressRepository : IShippingAddressRepository
     {
         private readonly DBRepository db;
 
@@ -12,8 +13,8 @@ namespace GullSharksLib.Repositories
             db = new DBRepository(options.CurrentValue.DbConn);
         }
 
-        // public Task<IEnumerable<ShippingAddress>> GetShippingAddresses() => db.GetShippingAddresses();
-        // public Task<ShippingAddress> GetShippingAddressByID(int id) => db.GetShippingAddressByID(id);
-        // public Task<int?> UpsertShippingAddress(ShippingAddress ins) => db.UpsertShippingAddress(shippingAddress);
+        public Task<IEnumerable<ShippingAddress>> GetShippingAddresses() => db.GetShippingAddresses();
+        public Task<ShippingAddress> GetShippingAddressByID(int id) => db.GetShippingAddressByID(id);
+        public Task<int?> UpsertShippingAddress(ShippingAddress ins) => db.UpsertShippingAddress(shippingAddress);
     }
 }
