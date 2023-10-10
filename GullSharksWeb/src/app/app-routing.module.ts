@@ -5,6 +5,7 @@ import { LoginComponent } from './login/login.component';
 import { AdminComponent } from './admin/admin.component';
 import { ProfileComponent } from './profile/profile.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
+import { ValidationComponent } from './validation/validation.component';
 
 const routes: Routes = [
   {path: "", component: HomeComponent},
@@ -12,7 +13,8 @@ const routes: Routes = [
   {path: "login", component: LoginComponent},
   {path: "admin", component: AdminComponent},
   {path: "profile", component: ProfileComponent},
-  {path: "signup", component: SignUpComponent}
+  {path: "signup", component: SignUpComponent},
+  {path: "Validation/:username", component: ValidationComponent}
 ];
 
 @NgModule({

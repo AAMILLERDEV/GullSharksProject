@@ -22,6 +22,7 @@ import { AdminComponent } from './admin/admin.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { ProfileComponent } from './profile/profile.component';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { ValidationComponent } from './validation/validation.component';
 
 const globalSettings: RecaptchaSettings = { siteKey: '6LcOuyYTAAAAAHTjFuqhA52fmfJ_j5iFk5PsfXaU' };
 
@@ -33,7 +34,8 @@ const globalSettings: RecaptchaSettings = { siteKey: '6LcOuyYTAAAAAHTjFuqhA52fmf
     SignUpComponent,
     AdminComponent,
     NavbarComponent,
-    ProfileComponent
+    ProfileComponent,
+    ValidationComponent
   ],
   imports: [
     BrowserModule,

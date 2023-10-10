@@ -19,7 +19,7 @@ public class EmailRepository : IEmailRepository
     {
         try
         {
-            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(user.ID.ToString());
+            var plainTextBytes = System.Text.Encoding.UTF8.GetBytes(user.Username.ToString());
             var URL = $"http://localhost:4200/Validation/{System.Convert.ToBase64String(plainTextBytes)}";
 
             MailMessage message = new MailMessage()

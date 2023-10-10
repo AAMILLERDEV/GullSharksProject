@@ -1,0 +1,28 @@
+<app-navbar></app-navbar>
+<ng-container *ngIf="successful">
+    <div class="form-group container customBorder1 p-5" style="width: 35%">
+        <div class="text-center">
+            <img src="/assets/CVGS.png" alt="Logo"  height="160">
+        </div>
+
+        <h1 class="text-center">Success {{username}}, your account is now verified!</h1>
+
+        <div class="text-center m-5">
+            <input type="button" class="btn btn-info" value="Return Home" [routerLink]="'/home'">
+        </div>
+   </div>
+</ng-container>
+
+<ng-container *ngIf="!successful">
+    <div class="form-group container customBorder1 p-5" style="width: 35%">
+        <div class="text-center">
+            <img src="/assets/CVGS.png" alt="Logo"  height="160">
+        </div>
+
+        <h1 class="text-center">Oops! Nothing to see here..</h1>
+
+        <div class="text-center m-5">
+            <input type="button" class="btn btn-info" value="Return Home" [routerLink]="'/home'">
+        </div>
+   </div>
+</ng-container>

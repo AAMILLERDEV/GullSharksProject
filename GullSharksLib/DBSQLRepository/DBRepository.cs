@@ -403,7 +403,6 @@ public class DBRepository : IDBRepository
             { "@email", ins.Email },
             { "@credentials_ID", ins.Credentials_ID },
             { "@isAdmin", ins.IsAdmin },
-            { "@loginCounter", ins.LoginCounter },
             { "@isValidated", ins.IsValidated },
             { "@isDeleted", ins.IsDeleted }
         });

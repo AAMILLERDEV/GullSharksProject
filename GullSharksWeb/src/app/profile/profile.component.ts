@@ -6,13 +6,17 @@ import { ToastrService } from 'ngx-toastr';
 import { AddressForm } from 'src/form-models/address-form';
 import { PreferencesForm } from 'src/form-models/preferences-form';
 import { UserDetailsForm } from 'src/form-models/user-details-form';
+import { CategoryPreference } from 'src/models/CategoryPreference';
 import { Country } from 'src/models/Country';
 import { GameCategory } from 'src/models/GameCategory';
 import { Language } from 'src/models/Language';
+import { LanguagePreference } from 'src/models/LanguagePreference';
 import { Platform } from 'src/models/Platform';
+import { PlatformPreference } from 'src/models/PlatformPreference';
 import { Province } from 'src/models/Province';
 import { User } from 'src/models/User';
 import { UserDetails } from 'src/models/UserDetails';
+import { PreferenceService } from 'src/services/preference.service';
 import { UserService } from 'src/services/user.service';
 import { UserDetailsService } from 'src/services/userDetail.service';
 
@@ -26,6 +30,10 @@ export class ProfileComponent implements OnInit {
   public users!: User[];
   public countries: Country[] = [];
   public provinces: Province[] = [];
+
+  public categoryPreferences: CategoryPreference[] = [];
+  public languagePreferences: LanguagePreference[] = [];
+  public platformPreferences: PlatformPreference[] = [];
 
   public user!: User | undefined;
   public userDetails!: UserDetails;
@@ -52,7 +60,8 @@ export class ProfileComponent implements OnInit {
   constructor(public router: Router,
     public userService: UserService,
     public toastr: ToastrService,
-    public userDetailsService: UserDetailsService){
+    public userDetailsService: UserDetailsService,
+    public preferenceService: PreferenceService){
     this.preferencesForm = PreferencesForm;
     this.addressForm = AddressForm;
     this.userDetailsForm = UserDetailsForm;
@@ -95,11 +104,35 @@ export class ProfileComponent implements OnInit {
 
     this.validated = this.user!.isValidated;
     this.email = this.user!.email;
-    
+
     if (this.userDetails != null){
       this.firstname = this.userDetails.first_name;
       this.lastname = this.userDetails.last_name;
     }
+
+    this.categoryPreferences = await this.preferenceService.getCategoryPreferences(this.user!.id);
+    this.languagePreferences = await this.preferenceService.getLanguagePreferences(this.user!.id);
+    this.platformPreferences = await this.preferenceService.getPlatformPreferences(this.user!.id);
+
+    let platList = [];
+    let langList = [];
+    let catList = [];
+
+    for (let i of this.categoryPreferences){
+      platList.push(i.category_ID);
+    }
+
+    for (let i of this.languagePreferences){
+      langList.push(i.language_ID);
+    }
+
+    for (let i of this.platformPreferences){
+      catList.push(i.platform_ID);
+    }
+
+    this.preferencesForm.controls['platformControl'].setValue(platList);
+    this.preferencesForm.controls['languageControl'].setValue(langList);
+    this.preferencesForm.controls['categoryControl'].setValue(catList);
   }
 
   // public postalCodeValidation(postalCode: string){
