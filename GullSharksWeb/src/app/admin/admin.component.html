@@ -114,7 +114,7 @@
                             <label>Game Name:</label>
                         </div>
                         <div class="col-4" *ngIf="gameOperation == 'Edit'">
-                            <ng-select type="text" [items]="games" bindLabel="game_name" bindValue="id" formControlName="gameNameControl" class="customNGSelect" required></ng-select>
+                            <ng-select type="text" [items]="games" bindLabel="gameName" bindValue="id" formControlName="gameNameControl" #gameItem class="customNGSelect" (change)="updateGamesForm()" required></ng-select>
                         </div>
                         <div class="col-4" *ngIf="gameOperation == 'Add'">
                             <input type="text" formControlName="gameNameControl" class="form-control customBorder2" required>
@@ -157,7 +157,7 @@
                             <label>Platforms:</label>
                         </div>
                         <div class="col-4">
-                            <ng-select [items]="platforms" bindLabel="platformName" bindValue="id" formControlName="platformControl" class="customNGSelect" required></ng-select>
+                            <ng-select [items]="platforms" bindLabel="platformName" bindValue="id" formControlName="platformControl" class="customNGSelect" [multiple]="true" required></ng-select>
                         </div>
                     </div>
                     <!--Description-->
@@ -178,7 +178,7 @@
         </div>
         <div class="modal-footer justify-content-center">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="clearForms()">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
+          <button type="button" class="btn btn-primary" (click)="insertGame()">Save changes</button>
         </div>
       </div>
     </div>

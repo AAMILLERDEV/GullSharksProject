@@ -8,6 +8,5 @@ export const GamesForm = new FormGroup ({
     publisherControl: new FormControl(),
     categoryControl: new FormControl(),
     descriptionControl: new FormControl(),
-    platformControl: new FormControl(),
-    ratingControl: new FormControl()
+    platformControl: new FormControl()
 })

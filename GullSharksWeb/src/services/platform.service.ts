@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { SharedService } from './shared.service';
 import { Events } from 'src/models/Events';
+import { PlatformsGamesLookUp } from 'src/models/PlatformsGamesLookUp';
 
 @Injectable({
   providedIn: 'root'
@@ -18,6 +19,10 @@ export class PlatformService {
 
   public getPlatformGamesLookUp(platform_ID: number){
     return this.sharedService.get(`PlatformGameLookUp/GetPlatforms/${platform_ID}`);
+  }
+
+  public upsertPlatformGamesLookUp(plat: PlatformsGamesLookUp){
+    return this.sharedService.upsert(`PlatformGameLookUp/UpsertPlatformGameLookup`, plat);
   }
   
 }

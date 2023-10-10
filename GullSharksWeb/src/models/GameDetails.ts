@@ -1,7 +1,7 @@
 export interface GameDetails {
   id: number;
   publisher: string;
-  category_id: number;
+  category_ID: number;
   description: string;
   isDeleted: boolean;
 }

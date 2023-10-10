@@ -1,8 +1,8 @@
 export interface Game {
   id: number;
-  game_name: string;
-  asset_id: number;
-  gameDetails_id: number;
-  price_in_cad: number;
+  gameName: string;
+  asset_ID: number;
+  gameDetails_ID: number;
+  priceInCAD: number;
   isDeleted: boolean;
 }

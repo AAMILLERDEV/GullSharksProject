@@ -548,7 +548,7 @@ public class DBRepository : IDBRepository
         var parameters = new DynamicParameters(new Dictionary<string, object>
         {
             { "@id", ins.ID },
-            { "@gameName", ins.Game_Name },
+            { "@gameName", ins.GameName },
             { "@asset_ID", ins.Asset_ID },
             { "@gameDetails_ID", ins.GameDetails_ID },
             { "@priceInCad", ins.PriceInCAD },
@@ -647,7 +647,7 @@ public class DBRepository : IDBRepository
         try
         {
             using IDbConnection connection = new SqlConnection(connectionString);
-            return await connection.QueryAsync<GameDetails>("ref.GameDetails_GET", commandType: CommandType.StoredProcedure);
+            return await connection.QueryAsync<GameDetails>("ref.gameDetails_GET", commandType: CommandType.StoredProcedure);
         }
         catch (Exception ex)
         {
@@ -683,7 +683,19 @@ public class DBRepository : IDBRepository
             return default;
         }
     }
-
+    public async Task<IEnumerable<PlatformGameLookUp>> GetPlatformGameLookUpByGameDetailsID(int gameDetails_ID)
+    {
+        try
+        {
+            using IDbConnection connection = new SqlConnection(connectionString);
+            return await connection.QueryAsync<PlatformGameLookUp>("ref.platforms_games_lookUpByGameDetailsID_GET", new { gameDetails_ID }, commandType: CommandType.StoredProcedure);
+        }
+        catch (Exception ex)
+        {
+            return default;
+        }
+    }
+    
     public async Task<int?> UpsertPlatformGameLookUp(PlatformGameLookUp ins)
     {
         int? insertedID = 0;

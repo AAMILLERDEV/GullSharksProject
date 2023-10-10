@@ -14,6 +14,7 @@ import { GameCategory } from 'src/models/GameCategory';
 import { GameDetails } from 'src/models/GameDetails';
 import { GameReview } from 'src/models/GameReview';
 import { Platform } from 'src/models/Platform';
+import { PlatformsGamesLookUp } from 'src/models/PlatformsGamesLookUp';
 import { Ratings } from 'src/models/Ratings';
 import { User } from 'src/models/User';
 import { AssetService } from 'src/services/asset.service';
@@ -46,6 +47,9 @@ export class AdminComponent implements OnInit {
   public gameCategories: GameCategory[] = [];
   public gameDetailsList: GameDetails[] = [];
   public ratingsList: Ratings[] = [];
+
+  public selectedGame?: Game;
+  public selectedGameDetails?: GameDetails;
 
   public user!: User | undefined;
 
@@ -86,6 +90,7 @@ export class AdminComponent implements OnInit {
 
     await this.getData();
     this.buildModals();
+    console.log(this.games);
   }
 
   public openGamesModal(operation: string){
@@ -118,6 +123,7 @@ export class AdminComponent implements OnInit {
     this.platforms = await this.platformService.getPlatforms();
     this.assets = await this.assetService.getAssets();
     this.games = await this.gameService.getGames();
+    this.gameDetailsList = await this.gameDetailService.getGameDetails();
     this.eventList = await this.eventSerivce.getEvents();
     this.reviewsList = await this.reviewService.getGameReviews();
     this.ratingsList = await this.ratingService.getRatings();
@@ -127,11 +133,62 @@ export class AdminComponent implements OnInit {
 
   }
 
+//Inserting New Game/Game Details/Look Up Method
   public async insertGame(){
     if (this.gamesForm.invalid){
       this.toastr.error("Please fill out all form fields to submit.");
       return;
     }
+
+    let game: Game = {
+      id: 0,
+      gameDetails_ID: 0,
+      asset_ID: this.gamesForm.controls['assetControl'].value,
+      gameName: this.gamesForm.controls['gameNameControl'].value,
+      priceInCAD: this.gamesForm.controls['priceControl'].value,
+      isDeleted: false
+    }
+
+    let res = await this.gameService.upsertGame(game);
+
+    //If our API does not successfully insert a game
+    if (res < 1){
+      this.toastr.error("Error, failed to insert game.");
+      return;
+    }
+
+    let gameDetails: GameDetails = {
+      id: 0,
+      category_ID: this.gamesForm.controls['categoryControl'].value,
+      description: this.gamesForm.controls['descriptionControl'].value,
+      publisher: this.gamesForm.controls['publisherControl'].value,
+      isDeleted: false
+    }
+
+    let gameDetailsRes = await this.gameDetailService.upsertGameDetails(gameDetails);
+
+    if (res < 1){
+      this.toastr.error("Error, failed to insert game details.");
+      return;
+    }
+
+    game.gameDetails_ID = gameDetailsRes;
+    game.id = res;
+
+    let gameUpdateRes = await this.gameService.upsertGame(game);
+
+    if (gameUpdateRes != res){
+      this.toastr.error("Error, failed to update game with details ID.");
+      return;
+    }
+
+    let platforms = this.gamesForm.controls['platformControl'].value;
+
+    for (let i of platforms){
+      await this.insertPlatGameLookUpRecords(gameDetailsRes, i);
+    }
+
+    this.toastr.success("Success, a new game has been added!");
   }
 
   public async updateGame(){
@@ -161,4 +218,40 @@ export class AdminComponent implements OnInit {
       return;
     }
   }
+
+  //Insert Plat Game Records
+  public async insertPlatGameLookUpRecords(gameDetailsRes: number, platform_ID: number){
+    let gamePlatLookUp: PlatformsGamesLookUp = {
+      gameDetails_id: gameDetailsRes,
+      id: 0,
+      isDeleted: false,
+      platform_id: platform_ID
+    }
+
+    let gamePlatRes = await this.platformService.upsertPlatformGamesLookUp(gamePlatLookUp);
+
+  }
+
+  updateGamesForm(){
+      let game = this.games.find(x => x.id == this.gamesForm.controls['gameNameControl'].value);
+
+      if (game == null){
+        this.toastr.error("Error, can't find game in list");
+        return;
+      }
+
+
+
+      let gameDetails = this.gameDetailsList.find( x => x.id == game?.gameDetails_ID);
+
+      console.log(gameDetails);
+
+      this.gamesForm.controls['assetControl'].setValue(game.asset_ID);
+      this.gamesForm.controls['priceControl'].setValue(game.priceInCAD);
+      this.gamesForm.controls['publisherControl'].setValue(gameDetails?.publisher);
+      this.gamesForm.controls['categoryControl'].setValue(gameDetails?.category_ID);
+      this.gamesForm.controls['descriptionControl'].setValue(gameDetails?.description);
+      //this.gamesForm.controls['platformControl'].setValue();
+
+;  }
 }
