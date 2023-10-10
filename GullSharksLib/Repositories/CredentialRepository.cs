@@ -13,8 +13,7 @@ namespace GullSharksLib.Repositories
             db = new DBRepository(options.CurrentValue.DbConn);
         }
 
-        public Task<IEnumerable<Credential>> GetCredientials() => db.GetCredentials();
-        public Task<Credential> GetCredentialByID(int id) => db.GetCredentialByID(id);
-        public Task<int?> UpsertCredential(Credential ins) => db.UpsertCredential(credential);
+        public Task<Credential> GetCredentialByID(int id) => db.GetCredentialsByID(id);
+        public Task<int?> UpsertCredential(Credential ins) => db.UpsertCredentials(ins);
     }
 }

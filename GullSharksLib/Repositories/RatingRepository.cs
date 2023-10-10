@@ -12,7 +12,6 @@ public class RatingRepository : IRatingRepository
     }
 
     public Task<IEnumerable<Rating>> GetRatings() => db.GetRatings();
-    public Task<Rating> GetRatingByID(int id) => db.GetRatingByID(id);
-    public Task<int?> UpsertRating(Rating rating) => db.UpsertRating(rating);
+    public Task<int?> UpsertRating(Rating rating) => db.UpsertRatings(rating);
 }
 

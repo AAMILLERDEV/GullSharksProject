@@ -17,10 +17,6 @@ public class GameReviewController : ControllerBase
     [Route("[controller]/GetGameReviews")]
     public Task<IEnumerable<GameReview>> GetGameReviews() => db.GetGameReviews();
 
-    [HttpGet]
-    [Route("[controller]/GetGameReviewByID/{id}")]
-    public Task<GameReview> GetGameReviewByID(int id) => db.GetGameReviewByID(id);
-
     [HttpPost]
     [Route("[controller]/UpsertGameReview")]
     public Task<int?> UpsertGameReview(GameReview gameReview) => db.UpsertGameReview(gameReview);

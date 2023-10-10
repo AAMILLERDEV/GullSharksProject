@@ -14,7 +14,7 @@ namespace GullSharksLib.Repositories
         }
 
         public Task<IEnumerable<Preference>> GetPreferences() => db.GetPreferences();
-        public Task<Preference> GetPreferenceByID(int id) => db.GetPreferenceByID(id);
-        public Task<int?> UpsertPreference(Preference ins) => db.UpsertPreference(preference);
+        public Task<Preference> GetPreferenceByID(int userDetails_ID) => db.GetPreferencesByID(userDetails_ID);
+        public Task<int?> UpsertPreference(Preference ins) => db.UpsertPreferences(ins);
     }
 }

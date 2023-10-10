@@ -12,5 +12,6 @@ public class GameDetailsRepository : IGameDetailsRepository
     }
 
     public Task<IEnumerable<GameDetails>> GetGameDetails() => db.GetGameDetails();
+    public Task<GameDetails> GetGameDetailsByID(int id) => db.GetGameDetailsByID(id);
     public Task<int?> UpsertGameDetails(GameDetails gd) => db.UpsertGameDetails(gd);
 }

@@ -17,10 +17,6 @@ public class RatingController : ControllerBase
     [Route("[controller]/GetRatings")]
     public Task<IEnumerable<Rating>> GetRatings() => db.GetRatings();
 
-    [HttpGet]
-    [Route("[controller]/GetRatingByID/{id}")]
-    public Task<Rating> GetRatingByID(int id) => db.GetRatingByID(id);
-
     [HttpPost]
     [Route("[controller]/UpsertRating")]
     public Task<int?> UpsertRating(Rating rating) => db.UpsertRating(rating);

@@ -12,7 +12,6 @@ public class EventRepository : IEventRepository
     }
 
     public Task<IEnumerable<Events>> GetEvents() => db.GetEvents();
-    public Task<Events> GetEventByID(int id) => db.GetEventByID(id);
     public Task<int?> UpsertEvent(Events e) => db.UpsertEvent(e);
     
 }

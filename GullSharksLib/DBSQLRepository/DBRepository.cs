@@ -1,5 +1,6 @@
 using Dapper;
 using GullSharksLib.Models;
+using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -68,7 +69,7 @@ public class DBRepository : IDBRepository
         var parameters = new DynamicParameters(new Dictionary<string, object>
         {
             { "@id", ins.ID },
-            { "@credentailValue", ins.Credential_Value },
+            { "@credentialValue", ins.Credential_Value },
             { "@userId", ins.User_ID },
             { "@isDeleted", ins.IsDeleted }
         });
@@ -87,6 +88,21 @@ public class DBRepository : IDBRepository
         }
 
         return insertedID ?? ins.ID;
+    }
+
+    // DB methods for the events object
+    public async Task<Credential> GetCredentialsByID(int id)
+    {
+        try
+        {
+            using IDbConnection connection = new SqlConnection(connectionString);
+            return await connection.QueryFirstOrDefaultAsync<Credential>("hist.credentials_GET", new { id }, commandType: CommandType.StoredProcedure);
+
+        }
+        catch (Exception ex)
+        {
+            return default;
+        }
     }
 
     // DB methods for the events object
@@ -172,7 +188,7 @@ public class DBRepository : IDBRepository
             { "@user_ID", ins.User_ID },
             { "@game_ID", ins.Game_ID },
             { "@isApproved", ins.IsApproved },
-            { "@desciption", ins.Description },
+            { "@description", ins.Description },
             { "@rating_ID", ins.Rating_ID },
             { "@isDeleted", ins.IsDeleted }
         });
@@ -208,6 +224,21 @@ public class DBRepository : IDBRepository
         }
     }
 
+    //DB methods for the preferences object
+    public async Task<Preference> GetPreferencesByID(int id)
+    {
+        try
+        {
+            using IDbConnection connection = new SqlConnection(connectionString);
+            return await connection.QueryFirstOrDefaultAsync<Preference>("hist.preferencesByID_GET", new { id }, commandType: CommandType.StoredProcedure);
+
+        }
+        catch (Exception ex)
+        {
+            return default;
+        }
+    }
+
     public async Task<int?> UpsertPreferences(Preference ins)
     {
         int? insertedID = 0;
@@ -218,7 +249,7 @@ public class DBRepository : IDBRepository
             { "@userDetails_ID", ins.UserDetails_ID },
             { "@platform_ID", ins.Platform_ID},
             { "@gameCategory_ID", ins.GameCategory_ID },
-            { "@languagePreference", ins.LanguagePreferences_ID },
+            { "@languagePreference_ID", ins.LanguagePreferences_ID },
             { "@isDeleted", ins.IsDeleted }
         });
 
@@ -344,6 +375,20 @@ public class DBRepository : IDBRepository
         }
     }
 
+    public async Task<UserDetails> GetUserDetailsByID(int id)
+    {
+        try
+        {
+            using IDbConnection connection = new SqlConnection(connectionString);
+            return await connection.QueryFirstOrDefaultAsync<UserDetails>("hist.userDetailsByID_GET", new { id }, commandType: CommandType.StoredProcedure);
+
+        }
+        catch (Exception ex)
+        {
+            return default;
+        }
+    }
+
     public async Task<int?> UpsertUserDetails(UserDetails ins)
     {
         int? insertedID = 0;
@@ -437,19 +482,6 @@ public class DBRepository : IDBRepository
         return insertedID ?? ins.ID;
     }
 
-    public async Task<User> GetUsersEmail(string email)
-    {
-        try
-        {
-            using IDbConnection connection = new SqlConnection(connectionString);
-            return await connection.QueryFirstOrDefaultAsync<User>("hist.usersEmail_GET", new { email }, commandType: CommandType.StoredProcedure);
-        }
-        catch (Exception ex)
-        {
-            return default;
-        }
-    }
-
     // DB methods for the assest object
     public async Task<IEnumerable<Asset>> GetAssets()
     {
@@ -495,12 +527,12 @@ public class DBRepository : IDBRepository
         }
     }
 
-    public async Task<Game> DeleteGameByID(int id)
+    public async Task<bool> DeleteGameByID(int id, int assetID, int gameDetailsID)
     {
         try
         {
             using IDbConnection connection = new SqlConnection(connectionString);
-            return await connection.QueryFirstOrDefaultAsync<Game>("ref.game_DELETE", new { id }, commandType: CommandType.StoredProcedure);
+            return await connection.QueryFirstOrDefaultAsync<bool>("ref.game_DELETE", new { id, assetID, gameDetailsID }, commandType: CommandType.StoredProcedure);
         }
         catch (Exception ex)
         {
@@ -544,19 +576,6 @@ public class DBRepository : IDBRepository
         {
             using IDbConnection connection = new SqlConnection(connectionString);
             return await connection.QueryFirstOrDefaultAsync<Game>("ref.GamesByID_GET", new { id }, commandType: CommandType.StoredProcedure);
-        }
-        catch (Exception ex)
-        {
-            return default;
-        }
-    }
-
-    public async Task<Game> GetGamesByName(string GameName)
-    {
-        try
-        {
-            using IDbConnection connection = new SqlConnection(connectionString);
-            return await connection.QueryFirstOrDefaultAsync<Game>("ref.gamesByGameName_GET", new { GameName }, commandType: CommandType.StoredProcedure);
         }
         catch (Exception ex)
         {
@@ -623,6 +642,19 @@ public class DBRepository : IDBRepository
         }
     }
 
+    public async Task<IEnumerable<GameDetails>> GetGameDetails()
+    {
+        try
+        {
+            using IDbConnection connection = new SqlConnection(connectionString);
+            return await connection.QueryAsync<GameDetails>("ref.GameDetails_GET", commandType: CommandType.StoredProcedure);
+        }
+        catch (Exception ex)
+        {
+            return default;
+        }
+    }
+
     // DB methods for the language object
     public async Task<IEnumerable<Language>> GetLanguages()
     {
@@ -639,12 +671,12 @@ public class DBRepository : IDBRepository
     }
 
     // DB methods for the platformGameLookUp object
-    public async Task<PlatformGameLookUp> GetPlatformGameLookUpByID(int id)
+    public async Task<IEnumerable<PlatformGameLookUp>> GetPlatformGameLookUpByID(int platform_ID)
     {
         try
         {
             using IDbConnection connection = new SqlConnection(connectionString);
-            return await connection.QueryFirstOrDefaultAsync<PlatformGameLookUp>("ref.platforms_games_lookUpByID_GET", new { id }, commandType: CommandType.StoredProcedure);
+            return await connection.QueryAsync<PlatformGameLookUp>("ref.platforms_games_lookUpByID_GET", new { platform_ID }, commandType: CommandType.StoredProcedure);
         }
         catch (Exception ex)
         {
@@ -690,19 +722,6 @@ public class DBRepository : IDBRepository
             using IDbConnection connection = new SqlConnection(connectionString);
             return await connection.QueryAsync<Setting>("ref.settings_GET", commandType: CommandType.StoredProcedure);
 
-        }
-        catch (Exception ex)
-        {
-            return default;
-        }
-    }
-
-    public async Task<Setting> GetSettingByID(int id)
-    {
-        try
-        {
-            using IDbConnection connection = new SqlConnection(connectionString);
-            return await connection.QueryFirstOrDefaultAsync<Setting>("ref.SettingsByID_GET", new { id }, commandType: CommandType.StoredProcedure);
         }
         catch (Exception ex)
         {

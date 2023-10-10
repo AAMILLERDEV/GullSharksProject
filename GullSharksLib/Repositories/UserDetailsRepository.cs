@@ -13,8 +13,8 @@ namespace GullSharksLib.Repositories
             db = new DBRepository(options.CurrentValue.DbConn);
         }
 
-        public Task<IEnumerable<UserDetails>> GetAllUserDetails() => db.GetAllUserDetails();
+        public Task<IEnumerable<UserDetails>> GetAllUserDetails() => db.GetUserDetails();
         public Task<UserDetails> GetUserDetailsByID(int id) => db.GetUserDetailsByID(id);
-        public Task<int?> UpsertUserDetails(UserDetails ins) => db.UpsertUserDetails(userDetails);
+        public Task<int?> UpsertUserDetails(UserDetails ins) => db.UpsertUserDetails(ins);
     }
 }

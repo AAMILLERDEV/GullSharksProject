@@ -19,10 +19,6 @@ public class EventController : ControllerBase
     [Route("[controller]/GetEvents")]
     public Task<IEnumerable<Events>> GetEvents() => db.GetEvents();
 
-    [HttpGet]
-    [Route("[controller]/GetEventByID/{id}")]
-    public Task<Events> GetEventByID(int id) => db.GetEventByID(id);
-
     [HttpPost]
     [Route("[controller]/UpsertEvent")]
     public Task<int?> UpsertEvent(Events events) => db.UpsertEvent(events);

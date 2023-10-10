@@ -11,5 +11,5 @@ public class PlatformGameLookUpRepository : IPlatformGameLookUpRepository
         db = new DBRepository(options.CurrentValue.DbConn);
     }
 
-    public Task<IEnumerable<PlatformGameLookUp>> GetPlatformsGamesLookUp() => db.GetPlatformsGamesLookUp();
+    public Task<IEnumerable<PlatformGameLookUp>> GetPlatformsGamesLookUp(int platform_ID) => db.GetPlatformGameLookUpByID(platform_ID);
 }

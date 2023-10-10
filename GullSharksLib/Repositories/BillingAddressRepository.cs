@@ -12,7 +12,7 @@ public class BillingAddressRepository : IBillingAddressRepository
     {
         db = new DBRepository(options.CurrentValue.DbConn);
     }
-    public Task<BillingAddress> GetBillingAddressByID(int id) => db.GetBillingAddressesByID(id);
-    public Task<int?> UpsertBillingAddress(BillingAddress ins) => db.UpsertBillingAddress(billingAddress);
+    public Task<BillingAddress> GetBillingAddressByID(int id) => db.GetBillingAddressByID(id);
+    public Task<int?> UpsertBillingAddress(BillingAddress ins) => db.UpsertBillingAddress(ins);
 }
 

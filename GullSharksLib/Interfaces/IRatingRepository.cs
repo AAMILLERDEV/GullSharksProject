@@ -5,7 +5,6 @@ namespace GullSharksLib.Interfaces
     public interface IRatingRepository
     {
         public Task<IEnumerable<Rating>> GetRatings();
-        public Task<Rating> GetRatingByID(int id);
         public Task<int?> UpsertRating(Rating ins);
     }
 }

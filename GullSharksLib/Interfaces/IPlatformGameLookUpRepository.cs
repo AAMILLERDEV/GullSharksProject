@@ -4,6 +4,6 @@ namespace GullSharksLib.Interfaces
 {
     public interface IPlatformGameLookUpRepository
     {
-        public Task<IEnumerable<PlatformGameLookUp>> GetPlatformsGamesLookUp();
+        public Task<IEnumerable<PlatformGameLookUp>> GetPlatformsGamesLookUp(int platform_ID);
     }
 }

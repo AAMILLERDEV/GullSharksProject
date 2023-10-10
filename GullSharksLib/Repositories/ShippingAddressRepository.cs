@@ -12,9 +12,7 @@ namespace GullSharksLib.Repositories
         {
             db = new DBRepository(options.CurrentValue.DbConn);
         }
-
-        public Task<IEnumerable<ShippingAddress>> GetShippingAddresses() => db.GetShippingAddresses();
         public Task<ShippingAddress> GetShippingAddressByID(int id) => db.GetShippingAddressByID(id);
-        public Task<int?> UpsertShippingAddress(ShippingAddress ins) => db.UpsertShippingAddress(shippingAddress);
+        public Task<int?> UpsertShippingAddress(ShippingAddress ins) => db.UpsertShippingAddress(ins);
     }
 }

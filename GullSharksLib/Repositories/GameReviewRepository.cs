@@ -12,7 +12,6 @@ public class GameReviewRepository : IGameReviewRepository
     }
 
     public Task<IEnumerable<GameReview>> GetGameReviews() => db.GetGameReviews();
-    public Task<GameReview> GetGameReviewByID(int id) => db.GetGameReviewByID(id);
     public Task<int?> UpsertGameReview(GameReview gameReview) => db.UpsertGameReview(gameReview);
 }
 
