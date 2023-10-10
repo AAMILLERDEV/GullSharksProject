@@ -50,6 +50,10 @@ export class AdminComponent implements OnInit {
 
   public selectedGame?: Game;
   public selectedGameDetails?: GameDetails;
+  public selectedPlatforms!: PlatformsGamesLookUp[];
+  public selectedReview?: GameReview;
+
+  public approved: boolean = false;
 
   public user!: User | undefined;
 
@@ -83,7 +87,8 @@ export class AdminComponent implements OnInit {
   public async ngOnInit() {
     this.users = await this.userService.getAllUsers();
     this.user = JSON.parse(sessionStorage.getItem("User")!);
-    
+
+
     if (this.user && !this.user.isAdmin){
       this.router.navigateByUrl("home");
     }
@@ -94,6 +99,7 @@ export class AdminComponent implements OnInit {
   }
 
   public openGamesModal(operation: string){
+    this.gamesForm.reset();
     this.gameOperation = operation;
     this.gamesModal.toggle();
   }
@@ -103,11 +109,23 @@ export class AdminComponent implements OnInit {
     this.eventsModal.toggle();
   }
 
+  public clearReviewsModal(){
+    this.reviewsForm.reset();
+    this.resetReviewsFormButtons();
+    this.reviewsForm.controls['approveControl'].enable();
+    this.reviewsForm.controls['rejectControl'].enable();
+    this.approved = false;
+  }
+
   public buildModals(){
     this.gamesModal = bootstrap.Modal.getOrCreateInstance('#gamesModal', {keyboard: true});
     this.reviewsModal = bootstrap.Modal.getOrCreateInstance('#reviewsModal', {keyboard: true});
     this.eventsModal = bootstrap.Modal.getOrCreateInstance('#eventsModal', {keyboard: true});
     this.usersReportModal = bootstrap.Modal.getOrCreateInstance('#usersReportModal', {keyboard: true});
+    this.reviewsForm.disable();
+    this.reviewsForm.controls['reviewsListControl'].enable();
+    this.reviewsForm.controls['approveControl'].enable();
+    this.reviewsForm.controls['rejectControl'].enable();
   }
   
   public clearForms(){
@@ -127,10 +145,19 @@ export class AdminComponent implements OnInit {
     this.eventList = await this.eventSerivce.getEvents();
     this.reviewsList = await this.reviewService.getGameReviews();
     this.ratingsList = await this.ratingService.getRatings();
+
+    if (this.reviewsList != null && this.reviewsList.length > 0){
+      for (let i of this.reviewsList){
+        i.review_name = `User: ${i.user_ID} - Date Added: ${i.dateAdded} - Game: ${i.game_ID}`;
+      }
+    }
   }
 
   public async deleteGame(){
-
+    await this.gameService.deleteGame(this.selectedGame!.id, this.selectedGameDetails!.id);
+    await this.getData();
+    this.toastr.success("Success, game deleted.");
+    return;
   }
 
 //Inserting New Game/Game Details/Look Up Method
@@ -139,6 +166,11 @@ export class AdminComponent implements OnInit {
       this.toastr.error("Please fill out all form fields to submit.");
       return;
     }
+
+    if (this.gamesForm.controls['gameNameControl'].value != null && this.games.find(x => x.gameName == this.gamesForm.controls['gameNameControl'].value)){
+      this.toastr.error("A game with that name already exists.");
+      return;
+    }    
 
     let game: Game = {
       id: 0,
@@ -187,15 +219,48 @@ export class AdminComponent implements OnInit {
     for (let i of platforms){
       await this.insertPlatGameLookUpRecords(gameDetailsRes, i);
     }
-
+    
+    await this.getData();
     this.toastr.success("Success, a new game has been added!");
   }
 
+
+//Method used for updating games
   public async updateGame(){
     if (this.gamesForm.invalid){
       this.toastr.error("Please fill out all form fields to submit.");
       return;
     }
+
+    this.selectedGame!.priceInCAD = this.gamesForm.controls['priceControl'].value;
+    this.selectedGame!.asset_ID = this.gamesForm.controls['assetControl'].value;
+    this.selectedGameDetails!.publisher = this.gamesForm.controls['publisherControl'].value;
+    this.selectedGameDetails!.description = this.gamesForm.controls['descriptionControl'].value;
+    this.selectedGameDetails!.category_ID = this.gamesForm.controls['categoryControl'].value;
+
+    await this.gameService.upsertGame(this.selectedGame!);
+    await this.gameDetailService.upsertGameDetails(this.selectedGameDetails!);
+
+    let platforms  = this.gamesForm.controls['platformControl'].value;
+
+    for (let i of platforms){
+      if (this.selectedPlatforms.find(x => x.platform_ID == i) == null){
+        await this.insertPlatGameLookUpRecords(this.selectedGameDetails!.id, i);
+      }
+    }
+
+    for (let i of this.selectedPlatforms){
+      if (platforms.find((x: number) => x == i.platform_ID) == null){
+        i.isDeleted = true;
+        await this.platformService.upsertPlatformGamesLookUp(i);
+      }
+    }
+
+    await this.getData();
+    this.toastr.success("Success, game updated!");
+    this.gamesForm.reset();
+    this.reviewsForm.reset();
+    this.resetReviewsFormButtons();
   }
 
   public async insertEvent(){
@@ -212,46 +277,85 @@ export class AdminComponent implements OnInit {
     }
   }
 
-  public updateReview(response: boolean){
+  public async updateReview(response: boolean){
     if (this.reviewsForm.invalid){
       this.toastr.error("Please fill out all form fields to submit.");
       return;
     }
+
+    if (response == true){
+      this.selectedReview!.isApproved = true;
+    } else {
+      this.selectedReview!.isApproved = false;
+      this.selectedReview!.isDeleted = true;
+    }
+
+    await this.reviewService.upsertGameReview(this.selectedReview!);
+    await this.getData();
+    this.toastr.success("Success, the review has been updated.");
   }
 
   //Insert Plat Game Records
   public async insertPlatGameLookUpRecords(gameDetailsRes: number, platform_ID: number){
     let gamePlatLookUp: PlatformsGamesLookUp = {
-      gameDetails_id: gameDetailsRes,
+      gameDetails_ID: gameDetailsRes,
       id: 0,
       isDeleted: false,
-      platform_id: platform_ID
+      platform_ID: platform_ID
     }
-
     let gamePlatRes = await this.platformService.upsertPlatformGamesLookUp(gamePlatLookUp);
-
   }
 
-  updateGamesForm(){
-      let game = this.games.find(x => x.id == this.gamesForm.controls['gameNameControl'].value);
+//Updates Games Form when review is selected
+  public async updateGamesForm(){
+      this.selectedGame = this.games.find(x => x.id == this.gamesForm.controls['gameNameControl'].value);
 
-      if (game == null){
-        this.toastr.error("Error, can't find game in list");
+      if (this.selectedGame == null){
         return;
       }
 
+      this.selectedGameDetails = this.gameDetailsList.find( x => x.id == this.selectedGame?.gameDetails_ID);
 
+      this.gamesForm.controls['assetControl'].setValue(this.selectedGame.asset_ID);
+      this.gamesForm.controls['priceControl'].setValue(this.selectedGame.priceInCAD);
+      this.gamesForm.controls['publisherControl'].setValue(this.selectedGameDetails?.publisher);
+      this.gamesForm.controls['categoryControl'].setValue(this.selectedGameDetails?.category_ID);
+      this.gamesForm.controls['descriptionControl'].setValue(this.selectedGameDetails?.description);
 
-      let gameDetails = this.gameDetailsList.find( x => x.id == game?.gameDetails_ID);
+      this.selectedPlatforms = await this.platformService.getPlatformGamesLookUpByGame(this.selectedGame.gameDetails_ID);
+      let platList = [];
 
-      console.log(gameDetails);
+      for (let i of this.selectedPlatforms){
+        platList.push(i.platform_ID);
+      }
 
-      this.gamesForm.controls['assetControl'].setValue(game.asset_ID);
-      this.gamesForm.controls['priceControl'].setValue(game.priceInCAD);
-      this.gamesForm.controls['publisherControl'].setValue(gameDetails?.publisher);
-      this.gamesForm.controls['categoryControl'].setValue(gameDetails?.category_ID);
-      this.gamesForm.controls['descriptionControl'].setValue(gameDetails?.description);
-      //this.gamesForm.controls['platformControl'].setValue();
+      this.gamesForm.controls['platformControl'].setValue(platList);
+    }
 
-;  }
+    //Updates Reviews Form when review is selected
+  public async updateReviewsForm(val: any){
+    this.selectedReview = this.reviewsList.find(x => x.id == val);
+
+    if (this.selectedReview == null){
+      return;
+    }
+
+    this.approved = this.selectedReview.isApproved;
+
+    let rating = this.ratingsList.find(x => x.id == this.selectedReview?.rating_ID)?.ratingNumber;
+    
+    this.reviewsForm.controls['gameControl'].setValue(this.selectedReview?.game_ID);
+    this.reviewsForm.controls['descriptionControl'].setValue(this.selectedReview?.description);
+    this.reviewsForm.controls['ratingControl'].setValue(rating);
+
+    if (this.selectedReview?.isApproved){
+      this.reviewsForm.controls['approveControl'].disable();
+      this.reviewsForm.controls['rejectControl'].disable();
+    }
+  }
+
+  public resetReviewsFormButtons(){
+    this.reviewsForm.controls['rejectControl'].setValue("Reject");
+    this.reviewsForm.controls['approveControl'].setValue("Approve");
+  }
 }

@@ -1,10 +1,11 @@
 export interface GameReview {
   id: number;
-  user_id: number;
-  game_id: number;
-  isApproved: number;
+  user_ID: number;
+  game_ID: number;
+  isApproved: boolean;
   description: string;
-  rating_id: number;
+  rating_ID: number;
   review_name: string;
   isDeleted: boolean;
+  dateAdded: Date;
 }

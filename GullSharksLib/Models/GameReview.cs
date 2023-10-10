@@ -10,4 +10,6 @@ public class GameReview
     public int Rating_ID { set; get; }
 
     public bool IsDeleted { get; set; }
+
+    public DateTime DateAdded { set; get; }
 }

@@ -39,7 +39,7 @@
                   <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
                     <div class="accordion-body">
                         <li class="pb-2 pt-2">
-                            <input type="button" value="Review Game Reviews" class="btn lightblue btn-sm" data-bs-toggle="modal" data-bs-target="#reviewsModal">
+                            <input type="button" value="Review Game Reviews" class="btn lightblue btn-sm" data-bs-toggle="modal" data-bs-target="#reviewsModal" (click)="clearReviewsModal()">
                         </li>                    
                     </div>
                   </div>
@@ -178,7 +178,8 @@
         </div>
         <div class="modal-footer justify-content-center">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="clearForms()">Close</button>
-          <button type="button" class="btn btn-primary" (click)="insertGame()">Save changes</button>
+          <button type="button" *ngIf="gameOperation == 'Add'"  class="btn btn-primary" (click)="insertGame()">Save changes</button>
+          <button type="button" *ngIf="gameOperation == 'Edit'"  class="btn btn-primary" (click)="updateGame()">Save changes</button>
         </div>
       </div>
     </div>
@@ -201,10 +202,13 @@
                             <label>Select Review:</label>
                         </div>
                         <div class="col-10">
-                            <select formControlName="reviewsListControl" class="form-control customBorder2">
-                                <option *ngFor="let i of reviewsList" [value]="i.id">{{i.review_name}}</option>
+                            <select formControlName="reviewsListControl" #option class="form-control customBorder2" (input)="updateReviewsForm(option.value)">
+                                <option *ngFor="let i of reviewsList"  [value]="i.id">{{i.review_name}}</option>
                             </select>
                         </div>
+                    </div>
+                    <div class="text-center fst-italic customBorder2" *ngIf="approved">
+                        <h4>Review Status: Approved</h4>
                     </div>
                     <!--Game/Rating-->
                     <div class="row py-3">
@@ -212,13 +216,13 @@
                             <label>Game:</label>
                         </div>
                         <div class="col-4">
-                            <input type="text" formControlName="gameControl" class="form-control customBorder2" required>
+                            <input type="text" formControlName="gameControl" class="form-control customBorder2">
                         </div>
                         <div class="col-2">
                             <label>Rating:</label>
                         </div>
                         <div class="col-4">
-                            <input type="text" formControlName="ratingControl" class="form-control customBorder2" required>
+                            <input type="number" formControlName="ratingControl" class="form-control customBorder2">
                         </div>
                     </div>
                     <!--Description-->
@@ -227,10 +231,9 @@
                             <label>Description:</label>
                         </div>
                         <div class="col-10">
-                            <textarea rows="3" formControlName="descriptionControl" class="form-control customBorder2" required></textarea>
+                            <textarea rows="3" formControlName="descriptionControl" class="form-control customBorder2"></textarea>
                         </div>
                     </div>
-
                     <div class="row">
                         <div class="col text-right">
                             <input type="button" class="btn btn-success" formControlName="approveControl" (click)="updateReview(true)">

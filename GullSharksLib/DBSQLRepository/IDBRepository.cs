@@ -54,7 +54,7 @@ public interface IDBRepository
 
     //Games
     public Task<IEnumerable<Game>> GetGames();
-    public Task<bool> DeleteGameByID(int id, int assetID, int gameDetailsID);
+    public Task<bool> DeleteGameByID(int id, int gameDetailsID);
     public Task<int?> UpsertGame(Game ins);
     public Task<Game> GetGameByID(int id);
 

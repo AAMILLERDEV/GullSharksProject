@@ -14,4 +14,5 @@ public class GameRepository : IGameRepository
 
     public Task<IEnumerable<Game>> GetGames() => db.GetGames();
     public Task<int?> UpsertGame(Game game) => db.UpsertGame(game);
+    public Task<bool> DeleteGame(int id, int gameDetailsID) => db.DeleteGameByID(id, gameDetailsID);
 }

@@ -191,7 +191,8 @@ public class DBRepository : IDBRepository
             { "@isApproved", ins.IsApproved },
             { "@description", ins.Description },
             { "@rating_ID", ins.Rating_ID },
-            { "@isDeleted", ins.IsDeleted }
+            { "@isDeleted", ins.IsDeleted },
+            { "@dateAdded", ins.DateAdded}
         });
 
         parameters.Add("@insertedID", 0, direction: ParameterDirection.Output);
@@ -199,7 +200,7 @@ public class DBRepository : IDBRepository
         try
         {
             using IDbConnection connection = new SqlConnection(connectionString);
-            await connection.ExecuteAsync("hist.events_UPSERT", parameters, commandType: CommandType.StoredProcedure);
+            await connection.ExecuteAsync("hist.gameReviews_UPSERT", parameters, commandType: CommandType.StoredProcedure);
             insertedID = parameters.Get<int?>("@insertedID");
         }
         catch (Exception ex)
@@ -528,12 +529,12 @@ public class DBRepository : IDBRepository
         }
     }
 
-    public async Task<bool> DeleteGameByID(int id, int assetID, int gameDetailsID)
+    public async Task<bool> DeleteGameByID(int id, int gameDetailsID)
     {
         try
         {
             using IDbConnection connection = new SqlConnection(connectionString);
-            return await connection.QueryFirstOrDefaultAsync<bool>("ref.game_DELETE", new { id, assetID, gameDetailsID }, commandType: CommandType.StoredProcedure);
+            return await connection.QueryFirstOrDefaultAsync<bool>("ref.game_DELETE", new { id, gameDetailsID }, commandType: CommandType.StoredProcedure);
         }
         catch (Exception ex)
         {

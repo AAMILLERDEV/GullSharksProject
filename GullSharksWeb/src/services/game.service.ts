@@ -20,4 +20,7 @@ export class GameService {
     return this.sharedService.upsert(`Game/UpsertGame`, game);
   }
   
+  public deleteGame(id: number, gameDetailsID: number){
+    return this.sharedService.upsert(`Game/DeleteGame/${id}&${gameDetailsID}`, null);
+  }
 }

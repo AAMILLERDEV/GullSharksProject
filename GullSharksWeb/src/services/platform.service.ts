@@ -18,7 +18,11 @@ export class PlatformService {
   }
 
   public getPlatformGamesLookUp(platform_ID: number){
-    return this.sharedService.get(`PlatformGameLookUp/GetPlatforms/${platform_ID}`);
+    return this.sharedService.get(`PlatformGameLookUp/GetPlatformGameLookUp/${platform_ID}`);
+  }
+
+  public getPlatformGamesLookUpByGame(gameDetails_ID: number){
+    return this.sharedService.get(`PlatformGameLookUp/GetPlatformGameLookupByGame/${gameDetails_ID}`);
   }
 
   public upsertPlatformGamesLookUp(plat: PlatformsGamesLookUp){

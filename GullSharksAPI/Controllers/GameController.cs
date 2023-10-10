@@ -21,4 +21,8 @@ public class GameController : ControllerBase
     [Route("[controller]/UpsertGame")]
     public Task<int?> UpsertGames(Game game) => db.UpsertGame(game);
 
+    [HttpPost]
+    [Route("[controller]/DeleteGame/{id}&{gameDetailsID}")]
+    public Task<bool> DeleteGame(int id, int gameDetailsID) => db.DeleteGame(id, gameDetailsID);
+
 }
