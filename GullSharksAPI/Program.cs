@@ -11,14 +11,14 @@ try {
     builder.Services.AddSwaggerGen();
 
     builder.Services.AddSingleton<IUserRepository, UserRepository>(x => new UserRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
-    //builder.Services.AddSingleton<IGameRepository, GameRepository>(x => new GameRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
-    //builder.Services.AddSingleton<IGameDetailsRepository, GameDetailsRepository>(x => new GameDetailsRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
-    //builder.Services.AddSingleton<IGameCategoryRepository, GameCategoryRepository>(x => new GameCategoryRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
-    //builder.Services.AddSingleton<IPlatformRepository, PlatformRepository>(x => new PlatformRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
-    //builder.Services.AddSingleton<IPlatformGameLookUpRepository, PlatformGameLookUpRepository>(x => new PlatformGameLookUpRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
-    //builder.Services.AddSingleton<IEventRepository, EventRepository>(x => new EventRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
-    //builder.Services.AddSingleton<IGameReviewRepository, GameReviewRepository>(x => new GameReviewRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
-    //builder.Services.AddSingleton<IRatingRepository, RatingRepository>(x => new RatingRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
+    builder.Services.AddSingleton<IGameRepository, GameRepository>(x => new GameRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
+    builder.Services.AddSingleton<IGameDetailsRepository, GameDetailsRepository>(x => new GameDetailsRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
+    builder.Services.AddSingleton<IGameCategoryRepository, GameCategoryRepository>(x => new GameCategoryRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
+    builder.Services.AddSingleton<IPlatformRepository, PlatformRepository>(x => new PlatformRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
+    builder.Services.AddSingleton<IPlatformGameLookUpRepository, PlatformGameLookUpRepository>(x => new PlatformGameLookUpRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
+    builder.Services.AddSingleton<IEventRepository, EventRepository>(x => new EventRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
+    builder.Services.AddSingleton<IGameReviewRepository, GameReviewRepository>(x => new GameReviewRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
+    builder.Services.AddSingleton<IRatingRepository, RatingRepository>(x => new RatingRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
 
 
 
