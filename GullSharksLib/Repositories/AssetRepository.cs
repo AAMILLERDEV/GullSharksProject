@@ -1,11 +1,12 @@
 ﻿using GullSharksLib.Interfaces;
+using GullSharksLib.Models;
 using Microsoft.Extensions.Options;
 
 namespace GullSharksLib.Repositories
 {
     public class AssetRepository //: IAssetRepository
     {
-        private readonly DBRepository db;
+        private readonly IDBRepository db;
 
         public AssetRepository(IOptionsMonitor<AppSetting> options)
         {

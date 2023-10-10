@@ -19,7 +19,7 @@ try {
     builder.Services.AddSingleton<IEventRepository, EventRepository>(x => new EventRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
     builder.Services.AddSingleton<IGameReviewRepository, GameReviewRepository>(x => new GameReviewRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
     builder.Services.AddSingleton<IRatingRepository, RatingRepository>(x => new RatingRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
-
+    builder.Services.AddSingleton<IEmailRepository, EmailRepository>(x => new EmailRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
 
 
 

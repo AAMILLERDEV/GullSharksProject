@@ -20,7 +20,7 @@ public class DBRepository : IDBRepository
         try
         {
             using IDbConnection connection = new SqlConnection(connectionString);
-            return await connection.QueryFirstOrDefaultAsync<BillingAddress>("hist.BillingAddressByID_GET", new { id }, commandType: CommandType.StoredProcedure);
+            return await connection.QueryFirstOrDefaultAsync<BillingAddress>("hist.billingAddressByID_GET", new { id }, commandType: CommandType.StoredProcedure);
         }
         catch (Exception ex)
         {
@@ -90,6 +90,33 @@ public class DBRepository : IDBRepository
     }
 
     // DB methods for the events object
+    public async Task<IEnumerable<Events>> GetEvents()
+    {
+        try
+        {
+            using IDbConnection connection = new SqlConnection(connectionString);
+            return await connection.QueryAsync<Events>("hist.events_GET", commandType: CommandType.StoredProcedure);
+
+        }
+        catch (Exception ex)
+        {
+            return default;
+        }
+    }
+
+    public async Task<Events> DeleteEventByID(int id)
+    {
+        try
+        {
+            using IDbConnection connection = new SqlConnection(connectionString);
+            return await connection.QueryFirstOrDefaultAsync<Events>("hist.events_DELETE", new { id }, commandType: CommandType.StoredProcedure);
+        }
+        catch (Exception ex)
+        {
+            return default;
+        }
+    }
+
     public async Task<int?> UpsertEvent(Events ins)
     {
         int? insertedID = 0;
@@ -233,10 +260,9 @@ public class DBRepository : IDBRepository
         var parameters = new DynamicParameters(new Dictionary<string, object>
         {
             { "@id", ins.ID },
-            { "@user_ID", ins.UserDetails_ID },
-            { "@game_ID", ins.Platform_ID},
-            { "@gameCategory_ID", ins.GameCategory_ID },
-            { "@languagePreference", ins.LanguagePreferences_ID },
+            { "@user_ID", ins.User_ID },
+            { "@game_ID", ins.Game_ID},
+            { "@rating", ins.RatingNumber },
             { "@isDeleted", ins.IsDeleted }
         });
 
@@ -246,6 +272,101 @@ public class DBRepository : IDBRepository
         {
             using IDbConnection connection = new SqlConnection(connectionString);
             await connection.ExecuteAsync("hist.ratings_UPSERT", parameters, commandType: CommandType.StoredProcedure);
+            insertedID = parameters.Get<int?>("@insertedID");
+        }
+        catch (Exception ex)
+        {
+            return default;
+        }
+
+        return insertedID ?? ins.ID;
+    }
+
+    //DB methods for the shippingAddress object
+    public async Task<ShippingAddress> GetShippingAddressByID(int id)
+    {
+        try
+        {
+            using IDbConnection connection = new SqlConnection(connectionString);
+            return await connection.QueryFirstOrDefaultAsync<ShippingAddress>("hist.shippingAddressByID_GET", new { id }, commandType: CommandType.StoredProcedure);
+        }
+        catch (Exception ex)
+        {
+            return default;
+        }
+    }
+
+    public async Task<int?> UpsertShippingAddress(ShippingAddress ins)
+    {
+        int? insertedID = 0;
+
+        var parameters = new DynamicParameters(new Dictionary<string, object>
+        {
+            { "@id", ins.ID },
+            { "@userDetails_ID", ins.UserDetails_ID },
+            { "@city", ins.City },
+            { "@country_ID", ins.Country_ID },
+            { "@deliveryInstructions", ins.DeliveryInstructions },
+            { "@province_ID", ins.Province_ID },
+            { "@postalCode", ins. PostalCode},
+            { "@streetAddress", ins.StreetAddress },
+            { "@isDeleted", ins.IsDeleted }
+        });
+
+        parameters.Add("@insertedID", 0, direction: ParameterDirection.Output);
+
+        try
+        {
+            using IDbConnection connection = new SqlConnection(connectionString);
+            await connection.ExecuteAsync("hist.shippingAddress_UPSERT", parameters, commandType: CommandType.StoredProcedure);
+            insertedID = parameters.Get<int?>("@insertedID");
+        }
+        catch (Exception ex)
+        {
+            return default;
+        }
+
+        return insertedID ?? ins.ID;
+    }
+
+    // DB methods for the userDetail object
+    public async Task<IEnumerable<UserDetails>> GetUserDetails()
+    {
+        try
+        {
+            using IDbConnection connection = new SqlConnection(connectionString);
+            return await connection.QueryAsync<UserDetails>("hist.userDetails_GET", commandType: CommandType.StoredProcedure);
+
+        }
+        catch (Exception ex)
+        {
+            return default;
+        }
+    }
+
+    public async Task<int?> UpsertUserDetails(UserDetails ins)
+    {
+        int? insertedID = 0;
+
+        var parameters = new DynamicParameters(new Dictionary<string, object>
+        {
+            { "@id", ins.ID },
+            { "@firstName", ins.First_Name},
+            { "@lastName", ins.Last_Name },
+            { "@gender", ins.Gender },
+            { "@user_ID", ins.User_ID},
+            { "@birthDate", ins.Birth_Date },
+            { "@receivesUpdates", ins.ReceivesEmailUpdates },
+            { "@phoneNumber", ins.PhoneNumber },
+            { "@isDeleted", ins.IsDeleted }
+        });
+
+        parameters.Add("@insertedID", 0, direction: ParameterDirection.Output);
+
+        try
+        {
+            using IDbConnection connection = new SqlConnection(connectionString);
+            await connection.ExecuteAsync("hist.userDetails_UPSERT", parameters, commandType: CommandType.StoredProcedure);
             insertedID = parameters.Get<int?>("@insertedID");
         }
         catch (Exception ex)
@@ -284,7 +405,7 @@ public class DBRepository : IDBRepository
         }
     }
 
-    public async Task<int?> UpsertUser (User ins)
+    public async Task<int?> UpsertUser(User ins)
     {
         int? insertedID = 0;
 
@@ -314,5 +435,278 @@ public class DBRepository : IDBRepository
         }
 
         return insertedID ?? ins.ID;
+    }
+
+    public async Task<User> GetUsersEmail(string email)
+    {
+        try
+        {
+            using IDbConnection connection = new SqlConnection(connectionString);
+            return await connection.QueryFirstOrDefaultAsync<User>("hist.usersEmail_GET", new { email }, commandType: CommandType.StoredProcedure);
+        }
+        catch (Exception ex)
+        {
+            return default;
+        }
+    }
+
+    // DB methods for the assest object
+    public async Task<IEnumerable<Asset>> GetAssets()
+    {
+        try
+        {
+            using IDbConnection connection = new SqlConnection(connectionString);
+            return await connection.QueryAsync<Asset>("ref.assets_GET", commandType: CommandType.StoredProcedure);
+
+        }
+        catch (Exception ex)
+        {
+            return default;
+        }
+    }
+
+    // DB methods for the country object
+    public async Task<IEnumerable<Country>> GetCountries()
+    {
+        try
+        {
+            using IDbConnection connection = new SqlConnection(connectionString);
+            return await connection.QueryAsync<Country>("ref.Countries_GET", commandType: CommandType.StoredProcedure);
+
+        }
+        catch (Exception ex)
+        {
+            return default;
+        }
+    }
+
+    // DB methods for the game object
+    public async Task<IEnumerable<Game>> GetGames()
+    {
+        try
+        {
+            using IDbConnection connection = new SqlConnection(connectionString);
+            return await connection.QueryAsync<Game>("ref.games_GET", commandType: CommandType.StoredProcedure);
+
+        }
+        catch (Exception ex)
+        {
+            return default;
+        }
+    }
+
+    public async Task<Game> DeleteGameByID(int id)
+    {
+        try
+        {
+            using IDbConnection connection = new SqlConnection(connectionString);
+            return await connection.QueryFirstOrDefaultAsync<Game>("ref.game_DELETE", new { id }, commandType: CommandType.StoredProcedure);
+        }
+        catch (Exception ex)
+        {
+            return default;
+        }
+    }
+
+    public async Task<int?> UpsertGame(Game ins)
+    {
+        int? insertedID = 0;
+
+        var parameters = new DynamicParameters(new Dictionary<string, object>
+        {
+            { "@id", ins.ID },
+            { "@gameName", ins.Game_Name },
+            { "@asset_ID", ins.Asset_ID },
+            { "@gameDetails_ID", ins.GameDetails_ID },
+            { "@priceInCad", ins.PriceInCAD },
+            { "@isDeleted", ins.IsDeleted }
+        });
+
+        parameters.Add("@insertedID", 0, direction: ParameterDirection.Output);
+
+        try
+        {
+            using IDbConnection connection = new SqlConnection(connectionString);
+            await connection.ExecuteAsync("ref.game_UPSERT", parameters, commandType: CommandType.StoredProcedure);
+            insertedID = parameters.Get<int?>("@insertedID");
+        }
+        catch (Exception ex)
+        {
+            return default;
+        }
+
+        return insertedID ?? ins.ID;
+    }
+
+    public async Task<Game> GetGameByID(int id)
+    {
+        try
+        {
+            using IDbConnection connection = new SqlConnection(connectionString);
+            return await connection.QueryFirstOrDefaultAsync<Game>("ref.GamesByID_GET", new { id }, commandType: CommandType.StoredProcedure);
+        }
+        catch (Exception ex)
+        {
+            return default;
+        }
+    }
+
+    public async Task<Game> GetGamesByName(string GameName)
+    {
+        try
+        {
+            using IDbConnection connection = new SqlConnection(connectionString);
+            return await connection.QueryFirstOrDefaultAsync<Game>("ref.gamesByGameName_GET", new { GameName }, commandType: CommandType.StoredProcedure);
+        }
+        catch (Exception ex)
+        {
+            return default;
+        }
+    }
+
+    // DB methods for the gameCategory object
+    public async Task<IEnumerable<GameCategory>> GetGameCategories()
+    {
+        try
+        {
+            using IDbConnection connection = new SqlConnection(connectionString);
+            return await connection.QueryAsync<GameCategory>("ref.gameCategories_GET", commandType: CommandType.StoredProcedure);
+
+        }
+        catch (Exception ex)
+        {
+            return default;
+        }
+    }
+
+    // DB methods for the gameDetail object
+    public async Task<int?> UpsertGameDetails(GameDetails ins)
+    {
+        int? insertedID = 0;
+
+        var parameters = new DynamicParameters(new Dictionary<string, object>
+        {
+            { "@id", ins.ID },
+            { "@publisher", ins.Publisher },
+            { "@category_ID", ins.Category_ID },
+            { "@description", ins.Description },
+            { "@rating_ID", ins.Rating_ID },
+            { "@isDeleted", ins.IsDeleted }
+        });
+
+        parameters.Add("@insertedID", 0, direction: ParameterDirection.Output);
+
+        try
+        {
+            using IDbConnection connection = new SqlConnection(connectionString);
+            await connection.ExecuteAsync("ref.gameDetails_UPSERT", parameters, commandType: CommandType.StoredProcedure);
+            insertedID = parameters.Get<int?>("@insertedID");
+        }
+        catch (Exception ex)
+        {
+            return default;
+        }
+
+        return insertedID ?? ins.ID;
+    }
+
+    public async Task<GameDetails> GetGameDetailsByID(int id)
+    {
+        try
+        {
+            using IDbConnection connection = new SqlConnection(connectionString);
+            return await connection.QueryFirstOrDefaultAsync<GameDetails>("ref.GameDetailsByID_GET", new { id }, commandType: CommandType.StoredProcedure);
+        }
+        catch (Exception ex)
+        {
+            return default;
+        }
+    }
+
+    // DB methods for the language object
+    public async Task<IEnumerable<Language>> GetLanguages()
+    {
+        try
+        {
+            using IDbConnection connection = new SqlConnection(connectionString);
+            return await connection.QueryAsync<Language>("ref.languages_GET", commandType: CommandType.StoredProcedure);
+
+        }
+        catch (Exception ex)
+        {
+            return default;
+        }
+    }
+
+    // DB methods for the platformGameLookUp object
+    public async Task<PlatformGameLookUp> GetPlatformGameLookUpByID(int id)
+    {
+        try
+        {
+            using IDbConnection connection = new SqlConnection(connectionString);
+            return await connection.QueryFirstOrDefaultAsync<PlatformGameLookUp>("ref.platforms_games_lookUpByID_GET", new { id }, commandType: CommandType.StoredProcedure);
+        }
+        catch (Exception ex)
+        {
+            return default;
+        }
+    }
+
+    // DB methods for the platform object
+    public async Task<IEnumerable<Platform>> GetPlatforms()
+    {
+        try
+        {
+            using IDbConnection connection = new SqlConnection(connectionString);
+            return await connection.QueryAsync<Platform>("ref.platforms_GET", commandType: CommandType.StoredProcedure);
+
+        }
+        catch (Exception ex)
+        {
+            return default;
+        }
+    }
+
+    // DB methods for the province object
+    public async Task<IEnumerable<Province>> GetProvinces()
+    {
+        try
+        {
+            using IDbConnection connection = new SqlConnection(connectionString);
+            return await connection.QueryAsync<Province>("ref.provinces_GET", commandType: CommandType.StoredProcedure);
+
+        }
+        catch (Exception ex)
+        {
+            return default;
+        }
+    }
+
+    // DB methods for the setting object
+    public async Task<IEnumerable<Setting>> GetSettings()
+    {
+        try
+        {
+            using IDbConnection connection = new SqlConnection(connectionString);
+            return await connection.QueryAsync<Setting>("ref.settings_GET", commandType: CommandType.StoredProcedure);
+
+        }
+        catch (Exception ex)
+        {
+            return default;
+        }
+    }
+
+    public async Task<Setting> GetSettingByID(int id)
+    {
+        try
+        {
+            using IDbConnection connection = new SqlConnection(connectionString);
+            return await connection.QueryFirstOrDefaultAsync<Setting>("ref.SettingsByID_GET", new { id }, commandType: CommandType.StoredProcedure);
+        }
+        catch (Exception ex)
+        {
+            return default;
+        }
     }
 }
