@@ -141,10 +141,10 @@ public class DBRepository : IDBRepository
         var parameters = new DynamicParameters(new Dictionary<string, object>
         {
             { "@id", ins.ID },
-            { "@eventName", ins.Event_Name },
+            { "@eventName", ins.EventName },
             { "@description", ins.Description },
-            { "@startDate", ins.Start_Date },
-            { "@endDate", ins.End_Date },
+            { "@startDate", ins.StartDate },
+            { "@endDate", ins.EndDate },
             { "@isDeleted", ins.IsDeleted }
         });
 
@@ -377,12 +377,12 @@ public class DBRepository : IDBRepository
         }
     }
 
-    public async Task<UserDetails> GetUserDetailsByID(int id)
+    public async Task<UserDetails> GetUserDetailsByID(int user_ID)
     {
         try
         {
             using IDbConnection connection = new SqlConnection(connectionString);
-            return await connection.QueryFirstOrDefaultAsync<UserDetails>("hist.userDetailsByID_GET", new { id }, commandType: CommandType.StoredProcedure);
+            return await connection.QueryFirstOrDefaultAsync<UserDetails>("hist.userDetailsByID_GET", new { user_ID }, commandType: CommandType.StoredProcedure);
 
         }
         catch (Exception ex)

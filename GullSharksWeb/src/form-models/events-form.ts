@@ -6,6 +6,5 @@ export const EventsForm = new FormGroup ({
     descriptionControl: new FormControl(),
     startDateControl: new FormControl(),
     endDateControl: new FormControl(),
-    submitControl: new FormControl("Submit")
-
+    eventsListControl: new FormControl()
 })

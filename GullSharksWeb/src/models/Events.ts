@@ -1,8 +1,8 @@
 export interface Events {
   id: number;
-  event_name: string;
+  eventName: string;
   description: string;
-  start_date: Date;
-  end_date: Date;
+  startDate: Date;
+  endDate: Date;
   isDeleted: boolean;
 }

@@ -52,6 +52,7 @@ export class AdminComponent implements OnInit {
   public selectedGameDetails?: GameDetails;
   public selectedPlatforms!: PlatformsGamesLookUp[];
   public selectedReview?: GameReview;
+  public selectedEvent!: Events;
 
   public approved: boolean = false;
 
@@ -146,6 +147,10 @@ export class AdminComponent implements OnInit {
     this.reviewsList = await this.reviewService.getGameReviews();
     this.ratingsList = await this.ratingService.getRatings();
 
+    this.gamesForm.reset();
+    this.reviewsForm.reset();
+    this.eventsForm.reset();
+    
     if (this.reviewsList != null && this.reviewsList.length > 0){
       for (let i of this.reviewsList){
         i.review_name = `User: ${i.user_ID} - Date Added: ${i.dateAdded} - Game: ${i.game_ID}`;
@@ -258,8 +263,6 @@ export class AdminComponent implements OnInit {
 
     await this.getData();
     this.toastr.success("Success, game updated!");
-    this.gamesForm.reset();
-    this.reviewsForm.reset();
     this.resetReviewsFormButtons();
   }
 
@@ -268,16 +271,49 @@ export class AdminComponent implements OnInit {
       this.toastr.error("Please fill out all form fields to submit.");
       return;
     }
+
+    let event: Events = {
+      id: 0,
+      isDeleted: false,
+      description:  this.eventsForm.controls['descriptionControl'].value,
+      endDate:  this.eventsForm.controls['endDateControl'].value,
+      eventName:  this.eventsForm.controls['eventNameControl'].value,
+      startDate:  this.eventsForm.controls['startDateControl'].value
+    };
+
+    let res = await this.eventSerivce.upsertEvent(event);
+
+    if (res < 1){
+      this.toastr.error("Error failed to save new event.");
+      return;
+    }
+
+    this.toastr.success("Success, new event added!");
+    await this.getData();
+    return;
   }
 
   public async updateEvent(){
-    if (this.gamesForm.invalid){
+    if (this.eventsForm.invalid){
       this.toastr.error("Please fill out all form fields to submit.");
       return;
     }
+
+    this.selectedEvent.endDate = this.eventsForm.controls['endDateControl'].value;
+    this.selectedEvent.startDate = this.eventsForm.controls['startDateControl'].value;
+    this.selectedEvent.eventName = this.eventsForm.controls['eventNameControl'].value;
+    this.selectedEvent.description = this.eventsForm.controls['descriptionControl'].value;
+
+    await this.eventSerivce.upsertEvent(this.selectedEvent);
+    this.toastr.success("Success, the event has been updated.");
+    await this.getData();
   }
 
   public async updateReview(response: boolean){
+    if (this.selectedReview == null){
+      return;
+    }
+
     if (this.reviewsForm.invalid){
       this.toastr.error("Please fill out all form fields to submit.");
       return;
@@ -336,7 +372,7 @@ export class AdminComponent implements OnInit {
   public async updateReviewsForm(val: any){
     this.selectedReview = this.reviewsList.find(x => x.id == val);
 
-    if (this.selectedReview == null){
+    if (this.selectedReview == null || this.selectedReview == undefined){
       return;
     }
 
@@ -357,5 +393,19 @@ export class AdminComponent implements OnInit {
   public resetReviewsFormButtons(){
     this.reviewsForm.controls['rejectControl'].setValue("Reject");
     this.reviewsForm.controls['approveControl'].setValue("Approve");
+  }
+
+  public async updateEventsForm(val: any){
+    this.selectedEvent = this.eventList.find(x => x.id == val)!;
+    console.log(this.selectedEvent);
+    if (this.selectedEvent == null || this.selectedEvent == undefined){
+      return;
+    }
+    
+    this.eventsForm.controls['eventNameControl'].setValue(this.selectedEvent.eventName);
+    this.eventsForm.controls['descriptionControl'].setValue(this.selectedEvent.description);
+    this.eventsForm.controls['startDateControl'].setValue(this.selectedEvent.startDate.toLocaleString().substring(0, 10));
+    this.eventsForm.controls['endDateControl'].setValue(this.selectedEvent.endDate.toLocaleString().substring(0, 10));
+
   }
 }

@@ -267,8 +267,8 @@
                             <label>Select Event:</label>
                         </div>
                         <div class="col-10">
-                            <select formControlName="eventsListControl" class="form-control customBorder2">
-                                <option *ngFor="let i of eventList" [value]="i.id">{{i.event_name}}</option>
+                            <select formControlName="eventsListControl" #events class="form-control customBorder2" (input)="updateEventsForm(events.value)">
+                                <option *ngFor="let i of eventList" [value]="i.id">{{i.eventName}}</option>
                             </select>
                         </div>
                     </div>
@@ -310,7 +310,8 @@
         </div>
         <div class="modal-footer justify-content-center">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
+          <button *ngIf="eventOperation == 'Edit'" type="button" class="btn btn-primary" (click)="updateEvent()">Save changes</button>
+          <button *ngIf="eventOperation == 'Add'" type="button" class="btn btn-primary" (click)="insertEvent()">Save changes</button>
         </div>
       </div>
     </div>

@@ -12,7 +12,9 @@ import { Language } from 'src/models/Language';
 import { Platform } from 'src/models/Platform';
 import { Province } from 'src/models/Province';
 import { User } from 'src/models/User';
+import { UserDetails } from 'src/models/UserDetails';
 import { UserService } from 'src/services/user.service';
+import { UserDetailsService } from 'src/services/userDetail.service';
 
 @Component({
   selector: 'app-profile',
@@ -26,6 +28,7 @@ export class ProfileComponent implements OnInit {
   public provinces: Province[] = [];
 
   public user!: User | undefined;
+  public userDetails!: UserDetails;
 
   public preferencesForm: FormGroup;
   public addressForm: FormGroup;
@@ -34,7 +37,11 @@ export class ProfileComponent implements OnInit {
   public userDetailsModal!: bootstrap.Modal;
   public preferencesModal!: bootstrap.Modal;
   public addressModal!: bootstrap.Modal;
-  
+
+  public email: string = "None Yet";
+  public firstname: string = "None Yet";
+  public lastname: string = "None Yet";
+  public validated: boolean = false;
 
   public canada_ID: number = 36;
 
@@ -44,7 +51,8 @@ export class ProfileComponent implements OnInit {
 
   constructor(public router: Router,
     public userService: UserService,
-    public toastr: ToastrService){
+    public toastr: ToastrService,
+    public userDetailsService: UserDetailsService){
     this.preferencesForm = PreferencesForm;
     this.addressForm = AddressForm;
     this.userDetailsForm = UserDetailsForm;
@@ -52,12 +60,13 @@ export class ProfileComponent implements OnInit {
   }
 
   public async ngOnInit() {
-    this.users = await this.userService.getAllUsers();
     this.user = JSON.parse(sessionStorage.getItem("User")!);
-    
+
+
     if (!this.user){
       this.router.navigateByUrl("login");
     }
+
     this.buildModals();
   }
 
@@ -73,10 +82,24 @@ export class ProfileComponent implements OnInit {
     this.addressModal.toggle();
   }
 
-  public buildModals(){
+  public async buildModals(){
     this.userDetailsModal = bootstrap.Modal.getOrCreateInstance('#userDetailsModal', {keyboard: true});
     this.preferencesModal = bootstrap.Modal.getOrCreateInstance('#preferencesModal', {keyboard: true});
     this.addressModal = bootstrap.Modal.getOrCreateInstance('#addressModal', {keyboard: true});
+    await this.getData();
+  }
+
+  public async getData(){
+    this.userDetails = await this.userDetailsService.getUserDetailsByID(this.user!.id);
+    this.users = await this.userService.getAllUsers();
+
+    this.validated = this.user!.isValidated;
+    this.email = this.user!.email;
+    
+    if (this.userDetails != null){
+      this.firstname = this.userDetails.first_name;
+      this.lastname = this.userDetails.last_name;
+    }
   }
 
   // public postalCodeValidation(postalCode: string){
