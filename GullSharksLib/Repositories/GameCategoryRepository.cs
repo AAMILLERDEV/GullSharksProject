@@ -4,7 +4,7 @@ using Microsoft.Extensions.Options;
 namespace GullSharksLib;
 public class GameCategoryRepository : IGameCategoryRepository
 {
-    private readonly DBRepository db;
+    private readonly IDBRepository db;
 
     public GameCategoryRepository(IOptionsMonitor<AppSetting> options)
     {

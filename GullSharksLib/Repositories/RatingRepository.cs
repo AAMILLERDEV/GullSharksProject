@@ -4,7 +4,7 @@ using Microsoft.Extensions.Options;
 namespace GullSharksLib;
 public class RatingRepository : IRatingRepository
 {
-    private readonly DBRepository db;
+    private readonly IDBRepository db;
 
     public RatingRepository(IOptionsMonitor<AppSetting> options)
     {

@@ -6,7 +6,7 @@ namespace GullSharksLib.Repositories
 {
     public class ProvinceRepository : IProvinceRepository
     {
-        private readonly DBRepository db;
+        private readonly IDBRepository db;
 
         public ProvinceRepository(IOptionsMonitor<AppSetting> options)
         {

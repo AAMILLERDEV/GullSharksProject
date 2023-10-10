@@ -4,7 +4,7 @@ using Microsoft.Extensions.Options;
 namespace GullSharksLib;
 public class GameDetailsRepository : IGameDetailsRepository
 {
-    private readonly DBRepository db;
+    private readonly IDBRepository db;
 
     public GameDetailsRepository(IOptionsMonitor<AppSetting> options)
     {

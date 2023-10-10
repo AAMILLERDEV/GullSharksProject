@@ -6,7 +6,7 @@ namespace GullSharksLib.Repositories
 {
     public class SettingRepository : ISettingRepository
     {
-        private readonly DBRepository db;
+        private readonly IDBRepository db;
 
         public SettingRepository(IOptionsMonitor<AppSetting> options)
         {

@@ -6,7 +6,7 @@ namespace GullSharksLib.Repositories
 {
     public class CountryRepository : ICountryRepository
     {
-        private readonly DBRepository db;
+        private readonly IDBRepository db;
 
         public CountryRepository(IOptionsMonitor<AppSetting> options)
         {

@@ -6,7 +6,7 @@ namespace GullSharksLib.Repositories
 {
     public class UserDetailsRepository : IUserDetailsRepository
     {
-        private readonly DBRepository db;
+        private readonly IDBRepository db;
 
         public UserDetailsRepository(IOptionsMonitor<AppSetting> options)
         {

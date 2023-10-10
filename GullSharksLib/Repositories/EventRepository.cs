@@ -4,7 +4,7 @@ using Microsoft.Extensions.Options;
 namespace GullSharksLib;
 public class EventRepository : IEventRepository
 {
-    private readonly DBRepository db;
+    private readonly IDBRepository db;
 
     public EventRepository(IOptionsMonitor<AppSetting> options)
     {

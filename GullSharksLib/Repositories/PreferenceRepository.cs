@@ -6,7 +6,7 @@ namespace GullSharksLib.Repositories
 {
     public class PreferenceRepository : IPreferenceRepository
     {
-        private readonly DBRepository db;
+        private readonly IDBRepository db;
 
         public PreferenceRepository(IOptionsMonitor<AppSetting> options)
         {

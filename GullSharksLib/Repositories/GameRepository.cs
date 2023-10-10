@@ -5,7 +5,7 @@ namespace GullSharksLib;
 
 public class GameRepository : IGameRepository
 {
-    private readonly DBRepository db;
+    private readonly IDBRepository db;
 
     public GameRepository(IOptionsMonitor<AppSetting> options)
     {

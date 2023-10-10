@@ -1,11 +1,12 @@
 ﻿using GullSharksLib.Interfaces;
+using GullSharksLib.Models;
 using Microsoft.Extensions.Options;
 
 namespace GullSharksLib.Repositories
 {
     public class CredentialRepository : ICredentialRepository
     {
-        private readonly DBRepository db;
+        private readonly IDBRepository db;
 
         public CredentialRepository(IOptionsMonitor<AppSetting> options)
         {

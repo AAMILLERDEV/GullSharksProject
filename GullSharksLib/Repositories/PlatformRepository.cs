@@ -4,7 +4,7 @@ using Microsoft.Extensions.Options;
 namespace GullSharksLib;
 public class PlatformRepository : IPlatformRepository
 {
-    private readonly DBRepository db;
+    private readonly IDBRepository db;
 
     public PlatformRepository(IOptionsMonitor<AppSetting> options)
     {

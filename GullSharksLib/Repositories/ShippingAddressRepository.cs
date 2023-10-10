@@ -6,7 +6,7 @@ namespace GullSharksLib.Repositories
 {
     public class ShippingAddressRepository : IShippingAddressRepository
     {
-        private readonly DBRepository db;
+        private readonly IDBRepository db;
 
         public ShippingAddressRepository(IOptionsMonitor<AppSetting> options)
         {
