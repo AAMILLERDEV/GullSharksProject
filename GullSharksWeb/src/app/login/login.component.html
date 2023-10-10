@@ -35,7 +35,7 @@
                 <label>Forgot your password?</label>
             </div>
             <div class="col-6">
-                <input text="button" formControlName="forgotCredentialsBtnControl" class="btn btn-danger form-control" (click)="sendLoginDetailsReset()" readonly>
+                <input text="button" formControlName="forgotCredentialsBtnControl" class="btn btn-danger form-control" data-bs-toggle="modal" data-bs-target="#resetPaswordModal" readonly>
             </div>
             <div class="col-2"></div>
         </div>
@@ -51,5 +51,36 @@
         </div>
    </div>
 </ng-container>
+
+<!--The Events Modal-->
+<div class="modal fade" #resetPaswordModal id="resetPaswordModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Enter your username for the account you wish to reset:</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form class="alignRight">
+                <div class="form-group container p-5">
+                    <!--Event Selector-->
+                    <div class="row py-3">
+                        <div class="col-2">
+                            <label class="form-control me-3">Username:</label>
+                        </div>
+                        <div class="col-10">
+                            <input type="text" class="form-control" id="username">
+                        </div>
+                    </div>
+                    <!--Event Name-->
+               </div>
+            </form>
+        </div>
+        <div class="modal-footer justify-content-center">
+          <button type="button" class="btn btn-primary" data-bs-dismiss="modal" (click)="sendLoginDetailsReset()">Send</button>
+        </div>
+      </div>
+    </div>
+</div>
 
 

@@ -6,6 +6,7 @@ import { ToastrService } from 'ngx-toastr';
 import { LoginForm } from 'src/form-models/login-form';
 import { User } from 'src/models/User';
 import { CredentialService } from 'src/services/credential.service';
+import { EmailService } from 'src/services/email.service';
 import { UserService } from 'src/services/user.service';
 
 @Component({
@@ -27,7 +28,8 @@ export class LoginComponent implements OnInit {
   constructor(public router: Router,
     public userService: UserService,
     public toastr: ToastrService,
-    public credentialService: CredentialService){
+    public credentialService: CredentialService,
+    public emailService: EmailService){
     this.loginForm = LoginForm;
   }
 
@@ -79,7 +81,8 @@ export class LoginComponent implements OnInit {
       return;
     } else {
       sessionStorage.setItem("User", JSON.stringify(this.user));
-
+      this.loginForm.controls['usernameControl'].setValue('');
+      this.loginForm.controls['passwordControl'].setValue('');
       this.router.navigateByUrl("home");
     }
   }
@@ -92,9 +95,25 @@ export class LoginComponent implements OnInit {
     console.log(`reCAPTCHA error encountered; details:`, errorDetails);
   }
 
-  public sendLoginDetailsReset(){
-    this.loginCounter = 0;
-    this.saveLoginAttempt();
+  public async sendLoginDetailsReset(){
+    let username = document.getElementById("username") as HTMLInputElement;
+    console.log(username.value);
+    let user = this.users.find(x => x.username == username.value);
+
+    if (user != null){
+      this.toastr.warning("Please wait...");
+      let res = await this.emailService.sendResetPasswordEmail(user);
+      if (res){
+        this.toastr.success("Email has been sent with password instructions for reset.");
+        return;
+      }
+
+      this.toastr.success("Error.");
+      return;
+    }
+
+    this.toastr.success("Unable to send request.");
+    return;
   }
 
   public saveLoginAttempt(){
