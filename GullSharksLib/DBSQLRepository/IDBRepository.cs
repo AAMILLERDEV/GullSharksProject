@@ -27,11 +27,6 @@ public interface IDBRepository
     public Task<IEnumerable<GameReview>> GetGameReviews();
     public Task<int?> UpsertGameReview(GameReview ins);
 
-    //Preferences
-    public Task<IEnumerable<Preference>> GetPreferences();
-    public Task<Preference> GetPreferencesByID(int id);
-    public Task<int?> UpsertPreferences(Preference ins);
-
     //Ratings
     public Task<IEnumerable<Rating>> GetRatings();
     public Task<int?> UpsertRatings(Rating ins);

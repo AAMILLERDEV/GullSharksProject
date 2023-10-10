@@ -211,66 +211,6 @@ public class DBRepository : IDBRepository
         return insertedID ?? ins.ID;
     }
 
-    //DB methods for the preferences object
-    public async Task<IEnumerable<Preference>> GetPreferences()
-    {
-        try
-        {
-            using IDbConnection connection = new SqlConnection(connectionString);
-            return await connection.QueryAsync<Preference>("hist.preferences_GET", commandType: CommandType.StoredProcedure);
-
-        }
-        catch (Exception ex)
-        {
-            return default;
-        }
-    }
-
-    //DB methods for the preferences object
-    public async Task<Preference> GetPreferencesByID(int id)
-    {
-        try
-        {
-            using IDbConnection connection = new SqlConnection(connectionString);
-            return await connection.QueryFirstOrDefaultAsync<Preference>("hist.preferencesByID_GET", new { id }, commandType: CommandType.StoredProcedure);
-
-        }
-        catch (Exception ex)
-        {
-            return default;
-        }
-    }
-
-    public async Task<int?> UpsertPreferences(Preference ins)
-    {
-        int? insertedID = 0;
-
-        var parameters = new DynamicParameters(new Dictionary<string, object>
-        {
-            { "@id", ins.ID },
-            { "@userDetails_ID", ins.UserDetails_ID },
-            { "@platform_ID", ins.Platform_ID},
-            { "@gameCategory_ID", ins.GameCategory_ID },
-            { "@languagePreference_ID", ins.LanguagePreferences_ID },
-            { "@isDeleted", ins.IsDeleted }
-        });
-
-        parameters.Add("@insertedID", 0, direction: ParameterDirection.Output);
-
-        try
-        {
-            using IDbConnection connection = new SqlConnection(connectionString);
-            await connection.ExecuteAsync("hist.preferences_UPSERT", parameters, commandType: CommandType.StoredProcedure);
-            insertedID = parameters.Get<int?>("@insertedID");
-        }
-        catch (Exception ex)
-        {
-            return default;
-        }
-
-        return insertedID ?? ins.ID;
-    }
-
     // DB methods for the rating object
     public async Task<IEnumerable<Rating>> GetRatings()
     {
