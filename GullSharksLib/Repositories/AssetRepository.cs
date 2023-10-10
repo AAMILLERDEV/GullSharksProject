@@ -4,7 +4,7 @@ using Microsoft.Extensions.Options;
 
 namespace GullSharksLib.Repositories
 {
-    public class AssetRepository //: IAssetRepository
+    public class AssetRepository : IAssetRepository
     {
         private readonly IDBRepository db;
 

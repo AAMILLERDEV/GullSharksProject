@@ -27,6 +27,7 @@ try {
     builder.Services.AddSingleton<ILanguageRepository, LanguageRepository>(x => new LanguageRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
     builder.Services.AddSingleton<IProvinceRepository, ProvinceRepository>(x => new ProvinceRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
     builder.Services.AddSingleton<ICountryRepository, CountryRepository>(x => new CountryRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
+    builder.Services.AddSingleton<IAssetRepository, AssetRepository>(x => new AssetRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
 
     builder.Services.AddCors(o => o.AddDefaultPolicy(builder =>
     {

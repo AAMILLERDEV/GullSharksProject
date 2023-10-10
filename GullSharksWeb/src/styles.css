@@ -27,6 +27,7 @@
 }
 
 .ng-select.customNGSelect {
+    text-align: left;
     box-shadow: rgba(100, 100, 100, 0.12) 0px 1px 0px, rgba(153, 153, 153, 0.24) 0px 1px 1px;
     background-color: #f8f9fa;
     border-radius: 7px;

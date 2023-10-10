@@ -7,11 +7,22 @@ import { EventsForm } from 'src/form-models/events-form';
 import { GamesForm } from 'src/form-models/games-form';
 import { PreferencesForm } from 'src/form-models/preferences-form';
 import { ReviewsForm } from 'src/form-models/reviews-form';
+import { Asset } from 'src/models/Asset';
 import { Events } from 'src/models/Events';
 import { Game } from 'src/models/Game';
+import { GameCategory } from 'src/models/GameCategory';
+import { GameDetails } from 'src/models/GameDetails';
 import { GameReview } from 'src/models/GameReview';
 import { Platform } from 'src/models/Platform';
+import { Ratings } from 'src/models/Ratings';
 import { User } from 'src/models/User';
+import { AssetService } from 'src/services/asset.service';
+import { EventService } from 'src/services/events.service';
+import { GameService } from 'src/services/game.service';
+import { GameCategoryService } from 'src/services/gameCategories.service';
+import { GameDetailService } from 'src/services/gameDetails.service';
+import { PlatformService } from 'src/services/platform.service';
+import { RatingService } from 'src/services/rating.service';
 import { UserService } from 'src/services/user.service';
 
 @Component({
@@ -27,9 +38,13 @@ export class AdminComponent implements OnInit {
 
   public users: User[] = [];
   public games: Game[] = [];
+  public assets: Asset[] = [];
   public platforms: Platform[] = [];
   public eventList: Events[] = [];
   public reviewsList: GameReview[] = [];
+  public gameCategories: GameCategory[] = [];
+  public gameDetailsList: GameDetails[] = [];
+  public ratingsList: Ratings[] = [];
 
   public user!: User | undefined;
 
@@ -46,7 +61,14 @@ export class AdminComponent implements OnInit {
 
   constructor(public router: Router,
     public userService: UserService,
-    public toastr: ToastrService){
+    public toastr: ToastrService,
+    public platformService: PlatformService,
+    public eventSerivce: EventService,
+    public ratingService: RatingService,
+    public gameService: GameService,
+    public gameDetailService: GameDetailService,
+    public gameCategoryService: GameCategoryService,
+    public assetService: AssetService){
     this.gamesForm = GamesForm;
     this.reviewsForm = ReviewsForm;
     this.eventsForm = EventsForm;
@@ -55,7 +77,10 @@ export class AdminComponent implements OnInit {
   public async ngOnInit() {
     this.users = await this.userService.getAllUsers();
     this.user = JSON.parse(sessionStorage.getItem("User")!);
+    await this.getData();
     this.buildModals();
+
+
   }
 
   public openGamesModal(operation: string){
@@ -88,7 +113,9 @@ export class AdminComponent implements OnInit {
   }
 
   public async getData(){
-
+    this.gameCategories = await this.gameCategoryService.GetGameCategories();
+    this.platforms = await this.platformService.getPlatforms();
+    this.assets = await this.assetService.getAssets();
   }
 
   public async deleteGame(){

@@ -126,19 +126,23 @@
                             <input type="text" formControlName="publisherControl" class="form-control customBorder2" required>
                         </div>
                     </div>
-                    <!--Category/Description-->
+                    <!--Category/Assets-->
                     <div class="row py-3">
                         <div class="col-2">
                             <label>Category:</label>
                         </div>
                         <div class="col-4">
-                            <input type="text" formControlName="categoryControl" class="form-control customBorder2" required>
+                            <select formControlName="categoryControl" class="form-control customBorder2" required>
+                                <option *ngFor="let i of gameCategories" [value]="i.id">{{i.categoryName}}</option>
+                            </select>
                         </div>
                         <div class="col-2">
-                            <label>Description:</label>
+                            <label>Assets:</label>
                         </div>
                         <div class="col-4">
-                            <input type="text" formControlName="descriptionControl" class="form-control customBorder2" required>
+                            <select formControlName="assetControl" class="form-control customBorder2" required>
+                                <option *ngFor="let i of assets" [value]="i.id">{{i.assetName}}</option>
+                            </select>
                         </div>
                     </div>
                     <!--Price/Platforms-->
@@ -153,16 +157,16 @@
                             <label>Platforms:</label>
                         </div>
                         <div class="col-4">
-                            <ng-select [items]="platforms" bindLabel="platform_name" bindValue="id" formControlName="platformControl" class="customNGSelect" required></ng-select>
+                            <ng-select [items]="platforms" bindLabel="platformName" bindValue="id" formControlName="platformControl" class="customNGSelect" required></ng-select>
                         </div>
                     </div>
-                    <!--Assets-->
+                    <!--Description-->
                     <div class="row py-3">
                         <div class="col-2">
-                            <label>Assets:</label>
+                            <label>Description:</label>
                         </div>
-                        <div class="col-4">
-                            <input type="text" formControlName="assetControl" class="form-control customBorder2" required>
+                        <div class="col-10">
+                            <textarea rows="3" formControlName="descriptionControl" class="form-control customBorder2" required></textarea>
                         </div>
                     </div>
                     <hr>

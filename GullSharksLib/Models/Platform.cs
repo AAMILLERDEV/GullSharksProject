@@ -3,7 +3,7 @@
 public class Platform
 {
     public int ID { set; get; }
-    public string Platform_Name { set; get; }
+    public string PlatformName { set; get; }
 
     public bool IsDeleted { get; set; }
 }

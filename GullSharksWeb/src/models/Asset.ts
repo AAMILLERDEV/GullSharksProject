@@ -1,4 +1,6 @@
 export interface Asset {
   id: number;
-  asset_url: string;
+  assetUrl: string;
+  assetName: string;
+  isDeleted: boolean;
 }
