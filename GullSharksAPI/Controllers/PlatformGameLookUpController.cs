@@ -16,5 +16,9 @@ public class PlatformGameLookUpController : ControllerBase
     [HttpGet]
     [Route("[controller]/GetPlatformGameLookUp/{platform_ID}")]
     public Task<IEnumerable<PlatformGameLookUp>> GetPlatformsGamesLookUp(int platform_ID) => db.GetPlatformsGamesLookUp(platform_ID);
+
+    [HttpPost]
+    [Route("[controller]/UpsertPlatformGameLookup")]
+    public Task<int?> UpsertPlatformGameLookup(PlatformGameLookUp plat) => db.UpsertPlatformGameLookUp(plat);
 }
 

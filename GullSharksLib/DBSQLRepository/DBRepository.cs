@@ -3,6 +3,7 @@ using GullSharksLib.Models;
 using System.ComponentModel;
 using System.Data;
 using System.Data.SqlClient;
+using System.Net;
 
 namespace GullSharksLib;
 
@@ -609,7 +610,6 @@ public class DBRepository : IDBRepository
             { "@publisher", ins.Publisher },
             { "@category_ID", ins.Category_ID },
             { "@description", ins.Description },
-            { "@rating_ID", ins.Rating_ID },
             { "@isDeleted", ins.IsDeleted }
         });
 
@@ -682,6 +682,34 @@ public class DBRepository : IDBRepository
         {
             return default;
         }
+    }
+
+    public async Task<int?> UpsertPlatformGameLookUp(PlatformGameLookUp ins)
+    {
+        int? insertedID = 0;
+
+        var parameters = new DynamicParameters(new Dictionary<string, object>
+        {
+            { "@id", ins.ID },
+            { "@platform_ID", ins.Platform_ID },
+            { "@gameDetails_ID", ins.GameDetails_ID },
+            { "@isDeleted", ins.IsDeleted }
+        });
+
+        parameters.Add("@insertedID", 0, direction: ParameterDirection.Output);
+
+        try
+        {
+            using IDbConnection connection = new SqlConnection(connectionString);
+            await connection.ExecuteAsync("ref.platforms_games_lookUp_UPSERT", parameters, commandType: CommandType.StoredProcedure);
+            insertedID = parameters.Get<int?>("@insertedID");
+        }
+        catch (Exception ex)
+        {
+            return default;
+        }
+
+        return insertedID ?? ins.ID;
     }
 
     // DB methods for the platform object

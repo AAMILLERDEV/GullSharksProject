@@ -3,5 +3,5 @@ export interface GameDetails {
   publisher: string;
   category_id: number;
   description: string;
-  rating_id: number;
+  isDeleted: boolean;
 }

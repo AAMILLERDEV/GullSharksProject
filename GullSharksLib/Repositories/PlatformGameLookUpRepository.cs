@@ -12,4 +12,5 @@ public class PlatformGameLookUpRepository : IPlatformGameLookUpRepository
     }
 
     public Task<IEnumerable<PlatformGameLookUp>> GetPlatformsGamesLookUp(int platform_ID) => db.GetPlatformGameLookUpByID(platform_ID);
+    public Task<int?> UpsertPlatformGameLookUp(PlatformGameLookUp plat) => db.UpsertPlatformGameLookUp(plat);
 }

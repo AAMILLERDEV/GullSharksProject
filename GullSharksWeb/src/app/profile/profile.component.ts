@@ -36,7 +36,7 @@ export class ProfileComponent implements OnInit {
   public addressModal!: bootstrap.Modal;
   
 
-  public canada_ID: number = 1;
+  public canada_ID: number = 36;
 
   public platforms: Platform[] = [];
   public categories: GameCategory[] = [];

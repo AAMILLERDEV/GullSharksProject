@@ -3,4 +3,5 @@ export interface Ratings {
   user_id: number;
   game_id: number;
   rating: number;
+  isDeleted: boolean;
 }

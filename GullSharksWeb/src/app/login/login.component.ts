@@ -37,9 +37,18 @@ export class LoginComponent implements OnInit {
   }
 
   public async submitUserLoginCredentials(){
+    let loginTimer = sessionStorage.getItem("LoginTimer");
+
+    if (loginTimer != null){
+      if (new Date(loginTimer!).getMinutes() + 1 < new Date().getMinutes()){
+        this.loginCounter = 0;
+        sessionStorage.removeItem("LoginTimer");
+        this.saveLoginAttempt();
+      }
+    }
 
     if (this.loginCounter >= 3){
-      this.toastr.error("Error, no more login attempts are allowed. Please reset your password to proceed.");
+      this.toastr.error("Error, no more login attempts are allowed. Please wait 1 minute to proceed.");
       return;
     }
 
@@ -59,18 +68,20 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    let check = await this.checkCredentials(this.user, btoa(this.loginForm.controls['usernameControl'].value));
+    let check = await this.checkCredentials(this.user, btoa(this.loginForm.controls['passwordControl'].value));
+
+    console.log(check);
 
     if (check == false){
       this.toastr.error("No login found for the details provided.");
       this.loginCounter++;
       this.saveLoginAttempt();
       return;
-    }
+    } else {
+      sessionStorage.setItem("User", JSON.stringify(this.user));
 
-    sessionStorage.setItem("User", JSON.stringify(this.user));
-    
-    this.router.navigateByUrl("home");
+      this.router.navigateByUrl("home");
+    }
   }
 
   public resolved(captchaResponse: string): void {
@@ -87,11 +98,17 @@ export class LoginComponent implements OnInit {
   }
 
   public saveLoginAttempt(){
+
+    if (this.loginCounter == 3){
+      sessionStorage.setItem("LoginTimer", JSON.stringify(new Date().toLocaleString()));
+    }
+
     sessionStorage.setItem("LoginCounter", JSON.stringify(this.loginCounter));
   }
 
   public async checkCredentials(user: User, cred: string){
     return await this.credentialService.checkCredentials(user, cred);
   }
+
 
 }

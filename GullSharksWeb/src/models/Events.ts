@@ -4,4 +4,5 @@ export interface Events {
   description: string;
   start_date: Date;
   end_date: Date;
+  isDeleted: boolean;
 }

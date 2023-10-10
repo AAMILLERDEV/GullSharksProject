@@ -1,7 +1,9 @@
 ﻿using GullSharksLib.Interfaces;
 using GullSharksLib.Models;
 using Microsoft.Extensions.Options;
+using System.Collections;
 using System.Net;
+using System.Text;
 
 namespace GullSharksLib.Repositories
 {
@@ -30,8 +32,8 @@ namespace GullSharksLib.Repositories
                 return false;
             }
 
-            var dbCheck = Convert.FromBase64String(user_creds.CredentialValue).ToString();
-            var valCheck = Convert.FromBase64String(val).ToString();
+            var dbCheck = Encoding.Default.GetString(Convert.FromBase64String(user_creds.CredentialValue));
+            var valCheck = Encoding.Default.GetString(Convert.FromBase64String(val));
 
             if (dbCheck == valCheck)
             {

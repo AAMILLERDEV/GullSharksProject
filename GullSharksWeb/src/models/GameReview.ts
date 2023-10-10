@@ -6,4 +6,5 @@ export interface GameReview {
   description: string;
   rating_id: number;
   review_name: string;
+  isDeleted: boolean;
 }

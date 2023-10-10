@@ -5,4 +5,5 @@ export interface User {
     isAdmin: boolean;
     isValidated: boolean;
     credentials_ID: number;
+    isDeleted: boolean;
 }

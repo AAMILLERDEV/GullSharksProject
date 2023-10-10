@@ -21,6 +21,7 @@ import { EventService } from 'src/services/events.service';
 import { GameService } from 'src/services/game.service';
 import { GameCategoryService } from 'src/services/gameCategories.service';
 import { GameDetailService } from 'src/services/gameDetails.service';
+import { GameReviewService } from 'src/services/gameReview.service';
 import { PlatformService } from 'src/services/platform.service';
 import { RatingService } from 'src/services/rating.service';
 import { UserService } from 'src/services/user.service';
@@ -68,7 +69,8 @@ export class AdminComponent implements OnInit {
     public gameService: GameService,
     public gameDetailService: GameDetailService,
     public gameCategoryService: GameCategoryService,
-    public assetService: AssetService){
+    public assetService: AssetService,
+    public reviewService: GameReviewService){
     this.gamesForm = GamesForm;
     this.reviewsForm = ReviewsForm;
     this.eventsForm = EventsForm;
@@ -77,10 +79,13 @@ export class AdminComponent implements OnInit {
   public async ngOnInit() {
     this.users = await this.userService.getAllUsers();
     this.user = JSON.parse(sessionStorage.getItem("User")!);
+    
+    if (this.user && !this.user.isAdmin){
+      this.router.navigateByUrl("home");
+    }
+
     await this.getData();
     this.buildModals();
-
-
   }
 
   public openGamesModal(operation: string){
@@ -108,18 +113,52 @@ export class AdminComponent implements OnInit {
     this.usersReportModal.toggle();
   }
 
-  public updateReview(response: boolean){
-
-  }
-
   public async getData(){
     this.gameCategories = await this.gameCategoryService.GetGameCategories();
     this.platforms = await this.platformService.getPlatforms();
     this.assets = await this.assetService.getAssets();
+    this.games = await this.gameService.getGames();
+    this.eventList = await this.eventSerivce.getEvents();
+    this.reviewsList = await this.reviewService.getGameReviews();
+    this.ratingsList = await this.ratingService.getRatings();
   }
 
   public async deleteGame(){
 
   }
-  
+
+  public async insertGame(){
+    if (this.gamesForm.invalid){
+      this.toastr.error("Please fill out all form fields to submit.");
+      return;
+    }
+  }
+
+  public async updateGame(){
+    if (this.gamesForm.invalid){
+      this.toastr.error("Please fill out all form fields to submit.");
+      return;
+    }
+  }
+
+  public async insertEvent(){
+    if (this.eventsForm.invalid){
+      this.toastr.error("Please fill out all form fields to submit.");
+      return;
+    }
+  }
+
+  public async updateEvent(){
+    if (this.gamesForm.invalid){
+      this.toastr.error("Please fill out all form fields to submit.");
+      return;
+    }
+  }
+
+  public updateReview(response: boolean){
+    if (this.reviewsForm.invalid){
+      this.toastr.error("Please fill out all form fields to submit.");
+      return;
+    }
+  }
 }

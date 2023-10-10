@@ -4,4 +4,5 @@ export interface Game {
   asset_id: number;
   gameDetails_id: number;
   price_in_cad: number;
+  isDeleted: boolean;
 }

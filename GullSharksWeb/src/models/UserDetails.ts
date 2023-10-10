@@ -7,4 +7,5 @@ export interface UserDetails {
   birth_date: Date;
   receivesUpdates: boolean;
   phoneNumber: string;
+  isDeleted: boolean;
 }

@@ -7,4 +7,5 @@ export interface MailingAddress {
   province_id: number;
   postalCode: string;
   streetAddress: string;
+  isDeleted: boolean;
 }

@@ -4,4 +4,5 @@ export interface Preferences {
   platform_id: number;
   gameCategory_id: number;
   languagePreferences_id: number;
+  isDeleted: boolean;
 }
