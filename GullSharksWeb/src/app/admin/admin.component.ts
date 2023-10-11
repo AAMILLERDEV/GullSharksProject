@@ -128,10 +128,6 @@ export class AdminComponent implements OnInit {
     this.reviewsForm.controls['approveControl'].enable();
     this.reviewsForm.controls['rejectControl'].enable();
   }
-  
-  public clearForms(){
-    this.gamesForm.reset();
-  }
 
   public showReport(){
     this.usersReportModal.toggle();
@@ -150,7 +146,7 @@ export class AdminComponent implements OnInit {
     this.gamesForm.reset();
     this.reviewsForm.reset();
     this.eventsForm.reset();
-    
+
     if (this.reviewsList != null && this.reviewsList.length > 0){
       for (let i of this.reviewsList){
         i.review_name = `User: ${i.user_ID} - Date Added: ${i.dateAdded} - Game: ${i.game_ID}`;
@@ -340,6 +336,12 @@ export class AdminComponent implements OnInit {
       platform_ID: platform_ID
     }
     let gamePlatRes = await this.platformService.upsertPlatformGamesLookUp(gamePlatLookUp);
+  }
+
+  public resetForms(){
+    this.gamesForm.reset();
+    this.eventsForm.reset();
+    this.reviewsForm.reset();
   }
 
 //Updates Games Form when review is selected

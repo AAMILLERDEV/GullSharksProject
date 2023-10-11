@@ -98,12 +98,12 @@
 </ng-container>
 
 <!--The Games Modal-->
-<div class="modal fade" #gamesModal id="gamesModal" tabindex="-1">
+<div class="modal fade" #gamesModal id="gamesModal" data-bs-backdrop="static" tabindex="-1">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">{{gameOperation}} Games</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="resetForms()"></button>
         </div>
         <div class="modal-body">
             <form [formGroup]="gamesForm" class="alignRight">
@@ -177,7 +177,7 @@
             </form>
         </div>
         <div class="modal-footer justify-content-center">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="clearForms()">Close</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="resetForms()">Close</button>
           <button type="button" *ngIf="gameOperation == 'Add'"  class="btn btn-primary" (click)="insertGame()">Save changes</button>
           <button type="button" *ngIf="gameOperation == 'Edit'"  class="btn btn-primary" (click)="updateGame()">Save changes</button>
         </div>
@@ -186,12 +186,12 @@
 </div>
 
 <!--The Reviews Modal-->
-<div class="modal fade" #reviewsModal id="reviewsModal" tabindex="-1">
+<div class="modal fade" #reviewsModal id="reviewsModal" data-bs-backdrop="static" tabindex="-1">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">Game Reviews</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="resetForms()"></button>
         </div>
         <div class="modal-body">
             <form [formGroup]="reviewsForm" class="alignRight">
@@ -251,12 +251,12 @@
 </div>
 
 <!--The Events Modal-->
-<div class="modal fade" #eventsModal id="eventsModal" tabindex="-1">
+<div class="modal fade" #eventsModal id="eventsModal" data-bs-backdrop="static" tabindex="-1">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
             <h5 class="modal-title">{{eventOperation}} Events</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="resetForms()"></button>
         </div>
         <div class="modal-body">
             <form [formGroup]="eventsForm" class="alignRight">
@@ -309,7 +309,7 @@
             </form>
         </div>
         <div class="modal-footer justify-content-center">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="resetForms()">Close</button>
           <button *ngIf="eventOperation == 'Edit'" type="button" class="btn btn-primary" (click)="updateEvent()">Save changes</button>
           <button *ngIf="eventOperation == 'Add'" type="button" class="btn btn-primary" (click)="insertEvent()">Save changes</button>
         </div>

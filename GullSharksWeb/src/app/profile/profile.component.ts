@@ -16,7 +16,12 @@ import { PlatformPreference } from 'src/models/PlatformPreference';
 import { Province } from 'src/models/Province';
 import { User } from 'src/models/User';
 import { UserDetails } from 'src/models/UserDetails';
+import { CountryService } from 'src/services/country.service';
+import { GameCategoryService } from 'src/services/gameCategories.service';
+import { LanguageService } from 'src/services/language.service';
+import { PlatformService } from 'src/services/platform.service';
 import { PreferenceService } from 'src/services/preference.service';
+import { ProvinceService } from 'src/services/province.service';
 import { UserService } from 'src/services/user.service';
 import { UserDetailsService } from 'src/services/userDetail.service';
 
@@ -61,7 +66,13 @@ export class ProfileComponent implements OnInit {
     public userService: UserService,
     public toastr: ToastrService,
     public userDetailsService: UserDetailsService,
-    public preferenceService: PreferenceService){
+    public preferenceService: PreferenceService,
+    public provinceService: ProvinceService,
+    public countryService: CountryService,
+    public platformService: PlatformService,
+    public languageService: LanguageService,
+    public categoryService: GameCategoryService){
+
     this.preferencesForm = PreferencesForm;
     this.addressForm = AddressForm;
     this.userDetailsForm = UserDetailsForm;
@@ -100,6 +111,12 @@ export class ProfileComponent implements OnInit {
 
   public async getData(){
     this.userDetails = await this.userDetailsService.getUserDetailsByID(this.user!.id);
+    this.countries = await this.countryService.getCountries();
+    this.platforms = await this.platformService.getPlatforms();
+    this.languages = await this.languageService.getLanguages();
+    this.categories = await this.categoryService.GetGameCategories();
+    this.provinces = await this.provinceService.getProvinces();
+
     this.users = await this.userService.getAllUsers();
 
     this.validated = this.user!.isValidated;
@@ -118,28 +135,26 @@ export class ProfileComponent implements OnInit {
     let langList = [];
     let catList = [];
 
-    for (let i of this.categoryPreferences){
-      platList.push(i.category_ID);
+    if (this.categoryPreferences){
+      for (let i of this.categoryPreferences){
+        platList.push(i.category_ID);
+      }
     }
 
-    for (let i of this.languagePreferences){
-      langList.push(i.language_ID);
+    if (this.categoryPreferences){
+      for (let i of this.platformPreferences){
+        catList.push(i.platform_ID);
+      }
     }
 
-    for (let i of this.platformPreferences){
-      catList.push(i.platform_ID);
+    if (this.categoryPreferences){
+      for (let i of this.languagePreferences){
+        langList.push(i.language_ID);
+      }
     }
 
     this.preferencesForm.controls['platformControl'].setValue(platList);
     this.preferencesForm.controls['languageControl'].setValue(langList);
     this.preferencesForm.controls['categoryControl'].setValue(catList);
   }
-
-  // public postalCodeValidation(postalCode: string){
-  //   if (/^(\d{5}(-\d{4})?|[A-Z]\d[A-Z] *\d[A-Z]\d)$/.test(postalCode)) {
-  //     this.preferencesForm.controls['postalCodeControl'].set
-  //   }
-
-  //   return false;
-  // }
 }

@@ -685,7 +685,7 @@ public class DBRepository : IDBRepository
         try
         {
             using IDbConnection connection = new SqlConnection(connectionString);
-            return await connection.QueryAsync<Province>("ref.provinces_GET", commandType: CommandType.StoredProcedure);
+            return await connection.QueryAsync<Province>("ref.province_GET", commandType: CommandType.StoredProcedure);
 
         }
         catch (Exception ex)
