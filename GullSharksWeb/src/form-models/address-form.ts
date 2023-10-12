@@ -9,6 +9,5 @@ export const AddressForm = new FormGroup ({
     postalCodeControl: new FormControl(),
     streetAddressControl: new FormControl(),
     phoneNumberControl: new FormControl(),
-    submitControl: new FormControl("Save Changes")
-
+    shippingAddressControl: new FormControl()
 })

@@ -43,7 +43,8 @@ public class DBRepository : IDBRepository
             { "@province_ID", ins.Province_ID },
             { "@postalCode", ins. PostalCode},
             { "@streetAddress", ins.StreetAddress },
-            { "@isDeleted", ins.IsDeleted }
+            { "@isDeleted", ins.IsDeleted },
+            { "@matchShipping", ins.MatchShipping }
         });
 
         parameters.Add("@insertedID", 0, direction: ParameterDirection.Output);
@@ -338,12 +339,12 @@ public class DBRepository : IDBRepository
         var parameters = new DynamicParameters(new Dictionary<string, object>
         {
             { "@id", ins.ID },
-            { "@firstName", ins.First_Name},
-            { "@lastName", ins.Last_Name },
+            { "@firstName", ins.FirstName},
+            { "@lastName", ins.LastName },
             { "@gender", ins.Gender },
             { "@user_ID", ins.User_ID},
-            { "@birthDate", ins.Birth_Date },
-            { "@receivesUpdates", ins.ReceivesEmailUpdates },
+            { "@birthDate", ins.BirthDate },
+            { "@receivesUpdates", ins.ReceivesUpdates },
             { "@phoneNumber", ins.PhoneNumber },
             { "@isDeleted", ins.IsDeleted }
         });

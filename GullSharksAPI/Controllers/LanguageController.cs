@@ -1,9 +1,8 @@
 ﻿using GullSharksLib;
 using GullSharksLib.Interfaces;
-using GullSharksLib.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace PlatformController;
+namespace LanguageController;
 
 [ApiController]
 public class LanguageController : ControllerBase

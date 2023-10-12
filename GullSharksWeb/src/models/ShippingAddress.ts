@@ -1,10 +1,10 @@
 export interface ShippingAddress {
   id: number;
-  userDetails_id: number;
+  userDetails_ID: number;
   city: string;
-  country_id: number;
+  country_ID: number;
   deliveryInstructions: string;
-  province_id: number;
+  province_ID: number;
   postalCode: string;
   streetAddress: string;
   isDeleted: boolean;

@@ -92,7 +92,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">Preferences</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="resetForms()"></button>
         </div>
         <div class="modal-body">
             <form [formGroup]="preferencesForm" class="form-group container customBorder2 p-5 alignRight">
@@ -102,13 +102,13 @@
                         <label>Game Categories:</label>
                     </div>
                     <div class="col-4">
-                        <ng-select [items]="categories" bindLabel="category_name" bindValue="id" formControlName="categoryControl" class="customNGSelect" required></ng-select>
+                        <ng-select [items]="categories" bindLabel="categoryName" bindValue="id" formControlName="categoryControl" class="customNGSelect" [multiple]="true" required></ng-select>
                     </div>
                     <div class="col-2">
                         <label>Platforms:</label>
                     </div>
                     <div class="col-4">
-                        <ng-select [items]="platforms" bindLabel="platform_name" bindValue="id" formControlName="platformControl" class="customNGSelect" required></ng-select>
+                        <ng-select [items]="platforms" bindLabel="platformName" bindValue="id" formControlName="platformControl" class="customNGSelect" [multiple]="true" required></ng-select>
                     </div>
                 </div>
                 <!--Language-->
@@ -117,14 +117,14 @@
                         <label>Language:</label>
                     </div>
                     <div class="col-10">
-                        <ng-select [items]="languages" bindLabel="language_name" bindValue="id" formControlName="languageControl" class="customNGSelect" required></ng-select>
+                        <ng-select [items]="languages" bindLabel="languageName" bindValue="id" formControlName="languageControl" class="customNGSelect" [multiple]="true" required></ng-select>
                     </div>
                 </div>
             </form>
         </div>
         <div class="modal-footer justify-content-center">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="resetForms()">Close</button>
+          <button type="button" class="btn btn-primary" (click)="updatePreferences()">Save changes</button>
         </div>
       </div>
     </div>
@@ -136,7 +136,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">Mailing Address</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="resetForms()"></button>
         </div>
         <div class="modal-body">
             <form [formGroup]="addressForm" class="form-group container customBorder2 p-5 alignRight">
@@ -146,7 +146,7 @@
                         <label>Country:</label>
                     </div>
                     <div class="col-4">
-                        <ng-select formControlName="countryControl" [items]="countries" [bindLabel]="'countryName'" [bindValue]="'id'" class="customNGSelect">
+                        <ng-select formControlName="countryControl" [items]="countries" bindLabel="countryName" bindValue="id" class="customNGSelect">
                         </ng-select>
                     </div>
                     <div class="col-2">
@@ -169,7 +169,7 @@
                         <label>Postal Code:</label>
                     </div>
                     <div class="col-4">
-                        <input type="text" formControlName="postalCodeControl" pattern="^(\d{5}(-\d{4})?|[A-Z]\d[A-Z] *\d[A-Z]\d)$" class="form-control customBorder2" required>
+                        <input type="text" formControlName="postalCodeControl" pattern="^(\d{5}(-\d{4})?|[A-Z]\d[A-Z] *\d[A-Z]\d)$" class="form-control customBorder2">
                     </div>
                 </div>
                 <!--Phone Number-->
@@ -178,7 +178,7 @@
                         <label>Phone Number:</label>
                     </div>
                     <div class="col-10">
-                        <input type="text" formControlName="phoneNumberControl" class="form-control customBorder2" required>
+                        <input type="text" formControlName="phoneNumberControl" pattern="^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$" class="form-control customBorder2" required>
                     </div>
                 </div>
                 <!--Street Address-->
@@ -190,8 +190,16 @@
                         <input type="text" formControlName="streetAddressControl" class="form-control customBorder2" required>
                     </div>
                 </div>
-                <!--Language-->
-                <div class="row py-3r">
+                <div class="row py-3r" *ngIf="!showShippingAddress">
+                    <div class="col-8">
+                        <label>Is Shipping Address Same as Mailing Address?</label>
+                    </div>
+                    <div class="col-4">
+                        <input type="checkbox" class="form-check-input form-control p-3" formControlName="shippingAddressControl">
+                    </div>
+                </div>
+                <!--Delivery Instructions-->
+                <div class="row py-3r" *ngIf="showShippingAddress">
                     <div class="col-2">
                         <label>Delivery Instructions:</label>
                     </div>
@@ -199,11 +207,16 @@
                         <textarea rows="3" class="form-control customBorder2" placeholder="Enter Instructions Here" formControlName="instructionsControl"></textarea>
                     </div>
                 </div>
+                <hr>
+                <div class="text-center">
+                    <input *ngIf="doesAddressExist && !showShippingAddress" type="button" class="btn btn-danger" value="Delete Address"  (click)="deleteAddress()">
+                </div>
             </form>
         </div>
         <div class="modal-footer justify-content-center">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="resetForms()">Close</button>
+          <button *ngIf="!doesAddressExist" type="button" class="btn btn-primary" (click)="insertShippingAddress()">Submit Address</button>
+          <button *ngIf="doesAddressExist" type="button" class="btn btn-primary" (click)="updateShippingAddress()">Save changes</button>
         </div>
       </div>
     </div>
@@ -215,7 +228,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">Your Details</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="resetForms()"></button>
         </div>
         <div class="modal-body">
             <form [formGroup]="userDetailsForm" class="form-group container customBorder2 p-5 alignRight">
@@ -265,8 +278,9 @@
            </form>
         </div>
         <div class="modal-footer justify-content-center">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="resetForms()">Close</button>
+          <button *ngIf="doUserDetailsExist" type="button" class="btn btn-primary" (click)="updateUserDetails()">Save changes</button>
+          <button *ngIf="!doUserDetailsExist" type="button" class="btn btn-primary" (click)="insertUserDetails()">Save changes</button>
         </div>
       </div>
     </div>

@@ -1,9 +1,8 @@
 ﻿using GullSharksLib;
 using GullSharksLib.Interfaces;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging;
 
-namespace EventController;
+namespace EmailController;
 
 [ApiController]
 public class EmailController : ControllerBase
@@ -22,7 +21,5 @@ public class EmailController : ControllerBase
     [HttpPost]
     [Route("[controller]/SendResetPasswordEmail")]
     public Task<bool> SendResetPasswordEmail(User user) => db.SendResetPasswordEmail(user);
-
-
 
 }

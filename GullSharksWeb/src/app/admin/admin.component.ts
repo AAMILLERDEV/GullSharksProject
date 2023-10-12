@@ -262,6 +262,7 @@ export class AdminComponent implements OnInit {
     this.resetReviewsFormButtons();
   }
 
+  //Insert New Events Method
   public async insertEvent(){
     if (this.eventsForm.invalid){
       this.toastr.error("Please fill out all form fields to submit.");
@@ -289,6 +290,8 @@ export class AdminComponent implements OnInit {
     return;
   }
 
+
+  //Update Events Method
   public async updateEvent(){
     if (this.eventsForm.invalid){
       this.toastr.error("Please fill out all form fields to submit.");
@@ -392,11 +395,13 @@ export class AdminComponent implements OnInit {
     }
   }
 
+  //Re-Adds button text after calling reviewForms.Reset()
   public resetReviewsFormButtons(){
     this.reviewsForm.controls['rejectControl'].setValue("Reject");
     this.reviewsForm.controls['approveControl'].setValue("Approve");
   }
 
+  
   public async updateEventsForm(val: any){
     this.selectedEvent = this.eventList.find(x => x.id == val)!;
     console.log(this.selectedEvent);

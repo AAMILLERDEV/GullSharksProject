@@ -1,5 +1,5 @@
 export interface Language {
   id: number;
-  language_name: string;
+  languageName: string;
   isDeleted: boolean;
 }

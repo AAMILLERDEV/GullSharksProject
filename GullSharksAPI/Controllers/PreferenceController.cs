@@ -2,7 +2,7 @@ using GullSharksLib;
 using GullSharksLib.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
-namespace UserController;
+namespace PreferenceController;
 
 [ApiController]
 public class PreferenceController : ControllerBase {

@@ -3,7 +3,7 @@ using GullSharksLib.Interfaces;
 using GullSharksLib.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace RatingController;
+namespace AssetController;
 
 [ApiController]
 public class AssetController : ControllerBase

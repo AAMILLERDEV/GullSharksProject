@@ -6,7 +6,6 @@ export const UserDetailsForm = new FormGroup ({
     lastNameControl: new FormControl(null),
     genderControl: new FormControl(null),
     birthDateControl: new FormControl(null),
-    emailUpdatesControl: new FormControl(),
-    submitControl: new FormControl("Save Changes")
+    emailUpdatesControl: new FormControl()
 
 })

@@ -1,11 +1,11 @@
 export interface UserDetails {
   id: number;
-  first_name: string;
-  last_name: string;
+  firstName: string;
+  lastName: string;
   gender: string;
-  user_id: number;
-  birth_date: Date;
+  user_ID: number;
+  birthDate: Date;
   receivesUpdates: boolean;
-  phoneNumber: string;
+  phoneNumber: string | null;
   isDeleted: boolean;
 }

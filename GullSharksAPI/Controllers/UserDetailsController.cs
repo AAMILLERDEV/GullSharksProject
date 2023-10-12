@@ -3,7 +3,7 @@ using GullSharksLib.Interfaces;
 using GullSharksLib.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace UserController;
+namespace UserDetailsController;
 
 [ApiController]
 public class UserDetailsController : ControllerBase {

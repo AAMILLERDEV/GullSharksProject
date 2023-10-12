@@ -30,7 +30,8 @@ try {
     builder.Services.AddSingleton<IAssetRepository, AssetRepository>(x => new AssetRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
     builder.Services.AddSingleton<IUserDetailsRepository, UserDetailsRepository>(x => new UserDetailsRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
     builder.Services.AddSingleton<IPreferenceRepository, PreferencesRepository>(x => new PreferencesRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
-
+    builder.Services.AddSingleton<IShippingAddressRepository, ShippingAddressRepository>(x => new ShippingAddressRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
+    builder.Services.AddSingleton<IBillingAddressRepository, BillingAddressRepository>(x => new BillingAddressRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
     builder.Services.AddCors(o => o.AddDefaultPolicy(builder =>
     {
         builder.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin();

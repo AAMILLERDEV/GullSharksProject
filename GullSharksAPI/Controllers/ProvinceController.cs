@@ -3,7 +3,7 @@ using GullSharksLib.Interfaces;
 using GullSharksLib.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace PlatformController;
+namespace ProvinceController;
 
 [ApiController]
 public class ProvinceController : ControllerBase
