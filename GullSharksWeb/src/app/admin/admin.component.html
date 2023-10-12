@@ -72,22 +72,22 @@
                     <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
                         <div class="accordion-body">
                             <li class="pb-2 pt-2">
-                                <input type="button" value="Game List Report" class="btn lightblue btn-sm">
+                                <input type="button" value="Game List Report" class="btn lightblue btn-sm" data-bs-toggle="modal" data-bs-target="#gameReportModal">
                             </li>
                             <li class="pb-2">
-                                <input type="button" value="Game Detail Report" class="btn lightblue btn-sm">
+                                <input type="button" value="Game Detail Report" class="btn lightblue btn-sm" data-bs-toggle="modal" data-bs-target="#gameDetailsReportModal">
                             </li>
                             <li class="pb-2">
-                                <input type="button" value="Member List Report" class="btn lightblue btn-sm" (click)="showReport()">
+                                <input type="button" value="Member List Report" class="btn lightblue btn-sm" data-bs-toggle="modal" data-bs-target="#usersReportModal">
                             </li>
                             <li class="pb-2">
-                                <input type="button" value="Member Details Report" class="btn lightblue btn-sm">
+                                <input type="button" value="Member Details Report" class="btn lightblue btn-sm" data-bs-toggle="modal" data-bs-target="#userDetailsReportModal">
                             </li>
                             <li class="pb-2">
-                                <input type="button" value="Wish List Report" class="btn lightblue btn-sm">
+                                <input type="button" value="Wish List Report" class="btn lightblue btn-sm" data-bs-toggle="modal" data-bs-target="#wishlistReportModal">
                             </li>
                             <li class="pb-2">
-                                <input type="button" value="Sales Report" class="btn lightblue btn-sm">
+                                <input type="button" value="Sales Report" class="btn lightblue btn-sm" data-bs-toggle="modal" data-bs-target="#salesReportModal">
                             </li>                  
                         </div>
                     </div>
@@ -326,10 +326,76 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body d-flex">
-            <iframe role="presentation" width="1200" height="800" src="https://app.powerbi.com/rdlEmbed?reportId=b87d2082-3f25-4fec-8f56-8ab50e19d3a1&autoAuth=true&ctid=4ddd393a-e98a-4404-841f-c4becdd925a5&experience=power-bi" frameborder="0" allowFullScreen="true"></iframe>        
+            <iframe role="presentation" width="1200" height="800" src="https://app.powerbi.com/rdlEmbed?reportId=25b3c2ce-aa09-4ddf-a005-5bdeb90f5daa&autoAuth=true&ctid=4ddd393a-e98a-4404-841f-c4becdd925a5&experience=power-bi" frameborder="0" allowFullScreen="true"></iframe>        </div>
+      </div>
+    </div>
+</div>
+
+<div class="modal modal-xl fade" #userDetailsReportModal id="userDetailsReportModal" tabindex="-1">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">All Member Details Report Kiosk</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body d-flex">
+            <iframe role="presentation" width="1200" height="800" src="https://app.powerbi.com/rdlEmbed?reportId=7ed7f746-193f-44a5-90fe-df115e572ecf&autoAuth=true&ctid=4ddd393a-e98a-4404-841f-c4becdd925a5&experience=power-bi" frameborder="0" allowFullScreen="true"></iframe>        </div>
+      </div>
+    </div>
+</div>
+
+<div class="modal modal-xl fade" #wishlistReportModal id="wishlistReportModal" tabindex="-1">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Wish List Report Kiosk</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body d-flex">
+            <iframe role="presentation" width="1200" height="800" src="https://app.powerbi.com/rdlEmbed?reportId=31a045f4-7f4a-491c-a50d-d0d504bf2b39&autoAuth=true&ctid=4ddd393a-e98a-4404-841f-c4becdd925a5&experience=power-bi" frameborder="0" allowFullScreen="true"></iframe>
         </div>
       </div>
     </div>
 </div>
+
+<div class="modal modal-xl fade" #salesReportModal id="salesReportModal" tabindex="-1">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Sales List Report Kiosk</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body d-flex">
+            <iframe role="presentation" width="1200" height="800" src="https://app.powerbi.com/rdlEmbed?reportId=6f2dfc7b-a6ca-452c-9907-d9ef8417c856&autoAuth=true&ctid=4ddd393a-e98a-4404-841f-c4becdd925a5&experience=power-bi" frameborder="0" allowFullScreen="true"></iframe>        </div>
+      </div>
+    </div>
+</div>
+
+<div class="modal modal-xl fade" #gameReportModal id="gameReportModal" tabindex="-1">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Games List Report Kiosk</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body d-flex">
+            <iframe role="presentation" width="1200" height="800" src="https://app.powerbi.com/rdlEmbed?reportId=5f6f5aae-0471-4d67-bcf1-a5829d9f9ce2&autoAuth=true&ctid=4ddd393a-e98a-4404-841f-c4becdd925a5&experience=power-bi" frameborder="0" allowFullScreen="true"></iframe>        </div>
+      </div>
+    </div>
+</div>
+
+<div class="modal modal-xl fade" #gameDetailsReportModal id="gameDetailsReportModal" tabindex="-1">
+    <div class="modal-dialog modal-xl">
+      <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Game Details List Report Kiosk</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body d-flex">
+            <iframe role="presentation" width="1200" height="800" src="https://app.powerbi.com/rdlEmbed?reportId=7ed7f746-193f-44a5-90fe-df115e572ecf&autoAuth=true&ctid=4ddd393a-e98a-4404-841f-c4becdd925a5&experience=power-bi" frameborder="0" allowFullScreen="true"></iframe>        </div>
+      </div>
+    </div>
+</div>
+
 
 

@@ -63,7 +63,13 @@ export class AdminComponent implements OnInit {
   public gamesModal!: bootstrap.Modal;
   public reviewsModal!: bootstrap.Modal;
   public eventsModal!: bootstrap.Modal;
+
   public usersReportModal!: bootstrap.Modal;
+  public userDetailsReportModal!: bootstrap.Modal;
+  public gameReportModal!: bootstrap.Modal;
+  public gameDetailsReportModal!: bootstrap.Modal;
+  public salesReportModal!: bootstrap.Modal;
+  public wishlistReportModal!: bootstrap.Modal;
 
   //template strings
   public gameOperation: string = 'Add';
@@ -123,6 +129,11 @@ export class AdminComponent implements OnInit {
     this.reviewsModal = bootstrap.Modal.getOrCreateInstance('#reviewsModal', {keyboard: true});
     this.eventsModal = bootstrap.Modal.getOrCreateInstance('#eventsModal', {keyboard: true});
     this.usersReportModal = bootstrap.Modal.getOrCreateInstance('#usersReportModal', {keyboard: true});
+    this.userDetailsReportModal = bootstrap.Modal.getOrCreateInstance('#userDetailsReportModal', {keyboard: true});
+    this.gameReportModal = bootstrap.Modal.getOrCreateInstance('#gameReportModal', {keyboard: true});
+    this.gameDetailsReportModal = bootstrap.Modal.getOrCreateInstance('#gameDetailsReportModal', {keyboard: true});
+    this.wishlistReportModal = bootstrap.Modal.getOrCreateInstance('#wishlistReportModal', {keyboard: true});
+    this.salesReportModal = bootstrap.Modal.getOrCreateInstance('#salesReportModal', {keyboard: true});
     this.reviewsForm.disable();
     this.reviewsForm.controls['reviewsListControl'].enable();
     this.reviewsForm.controls['approveControl'].enable();
@@ -175,7 +186,7 @@ export class AdminComponent implements OnInit {
 
     let game: Game = {
       id: 0,
-      gameDetails_ID: 0,
+      gameDetail_ID: 0,
       asset_ID: this.gamesForm.controls['assetControl'].value,
       gameName: this.gamesForm.controls['gameNameControl'].value,
       priceInCAD: this.gamesForm.controls['priceControl'].value,
@@ -205,7 +216,7 @@ export class AdminComponent implements OnInit {
       return;
     }
 
-    game.gameDetails_ID = gameDetailsRes;
+    game.gameDetail_ID = gameDetailsRes;
     game.id = res;
 
     let gameUpdateRes = await this.gameService.upsertGame(game);
@@ -355,7 +366,7 @@ export class AdminComponent implements OnInit {
         return;
       }
 
-      this.selectedGameDetails = this.gameDetailsList.find( x => x.id == this.selectedGame?.gameDetails_ID);
+      this.selectedGameDetails = this.gameDetailsList.find( x => x.id == this.selectedGame?.gameDetail_ID);
 
       this.gamesForm.controls['assetControl'].setValue(this.selectedGame.asset_ID);
       this.gamesForm.controls['priceControl'].setValue(this.selectedGame.priceInCAD);
@@ -363,7 +374,7 @@ export class AdminComponent implements OnInit {
       this.gamesForm.controls['categoryControl'].setValue(this.selectedGameDetails?.category_ID);
       this.gamesForm.controls['descriptionControl'].setValue(this.selectedGameDetails?.description);
 
-      this.selectedPlatforms = await this.platformService.getPlatformGamesLookUpByGame(this.selectedGame.gameDetails_ID);
+      this.selectedPlatforms = await this.platformService.getPlatformGamesLookUpByGame(this.selectedGame.gameDetail_ID);
       let platList = [];
 
       for (let i of this.selectedPlatforms){
