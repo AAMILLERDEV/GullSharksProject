@@ -491,7 +491,7 @@ public class DBRepository : IDBRepository
             { "@id", ins.ID },
             { "@gameName", ins.GameName },
             { "@asset_ID", ins.Asset_ID },
-            { "@gameDetails_ID", ins.gameDetail_ID },
+            { "@gameDetail_ID", ins.gameDetail_ID },
             { "@priceInCad", ins.PriceInCAD },
             { "@isDeleted", ins.IsDeleted }
         });
