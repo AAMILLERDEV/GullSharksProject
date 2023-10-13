@@ -9,6 +9,14 @@
             </div>
         </div>
         <div class="row py-3 text-center">
+          <div class="col-2">
+              <label>Email:</label>
+          </div>
+          <div class="col-8">
+              <input text="input" formControlName="emailControl" class="form-control">
+          </div>
+      </div>
+        <div class="row py-3 text-center">
             <div class="col-2">
                 <label>Password:</label>
             </div>
@@ -20,7 +28,7 @@
             <re-captcha (resolved)="resolved($event)" (errored)="onError($event)" errorMode="handled"></re-captcha>
         </div>
         <div class="row py-3 text-center">
-            <input text="button" formControlName="submitControl" class="btn btn-success form-control">
+            <input text="button" formControlName="submitControl" class="btn btn-success form-control" (click)="signUp()" readonly>
         </div>
    </div>
 </ng-container>
