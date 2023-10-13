@@ -10,8 +10,7 @@ import { UserService } from 'src/services/user.service';
 import { Credentials } from 'src/models/Credentials';
 import { CredentialService } from 'src/services/credential.service';
 import { EmailService } from 'src/services/email.service';
-
-
+import * as bootstrap from 'bootstrap';
 
 @Component({
   selector: 'app-sign-up',
@@ -20,7 +19,7 @@ import { EmailService } from 'src/services/email.service';
 })
 export class SignUpComponent implements OnInit {
 
-  public users?: User[];
+  public users!: User[];
   //public users: User[] = [];
   public user!: User | undefined;
 
@@ -28,6 +27,7 @@ export class SignUpComponent implements OnInit {
   public credential!: Credential | undefined;
 
   public signupForm!: FormGroup;
+  public successModal!: bootstrap.Modal;
 
 constructor (public userService: UserService,
     public toastr: ToastrService,
@@ -41,10 +41,14 @@ constructor (public userService: UserService,
     this.users = await this.userService.getAllUsers();
     this.user = JSON.parse(sessionStorage.getItem("User")!);
 
+    
 
-    if (this.user && !this.user.isAdmin){
+    if (this.user){
       this.router.navigateByUrl("home");
     }
+
+    this.successModal = bootstrap.Modal.getOrCreateInstance('#successModal', {keyboard: true});
+
   }
 
   public async signUp(){
@@ -53,6 +57,22 @@ constructor (public userService: UserService,
       this.toastr.error("Please fill out all form fields to submit.");
       return;
     }
+
+    let tempUsername = this.signupForm.controls['usernameControl'].value;
+    let tempEmail = this.signupForm.controls['emailControl'].value;
+
+    let userCheck = this.validateEmailAndUsername(tempUsername, tempEmail);
+
+    if (userCheck){
+      this.toastr.error("Sorry, that email and/or password is already taken, please use a differet one.");
+      return;
+    }
+
+    //write password validation
+    //
+    //if password == verifypassword && password is strong {
+    //  
+    //}
 
     let user: User = {
       id: 0,
@@ -66,52 +86,55 @@ constructor (public userService: UserService,
 
     let userRes = await this.userService.upsertUser(user);
 
-    user.id = userRes;
-    user.credentials_ID = userRes;
+    if (userRes < 1){
+      this.toastr.error("Error, failed to process your information.");
+      return;
+    }
 
-    const passwordControlValue = this.signupForm.controls['passwordControl'].value;
-    const credentialValueBase64 = btoa(passwordControlValue);
+    const credentialValueBase64 = btoa(this.signupForm.controls['passwordControl'].value);
 
     let credential: Credentials = {
       id: 0,
       credentialValue: credentialValueBase64,
-      user_ID: 0,
+      user_ID: userRes,
       isDeleted: false
     }
 
     let credentialRes = await this.credentialService.upsertCredentials(credential);
 
-    credential.id = credentialRes;
-    credential.user_ID = credentialRes;
-
-    user.id = credential.id;
-    user.credentials_ID = credential.user_ID;
-
-    if (user.email != null){
-      this.toastr.warning("Please wait...");
-      let res = await this.emailService.sendValidationEmail(user);
-      if (res){
-        this.toastr.success("Email has been sent for validation.");
-
-        let userUpdateRes = await this.userService.upsertUser(user);
-
-        let credentialUpdateRes = await this.credentialService.upsertCredentials(credential);
-
-        this.toastr.success("Success, User Added");
-
-        this.router.navigateByUrl('/login');
-
-        return;
-      }
-
-      this.toastr.success("Error.");
+    if (credentialRes < 1){
+      this.toastr.error("Error, failed to process your information.");
       return;
     }
 
-    this.toastr.success("Unable to send request.");
-    //return;
+    user.credentials_ID = credentialRes;
+    user.id = userRes;
+    
+    let userUpdateRes = await this.userService.upsertUser(user);
 
 
+    this.toastr.warning("Please wait...");
+    let res = await this.emailService.sendValidationEmail(user);
+    if (res){
+      this.user = user;
+      this.successModal.toggle();
+    }
+
+    this.toastr.success("Error.");
+    return;
+    
+  }
+
+  public validateEmailAndUsername(username: string, email: string){
+    
+    let usernameCheck = this.users.find(x => x.username == username);
+    let emailCheck = this.users.find(x => x.email == email);
+
+    if (usernameCheck || emailCheck){
+      return true;
+    }
+
+    return false;
   }
 
   public resolved(captchaResponse: string): void {
@@ -121,4 +144,13 @@ constructor (public userService: UserService,
   public onError(errorDetails: RecaptchaErrorParameters): void {
     console.log(`reCAPTCHA error encountered; details:`, errorDetails);
   }
+
+  public goToProfile(){
+    sessionStorage.setItem("User", JSON.stringify(this.user));
+    this.successModal.toggle();
+    this.router.navigateByUrl('/profile');
+    //Navigate to profile page
+  }
+
+
 }

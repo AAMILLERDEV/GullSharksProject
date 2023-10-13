@@ -5,7 +5,7 @@
                 <label>Username:</label>
             </div>
             <div class="col-8">
-                <input text="input" formControlName="usernameControl" class="form-control">
+                <input type="input" formControlName="usernameControl" class="form-control" required>
             </div>
         </div>
         <div class="row py-3 text-center">
@@ -13,7 +13,7 @@
               <label>Email:</label>
           </div>
           <div class="col-8">
-              <input text="input" formControlName="emailControl" class="form-control">
+              <input type="input" formControlName="emailControl" class="form-control" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" required>
           </div>
       </div>
         <div class="row py-3 text-center">
@@ -21,14 +21,34 @@
                 <label>Password:</label>
             </div>
             <div class="col-8">
-                <input text="input" formControlName="passwordControl" class="form-control">
+                <input type="password" formControlName="passwordControl" pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$" class="form-control" required>
             </div>
         </div>
         <div class="row py-3 text-center">
-            <re-captcha (resolved)="resolved($event)" (errored)="onError($event)" errorMode="handled"></re-captcha>
+            <re-captcha (resolved)="resolved($event)" formControlName="recaptchaControl" (errored)="onError($event)" errorMode="handled" required></re-captcha>
         </div>
         <div class="row py-3 text-center">
-            <input text="button" formControlName="submitControl" class="btn btn-success form-control" (click)="signUp()" readonly>
+            <input type="button" formControlName="submitControl" class="btn btn-success form-control" (click)="signUp()" readonly>
         </div>
    </div>
 </ng-container>
+
+<div class="modal fade" #successModal id="successModal" data-bs-backdrop="static" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+            <!--Modal Title-->
+          <h5 class="modal-title">Success!</h5>
+
+        </div>
+
+        <!--Modal Body/Content-->
+        <div class="modal-body">
+          
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-info" (click)="goToProfile()"></button>
+        </div>
+      </div>
+    </div>
+</div>
