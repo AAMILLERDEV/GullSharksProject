@@ -25,6 +25,14 @@
             </div>
         </div>
         <div class="row py-3 text-center">
+          <div class="col-2">
+              <label>Verify Password:</label>
+          </div>
+          <div class="col-8">
+              <input type="password" formControlName="passwordVerifyControl" pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$" class="form-control" required>
+          </div>
+      </div>
+        <div class="row py-3 text-center">
             <re-captcha (resolved)="resolved($event)" formControlName="recaptchaControl" (errored)="onError($event)" errorMode="handled" required></re-captcha>
         </div>
         <div class="row py-3 text-center">
@@ -44,7 +52,7 @@
 
         <!--Modal Body/Content-->
         <div class="modal-body">
-          
+
         </div>
         <div class="modal-footer">
             <button type="button" class="btn btn-info" (click)="goToProfile()"></button>

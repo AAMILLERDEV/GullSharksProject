@@ -41,7 +41,7 @@ constructor (public userService: UserService,
     this.users = await this.userService.getAllUsers();
     this.user = JSON.parse(sessionStorage.getItem("User")!);
 
-    
+
 
     if (this.user){
       this.router.navigateByUrl("home");
@@ -58,6 +58,12 @@ constructor (public userService: UserService,
       return;
     }
 
+
+    if (this.signupForm.controls['passwordControl'].value != this.signupForm.controls['passwordVerifyControl'].value){
+      this.toastr.error("Passwords do not match");
+      return;
+    }
+
     let tempUsername = this.signupForm.controls['usernameControl'].value;
     let tempEmail = this.signupForm.controls['emailControl'].value;
 
@@ -67,12 +73,6 @@ constructor (public userService: UserService,
       this.toastr.error("Sorry, that email and/or password is already taken, please use a differet one.");
       return;
     }
-
-    //write password validation
-    //
-    //if password == verifypassword && password is strong {
-    //  
-    //}
 
     let user: User = {
       id: 0,
@@ -109,7 +109,7 @@ constructor (public userService: UserService,
 
     user.credentials_ID = credentialRes;
     user.id = userRes;
-    
+
     let userUpdateRes = await this.userService.upsertUser(user);
 
 
@@ -120,13 +120,13 @@ constructor (public userService: UserService,
       this.successModal.toggle();
     }
 
-    this.toastr.success("Error.");
+    this.toastr.success("Success Email Sent.");
     return;
-    
+
   }
 
   public validateEmailAndUsername(username: string, email: string){
-    
+
     let usernameCheck = this.users.find(x => x.username == username);
     let emailCheck = this.users.find(x => x.email == email);
 
