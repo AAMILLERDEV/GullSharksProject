@@ -55,9 +55,7 @@ public class IterationOneUnitTests
     {
         var userDetails = await db.GetUserDetails();
         Assert.NotNull(userDetails);
-    }
-
-    /// 
+    } 
    
     [Fact]
     public async void GetPlatforms_AssertNotNull_Test07()
