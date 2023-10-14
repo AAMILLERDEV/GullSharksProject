@@ -45,7 +45,7 @@ public class EmailRepository : IEmailRepository
     {
         try
         {
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz!@#$%^&*()";
             var creds = new string(Enumerable.Repeat(chars, 14).Select(s => s[new Random().Next(s.Length)]).ToArray());
 
             var credentials = await db.GetCredentialsByID(user.Credentials_ID);

@@ -78,6 +78,9 @@
                             <li class="pb-2 pt-2">
                                 <input type="button" value="Manage Address" class="btn lightblue btn-sm" (click)="openAddressModal()">
                             </li>
+                            <li class="pb-2 pt-2">
+                                <input type="button" value="Change Password" class="btn lightblue btn-sm" (click)="openPasswordModal()">
+                            </li>
                         </ul>
                     </div>
                   </div>
@@ -86,7 +89,55 @@
         </div>
 </ng-container>
 
-<!--The User Details Modal-->
+<!--The Change Password Modal-->
+<div class="modal fade" #changePasswordModal id="changePasswordModal" data-bs-backdrop="static" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Update your password here</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="resetForms()"></button>
+        </div>
+        <div class="modal-body">
+            <form [formGroup]="passwordForm" class="form-group container customBorder2 p-5 alignRight">
+                <!--Category/Description-->
+                <div class="row py-3">
+                    <div class="col-2">
+                        <label>Current Password:</label>
+                    </div>
+                    <div class="col-8">
+                        <input type="password" class="form-control" formControlName="currentPasswordControl" required>
+                    </div>
+                </div>
+                <!--Language-->
+                <div class="row py-3">
+                    <div class="col-2">
+                        <label>New Password:</label>
+                    </div>
+                    <div class="col-8">
+                        <input type="password" pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$" class="form-control" formControlName="newPasswordControl" required>
+                    </div>
+                </div>
+                <!--Language-->
+                <div class="row py-3">
+                    <div class="col-2">
+                        <label>Verify New Password:</label>
+                    </div>
+                    <div class="col-8">
+                        <input type="password" pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$" class="form-control" formControlName="verifyPasswordControl" required>
+                    </div>
+                </div>
+     
+            </form>
+        </div>
+        <div class="modal-footer justify-content-center">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="resetForms()">Close</button>
+          <button type="button" class="btn btn-primary" (click)="updateCredentials()">Save changes</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!--The Preferences Modal-->
 <div class="modal fade" #preferencesModal id="preferencesModal" data-bs-backdrop="static" tabindex="-1">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
@@ -222,7 +273,7 @@
     </div>
 </div>
 
-<!--The AddressModal Modal-->
+<!--The UserDetails Modal-->
 <div class="modal fade" #userDetailsModal id="userDetailsModal" data-bs-backdrop="static" tabindex="-1">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
@@ -254,9 +305,9 @@
                     </div>
                     <div class="col-4">
                         <select formControlName="genderControl" class="form-control customBorder2">
-                            <option value="male" [selected]="true">Male</option>
+                            <option value="male">Male</option>
                             <option value="female">Female</option>
-                            <option value="Other">Other</option>
+                            <option value="other">Other</option>
                         </select>
                     </div>
                     <div class="col-2">

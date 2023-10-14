@@ -39,6 +39,7 @@ export class ValidationComponent implements OnInit {
     user.isValidated = true;
     let res = await this.userService.upsertUser(user);
     if (res == user.id){
+      this.username = user.username;
       this.successful = true;
     }
   }

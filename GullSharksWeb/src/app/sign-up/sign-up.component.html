@@ -1,5 +1,12 @@
 <ng-container [formGroup]="signupForm">
-    <div class="form-group container">
+    
+    <div class="form-group container customBorder1 p-5" style="width: 35%">
+        <div class="text-center">
+            <img src="/assets/CVGS.png" alt="Logo"  height="160">
+        </div>
+        <hr>
+        <h3 class="text-center fw-bold fst-italic">Complete the form below to sign up</h3>
+        <hr>
         <div class="row py-3 text-center">
             <div class="col-2">
                 <label>Username:</label>
@@ -32,11 +39,24 @@
               <input type="password" formControlName="passwordVerifyControl" pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$" class="form-control" required>
           </div>
       </div>
-        <div class="row py-3 text-center">
-            <re-captcha (resolved)="resolved($event)" formControlName="recaptchaControl" (errored)="onError($event)" errorMode="handled" required></re-captcha>
+        <div class="row py-3 ">
+            <div class="col-3"></div>
+            <div class="col-8 text-left">
+                <re-captcha (resolved)="resolved($event)" formControlName="recaptchaControl" (errored)="onError($event)" errorMode="handled" required></re-captcha>
+            </div>
+            <div class="col-1"></div>
+
         </div>
-        <div class="row py-3 text-center">
+        <div class="py-3 text-center">
             <input type="button" formControlName="submitControl" class="btn btn-success form-control" (click)="signUp()" readonly>
+        </div>
+        <div class="row text-center">
+            <div class="col-3"></div>
+            <div class="col-6">
+                <input type="button" class="btn btn-danger text-center mt-3" [routerLink]="'/login'" value="Return to Login">
+            </div>
+            <div class="col-3"></div>
+
         </div>
    </div>
 </ng-container>
@@ -44,18 +64,24 @@
 <div class="modal fade" #successModal id="successModal" data-bs-backdrop="static" tabindex="-1">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
-        <div class="modal-header">
+        <div class="modal-header text-center row">
             <!--Modal Title-->
-          <h5 class="modal-title">Success!</h5>
+            <div class="col-12 customBorder2">
+                <img class="text-center" src="/assets/CVGS.png" alt="Logo"  height="100">
+            </div>
 
+            <div class="col-12">
+                <h1 class="text-center pt-3">Success! Your account has been created!</h1>
+            </div>
         </div>
-
         <!--Modal Body/Content-->
         <div class="modal-body">
-
+            <div class="p5">      
+                <p class="text-center fw-bold">Please check your email for an email from us to validate your account</p>
+            </div>
         </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-info" (click)="goToProfile()"></button>
+        <div class="modal-footer justify-content-center">
+            <input type="button" class="btn btn-info text-center" (click)="goToProfile()" value="Continue">
         </div>
       </div>
     </div>

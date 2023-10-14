@@ -41,14 +41,11 @@ constructor (public userService: UserService,
     this.users = await this.userService.getAllUsers();
     this.user = JSON.parse(sessionStorage.getItem("User")!);
 
-
-
     if (this.user){
       this.router.navigateByUrl("home");
     }
 
     this.successModal = bootstrap.Modal.getOrCreateInstance('#successModal', {keyboard: true});
-
   }
 
   public async signUp(){
@@ -57,7 +54,6 @@ constructor (public userService: UserService,
       this.toastr.error("Please fill out all form fields to submit.");
       return;
     }
-
 
     if (this.signupForm.controls['passwordControl'].value != this.signupForm.controls['passwordVerifyControl'].value){
       this.toastr.error("Passwords do not match");
@@ -112,17 +108,16 @@ constructor (public userService: UserService,
 
     let userUpdateRes = await this.userService.upsertUser(user);
 
-
     this.toastr.warning("Please wait...");
     let res = await this.emailService.sendValidationEmail(user);
+    console.log(res);
     if (res){
       this.user = user;
       this.successModal.toggle();
+    } else {
+      this.toastr.success("Validation email could not be sent.");
+      return;
     }
-
-    this.toastr.success("Success Email Sent.");
-    return;
-
   }
 
   public validateEmailAndUsername(username: string, email: string){
@@ -149,7 +144,6 @@ constructor (public userService: UserService,
     sessionStorage.setItem("User", JSON.stringify(this.user));
     this.successModal.toggle();
     this.router.navigateByUrl('/profile');
-    //Navigate to profile page
   }
 
 

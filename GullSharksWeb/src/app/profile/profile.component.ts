@@ -4,11 +4,13 @@ import { Router } from '@angular/router';
 import * as bootstrap from 'bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { AddressForm } from 'src/form-models/address-form';
+import { PasswordForm } from 'src/form-models/passwordForm';
 import { PreferencesForm } from 'src/form-models/preferences-form';
 import { UserDetailsForm } from 'src/form-models/user-details-form';
 import { BillingAddress } from 'src/models/BillingAddress';
 import { CategoryPreference } from 'src/models/CategoryPreference';
 import { Country } from 'src/models/Country';
+import { Credentials } from 'src/models/Credentials';
 import { GameCategory } from 'src/models/GameCategory';
 import { Language } from 'src/models/Language';
 import { LanguagePreference } from 'src/models/LanguagePreference';
@@ -20,6 +22,7 @@ import { User } from 'src/models/User';
 import { UserDetails } from 'src/models/UserDetails';
 import { BillingAddressService } from 'src/services/billingAddress.service';
 import { CountryService } from 'src/services/country.service';
+import { CredentialService } from 'src/services/credential.service';
 import { GameCategoryService } from 'src/services/gameCategories.service';
 import { LanguageService } from 'src/services/language.service';
 import { PlatformService } from 'src/services/platform.service';
@@ -55,10 +58,12 @@ export class ProfileComponent implements OnInit {
   public preferencesForm: FormGroup;
   public addressForm: FormGroup;
   public userDetailsForm: FormGroup;
+  public passwordForm: FormGroup;
   
   public userDetailsModal!: bootstrap.Modal;
   public preferencesModal!: bootstrap.Modal;
   public addressModal!: bootstrap.Modal;
+  public changePasswordModal!: bootstrap.Modal;
 
   public email: string = "None Yet";
   public firstname: string = "None Yet";
@@ -82,18 +87,20 @@ export class ProfileComponent implements OnInit {
     public languageService: LanguageService,
     public categoryService: GameCategoryService,
     public billingAddressService: BillingAddressService,
-    public shippingAddressService: ShippingAddressService){
+    public shippingAddressService: ShippingAddressService,
+    public credentialService: CredentialService){
 
     this.preferencesForm = PreferencesForm;
     this.addressForm = AddressForm;
     this.userDetailsForm = UserDetailsForm;
-    
+    this.passwordForm = PasswordForm
   }
 
   public async ngOnInit() {
     this.user = JSON.parse(sessionStorage.getItem("User")!);
     if (!this.user){
       this.router.navigateByUrl("login");
+      return;
     }
 
     this.buildModals();
@@ -112,10 +119,15 @@ export class ProfileComponent implements OnInit {
     this.addressModal.toggle();
   }
 
+  public openPasswordModal(){
+    this.changePasswordModal.toggle();
+  }
+
   public async buildModals(){
     this.userDetailsModal = bootstrap.Modal.getOrCreateInstance('#userDetailsModal', {keyboard: true});
     this.preferencesModal = bootstrap.Modal.getOrCreateInstance('#preferencesModal', {keyboard: true});
     this.addressModal = bootstrap.Modal.getOrCreateInstance('#addressModal', {keyboard: true});
+    this.changePasswordModal = bootstrap.Modal.getOrCreateInstance('#changePasswordModal', {keyboard: true});
     await this.getData();
   }
 
@@ -132,7 +144,7 @@ export class ProfileComponent implements OnInit {
 
     if (this.userDetails){
       this.billingAddress = await this.billingAddressService.getBillingAddress(this.userDetails.id);
-
+      console.log(this.billingAddress);
       this.shippingAddress = await this.shippingAddressService.getShippingAddress(this.userDetails.id);
       
       this.firstname = this.userDetails.firstName;
@@ -155,7 +167,6 @@ export class ProfileComponent implements OnInit {
     }
 
     this.loadUserData();
-    
   }
 
   //Loads user preference data from the api
@@ -397,6 +408,7 @@ export class ProfileComponent implements OnInit {
     this.preferencesForm.reset();
     this.userDetailsForm.reset();
     this.addressForm.reset();
+    this.passwordForm.reset();
     await this.getData();
   }
 
@@ -504,6 +516,45 @@ export class ProfileComponent implements OnInit {
     this.toastr.success("Success, your preferences have been updated!");
     this.preferencesModal.toggle();
     await this.getData();
+    return;
+  }
+
+  public async updateCredentials(){
+    if (this.passwordForm.invalid){
+      this.toastr.error("Please fill out all form fields correctly. Passwords must be at least 8 characters, both upper and lower case, a number and special character.");
+      return;
+    }
+
+    if (this.passwordForm.controls['newPasswordControl'].value != this.passwordForm.controls['verifyPasswordControl'].value){
+      this.toastr.error("Please ensure your new passwords match each other.");
+      return;
+    }
+
+    let passwordCheck = await this.credentialService.checkCredentials(this.user!, btoa(this.passwordForm.controls['currentPasswordControl'].value));
+
+    if (!passwordCheck) {
+      this.toastr.error("Please ensure your current password is correct.");
+      return;
+    }
+
+    let credential: Credentials = {
+      id: this.user!.credentials_ID,
+      credentialValue: btoa(this.passwordForm.controls['newPasswordControl'].value),
+      isDeleted: false,
+      user_ID: this.user!.id
+    }
+
+    let res = await this.credentialService.upsertCredentials(credential);
+
+    if (res == this.user!.credentials_ID){
+      this.toastr.success("Success, your password has been updated!");
+      this.changePasswordModal.toggle();
+      await this.getData();
+      this.passwordForm.reset();
+      return;
+    }
+
+    this.toastr.error("Error, could not update password");
     return;
   }
 }
