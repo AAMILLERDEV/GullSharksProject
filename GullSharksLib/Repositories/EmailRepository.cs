@@ -67,7 +67,7 @@ public class EmailRepository : IEmailRepository
 
             MailMessage message = new MailMessage()
             {
-                Subject = "CGS Account Management - Password Reset",
+                Subject = "CVGS Account Management - Password Reset",
                 Body = $"Your password has been reset to: {creds}",
                 IsBodyHtml = true,
                 From = new MailAddress("conestoga_CVGS_Mgmt@outlook.com")

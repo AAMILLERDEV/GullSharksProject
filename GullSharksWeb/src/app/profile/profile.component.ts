@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { Router } from '@angular/router';
 import * as bootstrap from 'bootstrap';
@@ -37,7 +37,7 @@ import { UserDetailsService } from 'src/services/userDetail.service';
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
 })
-export class ProfileComponent implements OnInit {
+export class ProfileComponent implements OnInit, OnDestroy {
 
   public users!: User[];
   public countries: Country[] = [];
@@ -129,6 +129,10 @@ export class ProfileComponent implements OnInit {
     this.addressModal = bootstrap.Modal.getOrCreateInstance('#addressModal', {keyboard: true});
     this.changePasswordModal = bootstrap.Modal.getOrCreateInstance('#changePasswordModal', {keyboard: true});
     await this.getData();
+  }
+
+  public ngOnDestroy() {
+    this.resetForms();
   }
 
   //Loads data from the API for the users profile page
