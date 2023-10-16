@@ -45,7 +45,7 @@ public class EmailRepository : IEmailRepository
     {
         try
         {
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz!@#$%^&*()";
             var creds = new string(Enumerable.Repeat(chars, 14).Select(s => s[new Random().Next(s.Length)]).ToArray());
 
             var credentials = await db.GetCredentialsByID(user.Credentials_ID);
@@ -67,7 +67,7 @@ public class EmailRepository : IEmailRepository
 
             MailMessage message = new MailMessage()
             {
-                Subject = "CGS Account Management - Password Reset",
+                Subject = "CVGS Account Management - Password Reset",
                 Body = $"Your password has been reset to: {creds}",
                 IsBodyHtml = true,
                 From = new MailAddress("conestoga_CVGS_Mgmt@outlook.com")

@@ -17,12 +17,12 @@ public class DBRepository : IDBRepository
     }
 
     //DB methods for the billingAddress object
-    public async Task<BillingAddress> GetBillingAddressByID(int id)
+    public async Task<BillingAddress> GetBillingAddressByID(int userDetails_ID)
     {
         try
         {
             using IDbConnection connection = new SqlConnection(connectionString);
-            return await connection.QueryFirstOrDefaultAsync<BillingAddress>("hist.billingAddressByID_GET", new { id }, commandType: CommandType.StoredProcedure);
+            return await connection.QueryFirstOrDefaultAsync<BillingAddress>("hist.billingAddressByID_GET", new { userDetails_ID }, commandType: CommandType.StoredProcedure);
         }
         catch (Exception ex)
         {
@@ -257,12 +257,12 @@ public class DBRepository : IDBRepository
     }
 
     //DB methods for the shippingAddress object
-    public async Task<ShippingAddress> GetShippingAddressByID(int id)
+    public async Task<ShippingAddress> GetShippingAddressByID(int userDetails_ID)
     {
         try
         {
             using IDbConnection connection = new SqlConnection(connectionString);
-            return await connection.QueryFirstOrDefaultAsync<ShippingAddress>("hist.shippingAddressByID_GET", new { id }, commandType: CommandType.StoredProcedure);
+            return await connection.QueryFirstOrDefaultAsync<ShippingAddress>("hist.shippingAddressByID_GET", new { userDetails_ID }, commandType: CommandType.StoredProcedure);
         }
         catch (Exception ex)
         {

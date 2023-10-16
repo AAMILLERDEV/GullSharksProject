@@ -36,6 +36,13 @@ export class LoginComponent implements OnInit {
   public async ngOnInit() {
     this.users = await this.userService.getAllUsers();
     this.loginCounter = JSON.parse(sessionStorage.getItem("LoginCounter")!);
+
+    this.user = JSON.parse(sessionStorage.getItem("User")!);
+
+    if (this.user){
+      this.router.navigateByUrl("profile");
+      console.log("HI");
+    }
   }
 
   public async submitUserLoginCredentials(){
