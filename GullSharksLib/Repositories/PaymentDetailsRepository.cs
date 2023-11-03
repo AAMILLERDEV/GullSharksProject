@@ -1,21 +1,21 @@
-﻿using GullSharksLib.Models;
-using Microsoft.Extensions.Options;
+﻿//using GullSharksLib.Models;
+//using Microsoft.Extensions.Options;
 
-namespace GullSharksLib;
+//namespace GullSharksLib;
 
-public class PaymentDetailsRepository : IPaymentDetailsRepository
-{
-    private readonly IDBRepository db;
+//public class PaymentDetailsRepository : IPaymentDetailsRepository
+//{
+//    private readonly IDBRepository db;
 
-    public PaymentDetailsRepository(IOptionsMonitor<AppSetting> options)
-    {
-        db = new DBRepository(options.CurrentValue.DbConn);
-    }
+//    public PaymentDetailsRepository(IOptionsMonitor<AppSetting> options)
+//    {
+//        db = new DBRepository(options.CurrentValue.DbConn);
+//    }
 
-    public Task<IEnumerable<PaymentDetails>> GetPaymentDetails() => db.GetPaymentDetails();
+//    public Task<IEnumerable<PaymentDetails>> GetPaymentDetails() => db.GetPaymentDetails();
 
-    public Task<PaymentDetails> GetPaymentDetailsByID(int id) => db.GetPaymentDetailsByID(id);
+//    public Task<PaymentDetails> GetPaymentDetailsByID(int id) => db.GetPaymentDetailsByID(id);
 
-    public Task<int?> UpsertPaymentDetails(UPaymentDetails paymentDetails) => db.UpsertPaymentDetails(paymentDetails);
+//    public Task<int?> UpsertPaymentDetails(UPaymentDetails paymentDetails) => db.UpsertPaymentDetails(paymentDetails);
 
-}
+//}

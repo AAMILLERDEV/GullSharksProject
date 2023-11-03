@@ -32,10 +32,9 @@ try {
     builder.Services.AddSingleton<IPreferenceRepository, PreferencesRepository>(x => new PreferencesRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
     builder.Services.AddSingleton<IShippingAddressRepository, ShippingAddressRepository>(x => new ShippingAddressRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
     builder.Services.AddSingleton<IBillingAddressRepository, BillingAddressRepository>(x => new BillingAddressRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
-    builder.Services.AddSingleton<IPaymentDetailsRepository, PaymentDetailsRepository>(x => new PaymentDetailsRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
-    builder.Services.AddSingleton<ICardTypeRepository, CardTypeRepository>(x => new CardTypeRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
-    builder.Services.AddSingleton<ICartItemsRepository, CartItemsRepository>(x => new CartItemsRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
-    builder.Services.AddSingleton<IPaymentDetailsRepository, PaymentDetailsRepository>(x => new PaymentDetailsRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
+    //builder.Services.AddSingleton<IPaymentDetailsRepository, PaymentDetailsRepository>(x => new PaymentDetailsRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
+    //builder.Services.AddSingleton<ICardTypeRepository, CardTypeRepository>(x => new CardTypeRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
+    //builder.Services.AddSingleton<ICartItemsRepository, CartItemsRepository>(x => new CartItemsRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
     builder.Services.AddCors(o => o.AddDefaultPolicy(builder =>
     {
         builder.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin();

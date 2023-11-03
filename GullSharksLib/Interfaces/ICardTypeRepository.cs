@@ -1,10 +1,10 @@
-﻿using GullSharksLib.Models;
+﻿//using GullSharksLib.Models;
 
-namespace GullSharksLib;
+//namespace GullSharksLib;
 
-public interface ICardTypeRepository
-{
-    public Task<IEnumerable<CardType>> GetCardTypes();
+//public interface ICardTypeRepository
+//{
+//    public Task<IEnumerable<CardType>> GetCardTypes();
 
-    public Task<int?> UpsertCardType(CardType cardType);
-}
+//    public Task<int?> UpsertCardType(CardType cardType);
+//}

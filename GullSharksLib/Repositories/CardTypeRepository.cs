@@ -1,19 +1,19 @@
-﻿using GullSharksLib.Models;
-using Microsoft.Extensions.Options;
+﻿//using GullSharksLib.Models;
+//using Microsoft.Extensions.Options;
 
-namespace GullSharksLib;
+//namespace GullSharksLib;
 
-public class CardTypeRepository : ICardTypeRepository
-{
-    private readonly IDBRepository db;
+//public class CardTypeRepository : ICardTypeRepository
+//{
+//    private readonly IDBRepository db;
 
-    public CardTypeRepository(IOptionsMonitor<AppSetting> options)
-    {
-        db = new DBRepository(options.CurrentValue.DbConn);
-    }
+//    public CardTypeRepository(IOptionsMonitor<AppSetting> options)
+//    {
+//        db = new DBRepository(options.CurrentValue.DbConn);
+//    }
 
-    public Task<IEnumerable<CardType>> GetCardTypes() => db.GetCardTypes();
+//    public Task<IEnumerable<CardType>> GetCardTypes() => db.GetCardTypes();
 
-    public Task<int?> UpsertCardType(CardType cardType) => db.UpsertCardType(cardType);
+//    public Task<int?> UpsertCardType(CardType cardType) => db.UpsertCardType(cardType);
 
-}
+//}

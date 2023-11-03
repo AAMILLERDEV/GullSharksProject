@@ -1,31 +1,31 @@
-using GullSharksLib;
-using GullSharksLib.Models;
-using Microsoft.AspNetCore.Mvc;
+//using GullSharksLib;
+//using GullSharksLib.Models;
+//using Microsoft.AspNetCore.Mvc;
 
-namespace PaymentDetailsController;
+//namespace PaymentDetailsController;
 
-[ApiController]
-public class PaymentDetailsController : ControllerBase {
+//[ApiController]
+//public class PaymentDetailsController : ControllerBase {
 
-    public readonly IPaymentDetailsRepository db;
-    public PaymentDetailsController(IPaymentDetailsRepository ch)
-    {
-        this.db = ch;
-    }
+//    public readonly IPaymentDetailsRepository db;
+//    public PaymentDetailsController(IPaymentDetailsRepository ch)
+//    {
+//        this.db = ch;
+//    }
 
 
-    [HttpGet]
-    [Route("[controller]/GetPaymentDetails")]
-    public Task<IEnumerable<PaymentDetails>> GetPaymentDetails() => db.GetPaymentDetails();
+//    [HttpGet]
+//    [Route("[controller]/GetPaymentDetails")]
+//    public Task<IEnumerable<PaymentDetails>> GetPaymentDetails() => db.GetPaymentDetails();
 
-    [HttpGet]
-    [Route("[controller]/GetPaymentDetailsByID/{id}")]
-    public Task<PaymentDetails> GetPaymentDetailsByID(int id) => db.GetPaymentDetailsByID(id);
+//    [HttpGet]
+//    [Route("[controller]/GetPaymentDetailsByID/{id}")]
+//    public Task<PaymentDetails> GetPaymentDetailsByID(int id) => db.GetPaymentDetailsByID(id);
 
-    [HttpPost]
-    [Route("[controller]/UpsertPaymentDetails")]
-    public Task<int?> UpsertPaymentDetails(PaymentDetails paymentDetails) => db.UpsertPaymentDetails(paymentDetails);
+//    [HttpPost]
+//    [Route("[controller]/UpsertPaymentDetails")]
+//    public Task<int?> UpsertPaymentDetails(PaymentDetails paymentDetails) => db.UpsertPaymentDetails(paymentDetails);
 
-}
+//}
 
 

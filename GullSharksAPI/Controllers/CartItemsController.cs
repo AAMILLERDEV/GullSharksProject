@@ -1,31 +1,31 @@
-using GullSharksLib;
-using GullSharksLib.Models;
-using Microsoft.AspNetCore.Mvc;
+//using GullSharksLib;
+//using GullSharksLib.Models;
+//using Microsoft.AspNetCore.Mvc;
 
-namespace CartItemsController;
+//namespace CartItemsController;
 
-[ApiController]
-public class CartItemsController : ControllerBase {
+//[ApiController]
+//public class CartItemsController : ControllerBase {
 
-    public readonly IUserRepository db;
-    public CartItemsController(IUserRepository ch)
-    {
-        this.db = ch;
-    }
+//    public readonly ICartItemsRepository db;
+//    public CartItemsController(ICartItemsRepository ch)
+//    {
+//        this.db = ch;
+//    }
 
 
-    [HttpGet]
-    [Route("[controller]/GetCartItems")]
-    public Task<IEnumerable<CartItems>> GetCartItems() => db.GetCartItems();
+//    [HttpGet]
+//    [Route("[controller]/GetCartItems")]
+//    public Task<IEnumerable<CartItems>> GetCartItems() => db.GetCartItems();
 
-    [HttpGet]
-    [Route("[controller]/GetCartItemsByID/{id}")]
-    public Task<CartItems> GetCartItemsByID(int id) => db.GetCartItemsByID(id);
+//    [HttpGet]
+//    [Route("[controller]/GetCartItemsByID/{id}")]
+//    public Task<CartItems> GetCartItemsByID(int id) => db.GetCartItemsByID(id);
 
-    [HttpPost]
-    [Route("[controller]/UpsertCartItems")]
-    public Task<int?> UpsertCartItems(CartItems cartItems) => db.UpsertCartItems(cartItems);
+//    [HttpPost]
+//    [Route("[controller]/UpsertCartItems")]
+//    public Task<int?> UpsertCartItems(CartItems cartItems) => db.UpsertCartItems(cartItems);
 
-}
+//}
 
 
