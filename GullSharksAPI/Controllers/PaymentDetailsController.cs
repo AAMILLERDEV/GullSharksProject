@@ -7,8 +7,8 @@ namespace PaymentDetailsController;
 [ApiController]
 public class PaymentDetailsController : ControllerBase {
 
-    public readonly IUserRepository db;
-    public PaymentDetailsController(IUserRepository ch)
+    public readonly IPaymentDetailsRepository db;
+    public PaymentDetailsController(IPaymentDetailsRepository ch)
     {
         this.db = ch;
     }
