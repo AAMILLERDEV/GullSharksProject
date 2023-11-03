@@ -88,4 +88,18 @@ public interface IDBRepository
     public Task<int?> UpsertCategoryPreference(CategoryPreference lang);
     public Task<int?> UpsertPlatformPreference(PlatformPreference lang);
 
+    ////Card Types
+    //public Task<IEnumerable<CardType>> GetCardTypes();
+
+    //public Task<int?> UpsertCardType(CardType cardType);
+
+    ////Cart Items
+    //public Task<IEnumerable<CartItems>> GetCartItems();
+    //public Task<CartItems> GetCartItemsByID(int id);
+    //public Task<int?> UpsertCartItems(CartItems ins);
+
+    ////Payment Details
+    //public Task<IEnumerable<PaymentDetails>> GetPaymentDetails();
+    //public Task<PaymentDetails> GetPaymentDetailsByID(int id);
+    //public Task<int?> UpsertPaymentDetails(PaymentDetails ins);
 }
