@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿//using GullSharksLib.Models;
 
-namespace GullSharksLib.Interfaces
-{
-    internal interface IOrderRepository
-    {
-    }
-}
+//namespace GullSharksLib.Interfaces
+//{
+//    public interface IOrderRepository
+//    {
+//        public Task<IEnumerable<Order>> GetOrders();
+//        public Task<Order> GetOrderByID(int id);
+//        public Task<int?> UpsertOrder(Order order);
+//    }
+//}

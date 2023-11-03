@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿//using GullSharksLib.Models;
 
-namespace GullSharksLib.Interfaces
-{
-    internal interface IWishlistRepository
-    {
-    }
-}
+//namespace GullSharksLib.Interfaces
+//{
+//    public interface IWishlistRepository
+//    {
+//        public Task<IEnumerable<Wishlist>> GetWishlistByUserID(int user_ID);
+//        public Task<IEnumerable<Wishlist>> GetWishlistByID(int id);
+//        public Task<int?> UpsertWishlist(Wishlist wishlist);
+//    }
+//}

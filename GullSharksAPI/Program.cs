@@ -32,6 +32,10 @@ try {
     builder.Services.AddSingleton<IPreferenceRepository, PreferencesRepository>(x => new PreferencesRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
     builder.Services.AddSingleton<IShippingAddressRepository, ShippingAddressRepository>(x => new ShippingAddressRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
     builder.Services.AddSingleton<IBillingAddressRepository, BillingAddressRepository>(x => new BillingAddressRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
+    //builder.Services.AddSingleton<IWishlistRepository, WishlistRepository>(x => new WishlistRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
+    //builder.Services.AddSingleton<IOrderRepository, OrderRepository>(x => new OrderRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
+    //builder.Services.AddSingleton<IOrderDetailsRepository, OrderDetailsRepository>(x => new OrderDetailsRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
+    //builder.Services.AddSingleton<IFriendsListRepository, FriendsListRepository>(x => new FriendsListRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
     //builder.Services.AddSingleton<IPaymentDetailsRepository, PaymentDetailsRepository>(x => new PaymentDetailsRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
     //builder.Services.AddSingleton<ICardTypeRepository, CardTypeRepository>(x => new CardTypeRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
     //builder.Services.AddSingleton<ICartItemsRepository, CartItemsRepository>(x => new CartItemsRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
