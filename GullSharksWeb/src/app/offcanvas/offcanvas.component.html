@@ -1,0 +1,47 @@
+<div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="offcanvasScrollingLabel">Your Cart <span class="ms-2"><i class="bi bi-cart2"></i></span></h5>
+      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+      <div *ngFor="let i of cartItems" class="pb-2">
+        <div class="card" style="width: 18rem;">
+          <div class="card-body">
+            <div class="row">
+              <div  class="col">
+                <h5 class="card-title">{{i.game!.gameName}}</h5>
+                <h6 class="card-subtitle mb-2 text-success fst-italic">In Stock</h6>
+                <p class="card-text">Quantity: {{i.quantity}}</p>
+                <p class="card-text">Subtotal: {{i.subtotal.toFixed(2)}}</p>
+              </div>
+              <div class="col text-end">
+                <img src='assets/game_assets/{{i.game!.gameAsset?.assetURL}}/front.jpg' style="height: 100%; width: 75%;"  class="card-img-top text-end pb-4" alt="">
+              </div>
+            </div>
+            <button class="btn customBorder1 me-2 btn-success">Checkout</button>
+            <button (click)="deleteCartItem(i)" class="btn btn-secondary customBorder1">Delete</button>
+          </div>
+        </div>
+        <hr/>
+      </div>
+      <div class="pb-2">
+        <h5 class="offcanvas-title" id="offcanvasScrollingLabel">Your Wish List <span><i class="bi bi-calendar2-heart ps-1"></i></span></h5>
+      </div>
+      <div *ngFor="let i of wishlist" class="pb-2">
+        <div class="card" style="width: 18rem;">
+          <div class="card-body">
+            <div class="row">
+              <div  class="col">
+                <h5 class="card-title">{{i.game!.gameName}}</h5>
+                <h6 class="card-subtitle mb-2 text-success fst-italic">In Stock</h6>
+                <p class="card-text">Quantity: {{i.quantity}}</p>
+              </div>
+              <div class="col text-end">
+                <img src='assets/game_assets/{{i.game!.gameAsset?.assetURL}}/front.jpg' style="height: 100%; width: 75%;"  class="card-img-top text-end" alt="">
+              </div>
+            </div>
+            <button (click)="deleteWishlistItem(i)" class="btn btn-secondary customBorder1" value="Delete">Delete</button>
+          </div>
+        </div>
+    </div>
+  </div>

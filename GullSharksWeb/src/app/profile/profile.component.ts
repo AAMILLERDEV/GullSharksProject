@@ -249,6 +249,14 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.userDetails.birthDate = this.userDetailsForm.controls['birthDateControl'].value;
     this.userDetails.receivesUpdates = this.userDetailsForm.controls['emailUpdatesControl'].value;
 
+    let today = new Date();
+
+    if (new Date(this.userDetails.birthDate) > today){
+      this.toastr.error("Birth day cannot be a current or future date.");
+      return;
+    }
+     
+
     let res = await this.userDetailsService.upsertUserDetails(this.userDetails);
 
     if (res == this.userDetails.id){

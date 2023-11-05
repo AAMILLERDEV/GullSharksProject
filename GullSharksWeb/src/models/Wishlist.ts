@@ -1,3 +1,5 @@
+import { Game } from "./Game";
+
 export interface Wishlist {
   id: number;
   game_ID: number;
@@ -5,4 +7,5 @@ export interface Wishlist {
   isDeleted: boolean;
   dateAdded: Date;
   quantity: number;
+  game: Game;
 }

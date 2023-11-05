@@ -280,6 +280,23 @@ export class AdminComponent implements OnInit {
       return;
     }
 
+    let today = new Date();
+
+    if (new Date(this.eventsForm.controls['endDateControl'].value) < today){
+      this.toastr.error("End date cannot be a past date.");
+      return;
+    }
+
+    if (new Date(this.eventsForm.controls['startDateControl'].value) < today){
+      this.toastr.error("Start date must be a future date.");
+      return;
+    }
+
+    if (new Date(this.eventsForm.controls['startDateControl'].value) > new Date(this.eventsForm.controls['endDateControl'].value)){
+      this.toastr.error("Start date must be before the end date.");
+      return;
+    }
+
     let event: Events = {
       id: 0,
       isDeleted: false,
@@ -313,6 +330,23 @@ export class AdminComponent implements OnInit {
     this.selectedEvent.startDate = this.eventsForm.controls['startDateControl'].value;
     this.selectedEvent.eventName = this.eventsForm.controls['eventNameControl'].value;
     this.selectedEvent.description = this.eventsForm.controls['descriptionControl'].value;
+
+    let today = new Date();
+
+    if (new Date(this.selectedEvent.endDate) < today){
+      this.toastr.error("End date cannot be a past date.");
+      return;
+    }
+
+    if (new Date(this.selectedEvent.startDate) < today){
+      this.toastr.error("Start date must be a future date.");
+      return;
+    }
+
+    if (new Date(this.selectedEvent.startDate) > new Date(this.selectedEvent.startDate)){
+      this.toastr.error("Start date must be before the end date.");
+      return;
+    }
 
     await this.eventSerivce.upsertEvent(this.selectedEvent);
     this.toastr.success("Success, the event has been updated.");

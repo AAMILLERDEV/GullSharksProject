@@ -63,23 +63,23 @@
                 <div class="accordion-item">
                   <h2 class="accordion-header" id="headingOne">
                     <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                        Your User Details
+                        Manage Your Profile
                     </button>
                   </h2>
                   <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
                     <div class="accordion-body">
                         <ul>
                             <li class="pb-2 pt-2">
-                                <input type="button" value="Manage User Details" class="btn lightblue btn-sm" (click)="openUserDetailsModal()">
+                                <input type="button" value="Update Your Profile" class="btn lightblue btn-sm" (click)="openUserDetailsModal()">
                             </li>
                             <li class="pb-2 pt-2">
-                                <input type="button" value="My Preferences" class="btn lightblue btn-sm" (click)="openPreferencesModal()">
+                                <input type="button" value="Profile Preferences" class="btn lightblue btn-sm" (click)="openPreferencesModal()">
                             </li>
                             <li class="pb-2 pt-2">
-                                <input type="button" value="Manage Address" class="btn lightblue btn-sm" (click)="openAddressModal()">
+                                <input type="button" value="Update Your Shipping Address" class="btn lightblue btn-sm" (click)="openAddressModal()">
                             </li>
                             <li class="pb-2 pt-2">
-                                <input type="button" value="Change Password" class="btn lightblue btn-sm" (click)="openPasswordModal()">
+                                <input type="button" value="Change Your Password" class="btn lightblue btn-sm" (click)="openPasswordModal()">
                             </li>
                         </ul>
                     </div>
@@ -278,7 +278,7 @@
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Your Details</h5>
+          <h5 class="modal-title">Update your Profile</h5>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="resetForms()"></button>
         </div>
         <div class="modal-body">

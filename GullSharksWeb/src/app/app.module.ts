@@ -23,6 +23,10 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { ProfileComponent } from './profile/profile.component';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { ValidationComponent } from './validation/validation.component';
+import { OffcanvasComponent } from './offcanvas/offcanvas.component';
+import { GameDetailsComponent } from './game-details/game-details.component';
+import { CheckoutComponent } from './checkout/checkout.component';
+import { GameRecommendationsComponent } from './game-recommendations/game-recommendations.component';
 
 const globalSettings: RecaptchaSettings = { siteKey: '6LcOuyYTAAAAAHTjFuqhA52fmfJ_j5iFk5PsfXaU' };
 
@@ -35,7 +39,11 @@ const globalSettings: RecaptchaSettings = { siteKey: '6LcOuyYTAAAAAHTjFuqhA52fmf
     AdminComponent,
     NavbarComponent,
     ProfileComponent,
-    ValidationComponent
+    ValidationComponent,
+    OffcanvasComponent,
+    GameDetailsComponent,
+    CheckoutComponent,
+    GameRecommendationsComponent
   ],
   imports: [
     BrowserModule,

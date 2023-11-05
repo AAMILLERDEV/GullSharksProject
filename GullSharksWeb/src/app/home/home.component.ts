@@ -1,14 +1,20 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
+import * as bootstrap from 'bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { Asset } from 'src/models/Asset';
+import { CartItem } from 'src/models/CartItem';
 import { Game } from 'src/models/Game';
 import { GameDetails } from 'src/models/GameDetails';
 import { User } from 'src/models/User';
+import { Wishlist } from 'src/models/Wishlist';
 import { AssetService } from 'src/services/asset.service';
+import { CartItemService } from 'src/services/cartItem.service';
 import { GameService } from 'src/services/game.service';
 import { GameDetailService } from 'src/services/gameDetails.service';
 import { UserService } from 'src/services/user.service';
+import { WishlistService } from 'src/services/wishlist.service';
+import { OffcanvasComponent } from '../offcanvas/offcanvas.component';
 
 @Component({
   selector: 'app-home',
@@ -23,14 +29,21 @@ export class HomeComponent implements OnInit {
   public games: Game[] = [];
   public gameDetails: GameDetails[] = [];
   public assets: Asset[] = [];
+  public cartItems: CartItem[] = [];
+  public wishlist: Wishlist[] = [];
 
+  public offCanvasReady: boolean = false;
+
+  @ViewChild(OffcanvasComponent) offcanvas!: OffcanvasComponent;
 
   constructor (public userService: UserService,
     public toastr: ToastrService,
     public router: Router,
     public gameService: GameService,
     public gameDetailService: GameDetailService,
-    public assetService: AssetService) {
+    public assetService: AssetService,
+    public cartItemService: CartItemService,
+    public wishlistService: WishlistService) {
 
   }
 
@@ -44,6 +57,7 @@ export class HomeComponent implements OnInit {
     }
 
     await this.getGameData();
+    this.offCanvasReady = true;
   }
 
   public async getGameData(){
@@ -52,8 +66,34 @@ export class HomeComponent implements OnInit {
     this.assets = await this.assetService.getAssets();
     this.games.map(x => x.gameDetails = this.gameDetails.find(y => y.id == x.gameDetail_ID));
     this.games.map(x => x.gameAsset = this.assets.find(z => z.id == x.asset_ID));
-    console.log(this.assets);
+
+    // if (this.wishlist != []){
+    //   sessionStorage.setItem("wishlist", JSON.stringify(this.wishlist));
+    // }
+
+    // if (this.cartItems != []){
+    //   sessionStorage.setItem("cart", JSON.stringify(this.cartItems));
+    // }
+
     console.log(this.games);
+    //this.wishlist = await this.wishlistService.getWishlistByUserID(this.user!.id);
+    //this.cartItems = await this.cartItemService.getCartItemsByUserID(this.user!.id);
+  }
+
+  public openOffCanvas(){
+    this.offcanvas.showCanvas();
+  }
+
+  public toggleOffCanvas(){
+    this.offcanvas.toggleCanvas();
+  }
+
+  public async addItemToWishlist(game: Game){
+    this.offcanvas.addItemToWishlist(game);
+  }
+
+  public async addToCart(game: Game){
+    this.offcanvas.addToCart(game);
   }
 
 }
