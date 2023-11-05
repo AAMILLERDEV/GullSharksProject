@@ -1,3 +1,6 @@
+import { Asset } from "./Asset";
+import { GameDetails } from "./GameDetails";
+
 export interface Game {
   id: number;
   gameName: string;
@@ -5,4 +8,6 @@ export interface Game {
   gameDetail_ID: number;
   priceInCAD: number;
   isDeleted: boolean;
+  gameDetails?: GameDetails;
+  gameAsset?: Asset;
 }

@@ -1,2 +1,28 @@
 <app-navbar></app-navbar>
-<h1 class="text-center">Under Construction</h1>
+<div class="container customBorder1">
+    <div class="row row-cols-3 text-center">
+      <div *ngFor="let i of games" class="col pt-2 pb-2 justify-content-center">
+        <div class="card p-3 customBorder2 text-center" style="width: 24rem; overflow: none; min-height: 650px; max-height: 650px;">
+            <img src='assets/game_assets/{{i.gameAsset?.assetURL}}/front.jpg' style="max-height: 400px; min-height: 400px;"  class="card-img-top" alt="...">
+            <div class="card-body">
+              <h5 class="card-title text-center">{{i.gameName}}</h5>
+              <p class="card-text text-center">{{i.gameDetails!.publisher}}</p>
+              <div class="text-center">
+                <button class="btn btn-success text-center me-2">Add to Cart <span><i class="bi bi-cart2"></i></span></button>
+                <button class="btn btn-info text-center font-white">View Details </button>
+              </div>
+              <div class="text-center pt-3 m-2">
+                <label class="customBorder1 pe-1 ps-1">
+                    C$ {{i.priceInCAD}}
+                </label>
+              </div>
+              <div class="text-center">
+                <label class="fst-italic pt-1">
+                    Add to Wishlist <span><i class="bi bi-calendar2-heart ps-1"></i></span>
+                </label>
+              </div>
+            </div>
+          </div>
+      </div>
+    </div>
+  </div>

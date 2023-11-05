@@ -1,4 +1,5 @@
 @import "~@ng-select/ng-select/themes/default.theme.css";
+@import url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css");
 
 .lightblue {
     background-color: lightblue;
@@ -46,4 +47,9 @@
 
 .alignRight {
     text-align: right;
+}
+
+.wishlistURL:hover {
+    color: lightblue;
+    text-decoration: underline;
 }
