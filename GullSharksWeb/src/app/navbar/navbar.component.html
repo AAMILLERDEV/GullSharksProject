@@ -1,33 +1,53 @@
-<nav class="navbar navbar-expand-lg navbar-dark gradient">
+<nav class="navbar sticky-top navbar-expand-lg navbar-dark gradient">
     <div class="container-fluid justify-content-between row">
-        <div class="col-4">
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-              <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-              <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                <li class="nav-item">
-                  <a class="nav-link" [routerLink]="'/home'">Home</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" [routerLink]="'/profile'">Profile</a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link" (click)="showOffCanvas()">Cart & Wishlist</a>
-                </li>
-                <li *ngIf="user?.isAdmin" class="nav-item">
-                  <a class="nav-link" [routerLink]="'/admin'">Admin</a>
-                </li>
-              </ul>
-            </div>
+        <div class="col-4 nav ms-2">
+          <div>
+            <button class="btn btn-dark" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasMenu" aria-controls="offcanvasMenu"><i class="bi bi-justify"></i></button>
+          </div>
+          <div>
+            <li class="nav-item ms-3">
+              <button class="btn gradient btn-secondary text-white" [routerLink]="'/home'">CVGS</button>
+            </li>
+          </div>
+          <div *ngIf="showingHome">
+            <button class="btn btn-primary ms-3"(click)="showOffCanvas()"><i class="bi bi-cart3"></i> Cart ({{cart.length}})</button>
+          </div>
         </div>
         <div class="text-center col-4">
             <h2 class="fw-bold fst-italic" style="color: white">The CVGS</h2>
         </div>
         <div class="col-4 float-right">
-            <input type="button" class="btn btn-secondary ms-5" style="float: right;" value="Logout" (click)="logout()">
+          <input type="button" class="btn btn-secondary me-3" style="float: right;" value="Logout" (click)="logout()">
+          <button class="btn gradient btn-secondary text-white me-3" style="float: right;" [routerLink]="'/admin'">Admin</button>      
         </div>
     </div>
   </nav>
+
+<div class="offcanvas offcanvas-start" style="width: 15.5%; position:fixed; margin-top: 3.85em;" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasMenu" aria-labelledby="offcanvasScrollingLabel">
+  <div class="overcanvas-header gradientReversed text-white" style="display: flex;">
+    <h5 class="ps-4 pt-3">Menu</h5>      
+    <button type="button" class="btn-close mt-3 bg-white" style="margin-left: 62%" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+  </div>
+  <div class="offcanvas-body">
+    <ul class="nav flex-column">
+      <li class="nav-item">
+        <a class="nav-link wishlistURL" [routerLink]="'/profile'"><i class="bi bi-file-person-fill"></i> Profile</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link wishlistURL" [routerLink]="'/cart'"><i class="bi bi-bag-check"></i> Checkout</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link wishlistURL"><i class="bi bi-cart3"></i> Cart</a>
+      </li>
+      <hr>
+      <li class="nav-item">
+        <a class="nav-link wishlistURL" aria-current="page" [routerLink]="'/home'"><i class="bi bi-house"></i> Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link wishlistURL" aria-current="page" (click)="logout()"><i class="bi bi-door-open"></i> Logout</a>
+      </li>
+    </ul>
+  </div>
+</div>
 
   

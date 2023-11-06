@@ -32,6 +32,7 @@ export class OffcanvasComponent implements OnInit {
   public test:string = '';
 
   public offcanvas?: bootstrap.Offcanvas;
+  public offcanvasWishlist?: bootstrap.Offcanvas;
 
   constructor(    public gameService: GameService,
     public gameDetailService: GameDetailService,
@@ -45,6 +46,8 @@ export class OffcanvasComponent implements OnInit {
 
   ngOnInit(): void {
     this.offcanvas = new bootstrap.Offcanvas(document.getElementById("offcanvasScrolling")!, {backdrop: false});
+    this.offcanvasWishlist = new bootstrap.Offcanvas(document.getElementById("offcanvasScrollingWishlist")!, {backdrop: false});
+    this.cartItems = JSON.parse(sessionStorage.getItem("cart")!);
   }
 
   public toggleCanvas(){
@@ -55,8 +58,16 @@ export class OffcanvasComponent implements OnInit {
     this.offcanvas!.show();
   }
 
-  public async addToCart(game: Game){
+  public toggleCanvasWishlist(){
+    this.offcanvasWishlist!.toggle();
+  }
 
+  public showCanvasWishlist(){
+    this.offcanvasWishlist!.show();
+  }
+
+  public async addToCart(game: Game){
+    this.offcanvasWishlist?.hide();
     this.showCanvas();
 
     if (this.cartItems.find(x => x.game_ID == game.id)){
@@ -66,7 +77,7 @@ export class OffcanvasComponent implements OnInit {
       this.cartItems = this.cartItems.filter(x => x.game_ID != newCartItem!.game_ID);
       this.cartItems.push(newCartItem!);
       //await this.cartItemService.upsertCartItem(cartItem);
-      sessionStorage.setItem("cart", JSON.stringify(this.wishlist));
+      sessionStorage.setItem("cart", JSON.stringify(this.cartItems));
       return;
     }
 
@@ -83,17 +94,19 @@ export class OffcanvasComponent implements OnInit {
 
     this.cartItems.push(cartItem)
     //await this.cartItemService.upsertCartItem(cartItem);
-    sessionStorage.setItem("cart", JSON.stringify(this.wishlist));
+    sessionStorage.setItem("cart", JSON.stringify(this.cartItems));
   }
 
   public async addItemToWishlist(game: Game){
-    this.showCanvas();
+    this.offcanvas?.hide();
+    this.showCanvasWishlist();
 
     if (this.wishlist.find(x => x.game_ID == game.id)){
       let newWishListItem = this.wishlist.find(x => x.game_ID == game.id);
       newWishListItem!.quantity++;
-      this.wishlist = this.wishlist.filter(x => x.id != newWishListItem!.id);
+      this.wishlist = this.wishlist.filter(x => x.game_ID != newWishListItem!.game_ID);
       this.wishlist.push(newWishListItem!);
+      sessionStorage.setItem("wishlist", JSON.stringify(this.wishlist));
       //await this.wishlistService.upsertWishlist(wishlistItem);
       return;
     }
@@ -109,6 +122,7 @@ export class OffcanvasComponent implements OnInit {
     };
 
     this.wishlist.push(wishlistItem);
+    sessionStorage.setItem("wishlist", JSON.stringify(this.wishlist));
     //await this.wishlistService.upsertWishlist(wishlistItem);
   }
 

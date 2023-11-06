@@ -14,6 +14,10 @@
     background-image: linear-gradient(to right bottom, #002f74, #565c95, #8f8eb7, #c7c5db, #ffffff);
 }
 
+.gradientReversed {
+    background-image: linear-gradient(to right top, #002f74, #565c95, #8f8eb7, #8f8eb7, #8f8eb7);
+}
+
 .customBorder1 {
     box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
 }
