@@ -1,9 +1,10 @@
-<app-navbar (open)="toggleOffCanvas()" [showingHome]="true"></app-navbar>
+<app-navbar (open)="toggleOffCanvas()" (filterVal)="filterGames($event)" [showingHome]="true"></app-navbar>
 <div class="container customBorder1">
   <div class="row row-cols-3 text-center">
-    <div *ngFor="let i of games" class="col pt-2 pb-2 justify-content-center">
+    <div *ngFor="let i of readyGames" class="col pt-5 pb-5 justify-content-center">
       <div class="card p-2 customBorder2 text-center" style="width: 24rem; overflow: none; min-height: 550px; max-height: 650px; width: 75%; height: 75%;">
-          <img src='assets/game_assets/{{i.gameAsset?.assetURL}}/front.jpg' style="max-height: 300px; min-height: 300px;"  class="card-img-top" alt="...">
+          <img [src]="i.src!" style="max-height: 300px; min-height: 300px;"  class="card-img-top" alt="..." (mouseover)="i.src = i.srcBack"
+          (mouseout)="i.src = i.srcFront">
           <div class="card-body">
             <h5 class="card-title text-center">{{i.gameName}}</h5>
             <p class="card-text text-center">{{i.gameDetails?.publisher}}</p>
@@ -28,7 +29,7 @@
 </div>
 
 <div *ngIf="offCanvasReady">
-  <app-offcanvas [user]="user" [games]="games" [gameDetails]="gameDetails" [assets]="assets" [cartItems]="cartItems" [wishlist]="wishlist"  #offcanvas></app-offcanvas>
+  <app-offcanvas (updateSignal)="updateNav()" [user]="user" [games]="games" [gameDetails]="gameDetails" [assets]="assets" [cartItems]="cartItems" [wishlist]="wishlist"  #offcanvas></app-offcanvas>
 </div>
 
 

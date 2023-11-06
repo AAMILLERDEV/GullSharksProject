@@ -15,6 +15,7 @@ import { GameDetailService } from 'src/services/gameDetails.service';
 import { UserService } from 'src/services/user.service';
 import { WishlistService } from 'src/services/wishlist.service';
 import { OffcanvasComponent } from '../offcanvas/offcanvas.component';
+import { NavbarComponent } from '../navbar/navbar.component';
 
 @Component({
   selector: 'app-home',
@@ -31,10 +32,12 @@ export class HomeComponent implements OnInit {
   public assets: Asset[] = [];
   public cartItems: CartItem[] = [];
   public wishlist: Wishlist[] = [];
+  public readyGames: Game[] = [];
 
   public offCanvasReady: boolean = false;
 
   @ViewChild(OffcanvasComponent) offcanvas!: OffcanvasComponent;
+  @ViewChild(NavbarComponent) navbar!: NavbarComponent;
 
   constructor (public userService: UserService,
     public toastr: ToastrService,
@@ -60,13 +63,24 @@ export class HomeComponent implements OnInit {
     this.offCanvasReady = true;
   }
 
+  public updateNav(){
+    this.navbar.getData();
+  }
+
+  public filterGames(val: string){
+    this.readyGames = this.games.filter(x => x.gameName.includes(val));
+  }
+
   public async getGameData(){
     this.games = await this.gameService.getGames();
     this.gameDetails = await this.gameDetailService.getGameDetails();
     this.assets = await this.assetService.getAssets();
     this.games.map(x => x.gameDetails = this.gameDetails.find(y => y.id == x.gameDetail_ID));
     this.games.map(x => x.gameAsset = this.assets.find(z => z.id == x.asset_ID));
-
+    this.games.map(x => x.srcFront = "assets/game_assets/" + this.assets.find(z => z.id == x.asset_ID)?.assetURL + "/front.jpg");
+    this.games.map(x => x.src = "assets/game_assets/" + this.assets.find(z => z.id == x.asset_ID)?.assetURL + "/front.jpg");
+    this.games.map(x => x.srcBack = "assets/game_assets/" + this.assets.find(z => z.id == x.asset_ID)?.assetURL + "/back.jpg");
+    this.readyGames = this.games;
     // if (this.wishlist != []){
     //   sessionStorage.setItem("wishlist", JSON.stringify(this.wishlist));
     // }
@@ -75,7 +89,6 @@ export class HomeComponent implements OnInit {
     //   sessionStorage.setItem("cart", JSON.stringify(this.cartItems));
     // }
 
-    console.log(this.games);
     //this.wishlist = await this.wishlistService.getWishlistByUserID(this.user!.id);
     //this.cartItems = await this.cartItemService.getCartItemsByUserID(this.user!.id);
   }

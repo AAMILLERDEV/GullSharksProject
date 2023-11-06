@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { Asset } from 'src/models/Asset';
 import { CartItem } from 'src/models/CartItem';
 import { Game } from 'src/models/Game';
@@ -29,6 +29,8 @@ export class OffcanvasComponent implements OnInit {
   @Input() public cartItems: CartItem[] = [];
   @Input() public wishlist: Wishlist[] = [];
 
+  @Output() updateSignal: EventEmitter<any> = new EventEmitter();
+
   public test:string = '';
 
   public offcanvas?: bootstrap.Offcanvas;
@@ -48,6 +50,10 @@ export class OffcanvasComponent implements OnInit {
     this.offcanvas = new bootstrap.Offcanvas(document.getElementById("offcanvasScrolling")!, {backdrop: false});
     this.offcanvasWishlist = new bootstrap.Offcanvas(document.getElementById("offcanvasScrollingWishlist")!, {backdrop: false});
     this.cartItems = JSON.parse(sessionStorage.getItem("cart")!);
+  }
+
+  public updateCartAndWishlist(){
+    this.updateSignal.emit();
   }
 
   public toggleCanvas(){
@@ -78,6 +84,7 @@ export class OffcanvasComponent implements OnInit {
       this.cartItems.push(newCartItem!);
       //await this.cartItemService.upsertCartItem(cartItem);
       sessionStorage.setItem("cart", JSON.stringify(this.cartItems));
+      this.updateCartAndWishlist();
       return;
     }
 
@@ -95,6 +102,7 @@ export class OffcanvasComponent implements OnInit {
     this.cartItems.push(cartItem)
     //await this.cartItemService.upsertCartItem(cartItem);
     sessionStorage.setItem("cart", JSON.stringify(this.cartItems));
+    this.updateCartAndWishlist();
   }
 
   public async addItemToWishlist(game: Game){
@@ -108,6 +116,7 @@ export class OffcanvasComponent implements OnInit {
       this.wishlist.push(newWishListItem!);
       sessionStorage.setItem("wishlist", JSON.stringify(this.wishlist));
       //await this.wishlistService.upsertWishlist(wishlistItem);
+      this.updateCartAndWishlist();
       return;
     }
 
@@ -124,18 +133,29 @@ export class OffcanvasComponent implements OnInit {
     this.wishlist.push(wishlistItem);
     sessionStorage.setItem("wishlist", JSON.stringify(this.wishlist));
     //await this.wishlistService.upsertWishlist(wishlistItem);
+    this.updateCartAndWishlist();
   }
 
   public async deleteCartItem(cartItem: CartItem){
     cartItem.isDeleted = true;
     this.cartItems = this.cartItems.filter(x => x.game_ID != cartItem.game_ID);
     //await this.cartItemService.upsertCartItem(cartItem);
+    sessionStorage.setItem("cart", JSON.stringify(this.cartItems));
+    this.updateCartAndWishlist();
+    if (this.cartItems.length == 0){
+      this.offcanvas?.hide();
+    }
   }
 
   public async deleteWishlistItem(wishlist: Wishlist){
     wishlist.isDeleted = true;
     this.wishlist = this.wishlist.filter(x => x.game_ID != wishlist.game_ID);
     //await this.wishlistService.upsertWishlist(wishlist);
+    sessionStorage.setItem("wishlist", JSON.stringify(this.wishlist));
+    this.updateCartAndWishlist();
+    if (this.wishlist.length == 0){
+      this.offcanvasWishlist?.hide();
+    }
   }
 
   public checkout(){

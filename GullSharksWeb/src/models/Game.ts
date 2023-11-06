@@ -10,4 +10,7 @@ export interface Game {
   isDeleted: boolean;
   gameDetails?: GameDetails;
   gameAsset?: Asset;
+  srcFront?: string;
+  srcBack?: string;
+  src?: string;
 }
