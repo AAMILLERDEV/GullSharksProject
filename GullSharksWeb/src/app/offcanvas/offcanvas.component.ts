@@ -29,6 +29,8 @@ export class OffcanvasComponent implements OnInit {
   @Input() public cartItems: CartItem[] = [];
   @Input() public wishlist: Wishlist[] = [];
 
+  public test:string = '';
+
   public offcanvas?: bootstrap.Offcanvas;
 
   constructor(    public gameService: GameService,
