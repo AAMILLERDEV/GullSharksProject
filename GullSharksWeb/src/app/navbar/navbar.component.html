@@ -23,7 +23,7 @@
           <input type="button" class="btn btn-secondary me-3" style="float: right;" value="Logout" (click)="logout()">
           <button class="btn gradient btn-secondary text-white me-3" style="float: right;" [routerLink]="'/admin'">Admin</button>      
           <div *ngIf="showingHome" class="d-flex pe-2">
-            <input class="form-control me-2" type="search" #searchValue (keyup)="searchForGames(searchValue.value)" placeholder="Search" aria-label="Search">
+            <input class="form-control me-2" type="search" #searchValue (keyup)="searchForGames(searchValue.value)" placeholder="Search For Games" aria-label="Search">
           </div>
         </div>
     </div>

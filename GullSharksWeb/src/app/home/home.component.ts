@@ -68,7 +68,7 @@ export class HomeComponent implements OnInit {
   }
 
   public filterGames(val: string){
-    this.readyGames = this.games.filter(x => x.gameName.includes(val));
+    this.readyGames = this.games.filter(x => x.gameName.toLowerCase().includes(val.toLowerCase()));
   }
 
   public async getGameData(){
