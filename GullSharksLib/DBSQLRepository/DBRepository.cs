@@ -63,6 +63,67 @@ public class DBRepository : IDBRepository
         return insertedID ?? ins.ID;
     }
 
+    //DB methods for the cardType object
+    public async Task<IEnumerable<CardType>> GetCardTypes()
+    {
+        try
+        {
+            using IDbConnection connection = new SqlConnection(connectionString);
+            return await connection.QueryAsync<CardType>("hist.cardTypes_GET", commandType: CommandType.StoredProcedure);
+
+        }
+        catch (Exception ex)
+        {
+            return default;
+        }
+    }
+
+    //DB methods for the cartItems object
+    public async Task<IEnumerable<CartItems>> GetCartItems()
+    {
+        try
+        {
+            using IDbConnection connection = new SqlConnection(connectionString);
+            return await connection.QueryAsync<CartItems>("hist.cartItems_GET", commandType: CommandType.StoredProcedure);
+
+        }
+        catch (Exception ex)
+        {
+            return default;
+        }
+    }
+
+    public async Task<int?> UpsertCartItems(CartItems ins)
+    {
+        int? insertedID = 0;
+
+        var parameters = new DynamicParameters(new Dictionary<string, object>
+        {
+            { "@id", ins.ID },
+            { "@game_ID", ins.GameID},
+            { "@quantity", ins.Quantity },
+            { "@subtotal", ins.Subtotal },
+            { "@total", ins.Total },
+            { "@user_ID", ins.User_ID},
+            { "@isDeleted", ins.IsDeleted }
+        });
+
+        parameters.Add("@insertedID", 0, direction: ParameterDirection.Output);
+
+        try
+        {
+            using IDbConnection connection = new SqlConnection(connectionString);
+            await connection.ExecuteAsync("hist.cartItems_UPSERT", parameters, commandType: CommandType.StoredProcedure);
+            insertedID = parameters.Get<int?>("@insertedID");
+        }
+        catch (Exception ex)
+        {
+            return default;
+        }
+
+        return insertedID ?? ins.ID;
+    }
+
     //DB methods for the credential object
     public async Task<int?> UpsertCredentials(Credential ins)
     {
@@ -92,7 +153,6 @@ public class DBRepository : IDBRepository
         return insertedID ?? ins.ID;
     }
 
-    // DB methods for the events object
     public async Task<Credential> GetCredentialsByID(int id)
     {
         try
@@ -155,6 +215,50 @@ public class DBRepository : IDBRepository
         {
             using IDbConnection connection = new SqlConnection(connectionString);
             await connection.ExecuteAsync("hist.events_UPSERT", parameters, commandType: CommandType.StoredProcedure);
+            insertedID = parameters.Get<int?>("@insertedID");
+        }
+        catch (Exception ex)
+        {
+            return default;
+        }
+
+        return insertedID ?? ins.ID;
+    }
+
+    // DB methods for the friendsList object
+    public async Task<IEnumerable<FriendsList>> GetFriendsList()
+    {
+        try
+        {
+            using IDbConnection connection = new SqlConnection(connectionString);
+            return await connection.QueryAsync<FriendsList>("hist.friendsList_GET", commandType: CommandType.StoredProcedure);
+
+        }
+        catch (Exception ex)
+        {
+            return default;
+        }
+    }
+
+    public async Task<int?> UpsertFriendsList(FriendsList ins)
+    {
+        int? insertedID = 0;
+
+        var parameters = new DynamicParameters(new Dictionary<string, object>
+        {
+            { "@id", ins.ID },
+            { "@user_ID", ins.User_ID },
+            { "@friend_ID", ins.Friend_ID },
+            { "@isConfirmed", ins.IsConfirmed },
+            { "@isDeleted", ins.IsDeleted }
+        });
+
+        parameters.Add("@insertedID", 0, direction: ParameterDirection.Output);
+
+        try
+        {
+            using IDbConnection connection = new SqlConnection(connectionString);
+            await connection.ExecuteAsync("hist.friendsList_UPSERT", parameters, commandType: CommandType.StoredProcedure);
             insertedID = parameters.Get<int?>("@insertedID");
         }
         catch (Exception ex)
@@ -424,6 +528,64 @@ public class DBRepository : IDBRepository
         return insertedID ?? ins.ID;
     }
 
+    // DB methods for the wishList object
+    public async Task<int?> UpsertWishlist(Wishlist ins)
+    {
+        int? insertedID = 0;
+
+        var parameters = new DynamicParameters(new Dictionary<string, object>
+        {
+            { "@id", ins.ID },
+            { "@game_ID", ins.Game_ID },
+            { "@User_ID", ins.User_ID },
+            { "@isDeleted", ins.IsDeleted },
+            { "@dateAdded", ins.DateAdded },
+            { "@quantity", ins.Quantity }
+        });
+
+        parameters.Add("@insertedID", 0, direction: ParameterDirection.Output);
+
+        try
+        {
+            using IDbConnection connection = new SqlConnection(connectionString);
+            await connection.ExecuteAsync("hist.wishlist_UPSERT", parameters, commandType: CommandType.StoredProcedure);
+            insertedID = parameters.Get<int?>("@insertedID");
+        }
+        catch (Exception ex)
+        {
+            return default;
+        }
+
+        return insertedID ?? ins.ID;
+    }
+
+    public async Task<IEnumerable<Wishlist>> GetWishlistByUserID(int user_ID)
+    {
+        try
+        {
+            using IDbConnection connection = new SqlConnection(connectionString);
+            return await connection.QueryAsync<Wishlist>("hist.wishlistByID_GET", new { user_ID }, commandType: CommandType.StoredProcedure);
+        }
+        catch (Exception ex)
+        {
+            return default;
+        }
+    }
+
+    public async Task<IEnumerable<Wishlist>> GetWishlists()
+    {
+        try
+        {
+            using IDbConnection connection = new SqlConnection(connectionString);
+            return await connection.QueryAsync<Wishlist>("hist.Wishlist_GET", commandType: CommandType.StoredProcedure);
+
+        }
+        catch (Exception ex)
+        {
+            return default;
+        }
+    }
+
     // DB methods for the assest object
     public async Task<IEnumerable<Asset>> GetAssets()
     {
@@ -611,6 +773,158 @@ public class DBRepository : IDBRepository
         }
     }
 
+    // DB methods for the orderDetails object
+    public async Task<int?> UpsertOrderDetails(OrderDetails ins)
+    {
+        int? insertedID = 0;
+
+        var parameters = new DynamicParameters(new Dictionary<string, object>
+        {
+            { "@id", ins.ID },
+            { "@quantity", ins.Quantity },
+            { "@subtotal", ins.Subtotal },
+            { "@total", ins.Total },
+            { "@useShippingAddress", ins.UseShippingAddress },
+            { "@dateCreated", ins.DateCreated },
+            { "@isDeleted", ins.IsDeleted }
+        });
+
+        parameters.Add("@insertedID", 0, direction: ParameterDirection.Output);
+
+        try
+        {
+            using IDbConnection connection = new SqlConnection(connectionString);
+            await connection.ExecuteAsync("hist.orderDetails_UPSERT", parameters, commandType: CommandType.StoredProcedure);
+            insertedID = parameters.Get<int?>("@insertedID");
+        }
+        catch (Exception ex)
+        {
+            return default;
+        }
+
+        return insertedID ?? ins.ID;
+    }
+
+    public async Task<IEnumerable<OrderDetails>> GetOrderDetailsByID(int orderDetails_ID)
+    {
+        try
+        {
+            using IDbConnection connection = new SqlConnection(connectionString);
+            return await connection.QueryAsync<OrderDetails>("hist.orderDetailsByID_GET", new { orderDetails_ID }, commandType: CommandType.StoredProcedure);
+        }
+        catch (Exception ex)
+        {
+            return default;
+        }
+    }
+
+    // DB methods for the order object
+    public async Task<int?> UpsertOrders(Order ins)
+    {
+        int? insertedID = 0;
+
+        var parameters = new DynamicParameters(new Dictionary<string, object>
+        {
+            { "@id", ins.ID },
+            { "@game_ID", ins.Game_ID },
+            { "@subtotal", ins.Subtotal },
+            { "@total", ins.Total },
+            { "isConfirmed", ins.IsConfirmed },
+            { "@dateCreated", ins.DateCreated },
+            { "@orderDetail_ID", ins.OrderDetail_ID },
+            { "@User_ID", ins.User_ID },
+            { "@isDeleted", ins.IsDeleted }
+        });
+
+        parameters.Add("@insertedID", 0, direction: ParameterDirection.Output);
+
+        try
+        {
+            using IDbConnection connection = new SqlConnection(connectionString);
+            await connection.ExecuteAsync("hist.orders_UPSERT", parameters, commandType: CommandType.StoredProcedure);
+            insertedID = parameters.Get<int?>("@insertedID");
+        }
+        catch (Exception ex)
+        {
+            return default;
+        }
+
+        return insertedID ?? ins.ID;
+    }
+
+    public async Task<IEnumerable<Order>> GetOrdersByUserID(int user_ID)
+    {
+        try
+        {
+            using IDbConnection connection = new SqlConnection(connectionString);
+            return await connection.QueryAsync<Order>("hist.ordersByID_GET", new { user_ID }, commandType: CommandType.StoredProcedure);
+        }
+        catch (Exception ex)
+        {
+            return default;
+        }
+    }
+
+    public async Task<IEnumerable<Order>> GetOrders()
+    {
+        try
+        {
+            using IDbConnection connection = new SqlConnection(connectionString);
+            return await connection.QueryAsync<Order>("hist.orders_GET", commandType: CommandType.StoredProcedure);
+
+        }
+        catch (Exception ex)
+        {
+            return default;
+        }
+    }
+
+    // DB methods for the paymentDetails object
+    public async Task<int?> UpsertPaymentDetails(PaymentDetails ins)
+    {
+        int? insertedID = 0;
+
+        var parameters = new DynamicParameters(new Dictionary<string, object>
+        {
+            { "@id", ins.ID },
+            { "@order_ID", ins.Order_ID },
+            { "@cardType_ID", ins.CardType_ID },
+            { "@cardNumber", ins.CardNumber },
+            { "@securityCode", ins.SecurityCode },
+            { "@User_ID", ins.User_ID },
+            { "@total", ins.Total },
+            { "@isDeleted", ins.IsDeleted }
+        });
+
+        parameters.Add("@insertedID", 0, direction: ParameterDirection.Output);
+
+        try
+        {
+            using IDbConnection connection = new SqlConnection(connectionString);
+            await connection.ExecuteAsync("hist.paymentDetails_UPSERT", parameters, commandType: CommandType.StoredProcedure);
+            insertedID = parameters.Get<int?>("@insertedID");
+        }
+        catch (Exception ex)
+        {
+            return default;
+        }
+
+        return insertedID ?? ins.ID;
+    }
+
+    public async Task<IEnumerable<PaymentDetails>> GetPaymentDetailsByUserID(int user_ID)
+    {
+        try
+        {
+            using IDbConnection connection = new SqlConnection(connectionString);
+            return await connection.QueryAsync<PaymentDetails>("hist.paymentDetailsByID_GET", new { user_ID }, commandType: CommandType.StoredProcedure);
+        }
+        catch (Exception ex)
+        {
+            return default;
+        }
+    }
+
     // DB methods for the platformGameLookUp object
     public async Task<IEnumerable<PlatformGameLookUp>> GetPlatformGameLookUpByID(int platform_ID)
     {
@@ -636,7 +950,7 @@ public class DBRepository : IDBRepository
             return default;
         }
     }
-    
+
     public async Task<int?> UpsertPlatformGameLookUp(PlatformGameLookUp ins)
     {
         int? insertedID = 0;
