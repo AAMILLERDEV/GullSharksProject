@@ -47,9 +47,22 @@ export class OffcanvasComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.setupOffcanvas();
+  }
+
+  public setupOffcanvas(){
     this.offcanvas = new bootstrap.Offcanvas(document.getElementById("offcanvasScrolling")!, {backdrop: false});
     this.offcanvasWishlist = new bootstrap.Offcanvas(document.getElementById("offcanvasScrollingWishlist")!, {backdrop: false});
     this.cartItems = JSON.parse(sessionStorage.getItem("cart")!);
+    this.wishlist = JSON.parse(sessionStorage.getItem("wishlist")!);
+
+    if (this.cartItems == null){
+      this.cartItems = [];
+    }
+
+    if (this.wishlist == null){
+      this.wishlist = [];
+    }
   }
 
   public updateCartAndWishlist(){
@@ -76,7 +89,7 @@ export class OffcanvasComponent implements OnInit {
     this.offcanvasWishlist?.hide();
     this.showCanvas();
 
-    if (this.cartItems.find(x => x.game_ID == game.id)){
+    if (this.cartItems!= null && this.cartItems.find(x => x.game_ID == game.id)){
       let newCartItem = this.cartItems.find(x => x.game_ID == game.id);
       newCartItem!.quantity++;
       newCartItem!.subtotal = newCartItem!.subtotal + game.priceInCAD;
@@ -109,7 +122,7 @@ export class OffcanvasComponent implements OnInit {
     this.offcanvas?.hide();
     this.showCanvasWishlist();
 
-    if (this.wishlist.find(x => x.game_ID == game.id)){
+    if (this.wishlist != null && this.wishlist.find(x => x.game_ID == game.id)){
       let newWishListItem = this.wishlist.find(x => x.game_ID == game.id);
       newWishListItem!.quantity++;
       this.wishlist = this.wishlist.filter(x => x.game_ID != newWishListItem!.game_ID);

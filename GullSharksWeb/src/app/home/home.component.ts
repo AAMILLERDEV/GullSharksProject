@@ -16,6 +16,8 @@ import { UserService } from 'src/services/user.service';
 import { WishlistService } from 'src/services/wishlist.service';
 import { OffcanvasComponent } from '../offcanvas/offcanvas.component';
 import { NavbarComponent } from '../navbar/navbar.component';
+import { RatingService } from 'src/services/rating.service';
+import { Ratings } from 'src/models/Ratings';
 
 @Component({
   selector: 'app-home',
@@ -33,6 +35,8 @@ export class HomeComponent implements OnInit {
   public cartItems: CartItem[] = [];
   public wishlist: Wishlist[] = [];
   public readyGames: Game[] = [];
+  public ratings: Ratings[] = [];
+  public viewReady: boolean = false;
 
   public offCanvasReady: boolean = false;
 
@@ -46,7 +50,8 @@ export class HomeComponent implements OnInit {
     public gameDetailService: GameDetailService,
     public assetService: AssetService,
     public cartItemService: CartItemService,
-    public wishlistService: WishlistService) {
+    public wishlistService: WishlistService,
+    public ratingService: RatingService) {
 
   }
 
@@ -61,6 +66,38 @@ export class HomeComponent implements OnInit {
 
     await this.getGameData();
     this.offCanvasReady = true;
+    this.viewReady = true;
+    console.log(this.ratings);
+    console.log(this.games);
+  }
+
+  public applyGameRatings(){
+    for (let x of this.games){
+      let ratings = this.ratings.filter(y => y.game_ID == x.id);
+      console.log(ratings);
+      if (ratings == null || ratings.length == 0){
+        x.rating = 0;
+        continue;
+      }
+  
+      let total: number = 0;
+      for (let z of ratings){
+          total += z.ratingNumber;
+      }
+      x.rating = (total / ratings.length);
+      x.textColor = this.ratingColors(x.rating);
+    }
+
+  }
+
+  public ratingColors(num: number){
+    if (num <= 50){
+      return "text-secondary";
+    } else if (num > 50 && num <= 75){
+      return "text-warning";
+    } else {
+      return "text-success";
+    }
   }
 
   public updateNav(){
@@ -75,11 +112,13 @@ export class HomeComponent implements OnInit {
     this.games = await this.gameService.getGames();
     this.gameDetails = await this.gameDetailService.getGameDetails();
     this.assets = await this.assetService.getAssets();
+    this.ratings = await this.ratingService.getRatings();
     this.games.map(x => x.gameDetails = this.gameDetails.find(y => y.id == x.gameDetail_ID));
     this.games.map(x => x.gameAsset = this.assets.find(z => z.id == x.asset_ID));
     this.games.map(x => x.srcFront = "assets/game_assets/" + this.assets.find(z => z.id == x.asset_ID)?.assetURL + "/front.jpg");
     this.games.map(x => x.src = "assets/game_assets/" + this.assets.find(z => z.id == x.asset_ID)?.assetURL + "/front.jpg");
     this.games.map(x => x.srcBack = "assets/game_assets/" + this.assets.find(z => z.id == x.asset_ID)?.assetURL + "/back.jpg");
+    this.applyGameRatings();
     this.readyGames = this.games;
     // if (this.wishlist != []){
     //   sessionStorage.setItem("wishlist", JSON.stringify(this.wishlist));
@@ -99,6 +138,10 @@ export class HomeComponent implements OnInit {
 
   public toggleOffCanvas(){
     this.offcanvas.toggleCanvas();
+  }
+
+  toggleWishlistOffCanvas(){
+    this.offcanvas.toggleCanvasWishlist();
   }
 
   public async addItemToWishlist(game: Game){

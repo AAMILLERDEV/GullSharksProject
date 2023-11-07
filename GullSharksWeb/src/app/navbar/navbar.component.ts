@@ -5,6 +5,7 @@ import { User } from 'src/models/User';
 import { UserService } from 'src/services/user.service';
 import { CartItem } from 'src/models/CartItem';
 import * as bootstrap from 'bootstrap';
+import { Wishlist } from 'src/models/Wishlist';
 
 @Component({
   selector: 'app-navbar',
@@ -15,11 +16,13 @@ export class NavbarComponent implements OnInit {
 
   public user?: User;
   public cart: CartItem[] = [];
+  public wishlist: Wishlist[] = [];
   public offcanvasMenu?: bootstrap.Offcanvas;
 
   @Input() public showingHome: boolean = false;
 
-  @Output() open: EventEmitter<any> = new EventEmitter();
+  @Output() openCart: EventEmitter<any> = new EventEmitter();
+  @Output() openWishlist: EventEmitter<any> = new EventEmitter();
   @Output() filterVal: EventEmitter<any> = new EventEmitter();
 
   constructor (public userService: UserService,
@@ -30,13 +33,13 @@ export class NavbarComponent implements OnInit {
 
   public async ngOnInit(){
     this.user = JSON.parse(sessionStorage.getItem("User")!);
-    this.cart = JSON.parse(sessionStorage.getItem("cart")!);
     this.offcanvasMenu = new bootstrap.Offcanvas(document.getElementById("offcanvasMenu")!, {backdrop: false});
     this.offcanvasMenu!.show();
   }
 
   public async getData(){
     this.cart = JSON.parse(sessionStorage.getItem("cart")!);
+    this.wishlist = JSON.parse(sessionStorage.getItem("wishlist")!);
   }
 
   public showCanvas(){
@@ -49,7 +52,11 @@ export class NavbarComponent implements OnInit {
   }
 
   public showOffCanvas(){
-    this.open.emit();
+    this.openCart.emit();
+  }
+
+  public showWishlistOffCanvas(){
+    this.openWishlist.emit();
   }
 
   public searchForGames(val: string){

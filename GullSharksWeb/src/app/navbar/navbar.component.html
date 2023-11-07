@@ -1,4 +1,4 @@
-<nav class="navbar sticky-top navbar-expand-lg navbar-dark gradient">
+<nav class="navbar sticky-top navbar-expand-lg navbar-dark gradient mb-1">
     <div class="container-fluid justify-content-between row">
         <div class="col-4 nav ms-2">
           <div>
@@ -9,10 +9,13 @@
               <button class="btn gradient btn-secondary text-white" [routerLink]="'/home'">CVGS</button>
             </li>
           </div>
-          <div *ngIf="showingHome">
+          <div *ngIf="showingHome && cart != null && cart.length > 0">
             <button class="btn btn-primary ms-3"(click)="showOffCanvas()"><i class="bi bi-cart3"></i> Cart ({{cart.length}})</button>
           </div>
-          <div *ngIf="showingHome && cart.length > 0">
+          <div *ngIf="showingHome && wishlist != null && wishlist.length > 0">
+            <button class="btn btn-primary ms-3"(click)="showWishlistOffCanvas()"><i class="bi bi-cart3"></i> Wishlist ({{wishlist.length}})</button>
+          </div>
+          <div *ngIf="showingHome && cart != null && cart.length > 0">
             <button class="btn btn-warning ms-3" ><i class="bi bi-bag-check"></i> Checkout</button>
           </div>
         </div>
@@ -29,12 +32,12 @@
     </div>
   </nav>
 
-<div class="offcanvas offcanvas-start" style="width: 15.7%; position:fixed; margin-top: 3.85em;" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasMenu" aria-labelledby="offcanvasScrollingLabel">
+<div class="offcanvas offcanvas-start border-top" style="width: 15.7%; position:fixed; margin-top: 3.85em;" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasMenu" aria-labelledby="offcanvasScrollingLabel">
   <div class="overcanvas-header gradientReversed text-white" style="display: flex;">
     <h5 class="ps-4 pt-3">Menu</h5>      
     <button type="button" class="btn-close mt-3 bg-white" style="margin-left: 62%" data-bs-dismiss="offcanvas" aria-label="Close"></button>
   </div>
-  <div class="offcanvas-body">
+  <div class="offcanvas-body glass">
     <ul class="nav flex-column">
       <li class="nav-item">
         <a class="nav-link wishlistURL" [routerLink]="'/profile'"><i class="bi bi-file-person-fill"></i> Profile</a>

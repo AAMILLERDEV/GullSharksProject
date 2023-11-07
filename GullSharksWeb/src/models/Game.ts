@@ -13,4 +13,6 @@ export interface Game {
   srcFront?: string;
   srcBack?: string;
   src?: string;
+  rating?: number;
+  textColor?: string;
 }
