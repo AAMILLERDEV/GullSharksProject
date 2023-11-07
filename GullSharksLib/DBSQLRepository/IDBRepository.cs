@@ -88,18 +88,33 @@ public interface IDBRepository
     public Task<int?> UpsertCategoryPreference(CategoryPreference lang);
     public Task<int?> UpsertPlatformPreference(PlatformPreference lang);
 
-    ////Card Types
-    //public Task<IEnumerable<CardType>> GetCardTypes();
+    //Card Types
+    public Task<IEnumerable<CardType>> GetCardTypes();
 
-    //public Task<int?> UpsertCardType(CardType cardType);
+    //Cart Items
+    public Task<IEnumerable<CartItems>> GetCartItems(int user_ID);
+    public Task<int?> UpsertCartItems(CartItems ins);
 
-    ////Cart Items
-    //public Task<IEnumerable<CartItems>> GetCartItems();
-    //public Task<CartItems> GetCartItemsByID(int id);
-    //public Task<int?> UpsertCartItems(CartItems ins);
+    //Payment Details
+    public Task<IEnumerable<PaymentDetails>> GetPaymentDetailsByUserID(int user_ID);
+    public Task<int?> UpsertPaymentDetails(PaymentDetails ins);
 
-    ////Payment Details
-    //public Task<IEnumerable<PaymentDetails>> GetPaymentDetails();
-    //public Task<PaymentDetails> GetPaymentDetailsByID(int id);
-    //public Task<int?> UpsertPaymentDetails(PaymentDetails ins);
+    //Friends List 
+    public Task<IEnumerable<FriendsList>> GetFriendsListByUserID(int user_ID);
+    public Task<IEnumerable<FriendsList>> GetFriendsList();
+    public Task<int?> UpsertFriendsList(FriendsList friendsList);
+
+    //Order Details
+    public Task<OrderDetails> GetOrderDetailsByID(int id);
+    public Task<int?> UpsertOrderDetails(OrderDetails od);
+
+    //Orders
+    public Task<IEnumerable<Order>> GetOrdersByUserID(int user_ID);
+    public Task<IEnumerable<Order>> GetOrders();
+    public Task<int?> UpsertOrder(Order order);
+
+    //Wishlist
+    public Task<IEnumerable<Wishlist>> GetWishlistByUserID(int user_ID);
+    public Task<IEnumerable<Wishlist>> GetWishlists();
+    public Task<int?> UpsertWishlist(Wishlist wishlist);
 }

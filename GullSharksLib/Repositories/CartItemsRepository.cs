@@ -1,21 +1,19 @@
-﻿//using GullSharksLib.Models;
-//using Microsoft.Extensions.Options;
+﻿using GullSharksLib.Models;
+using Microsoft.Extensions.Options;
 
-//namespace GullSharksLib;
+namespace GullSharksLib;
 
-//public class CartItemsRepository : ICartItemsRepository
-//{
-//    private readonly IDBRepository db;
+public class CartItemsRepository : ICartItemsRepository
+{
+    private readonly IDBRepository db;
 
-//    public CartItemsRepository(IOptionsMonitor<AppSetting> options)
-//    {
-//        db = new DBRepository(options.CurrentValue.DbConn);
-//    }
+    public CartItemsRepository(IOptionsMonitor<AppSetting> options)
+    {
+        db = new DBRepository(options.CurrentValue.DbConn);
+    }
 
-//    public Task<IEnumerable<CartItems>> GetCartItems() => db.GetCartItems();
+    public Task<IEnumerable<CartItems>> GetCartItemsByUserID(int user_ID) => db.GetCartItems(user_ID);
 
-//    public Task<CartItems> GetCartItemsByID(int id) => db.GetCartItemsByID(id);
+    public Task<int?> UpsertCartItems(CartItems cartItems) => db.UpsertCartItems(cartItems);
 
-//    public Task<int?> UpsertCartItems(CartItems cartItems) => db.UpsertCartItems(cartItems);
-
-//}
+}

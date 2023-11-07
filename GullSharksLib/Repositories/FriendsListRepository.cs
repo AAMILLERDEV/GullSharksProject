@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Options;
 
 namespace GullSharksLib;
-public class FriendsListRepository //: IFriendsListRepository
+public class FriendsListRepository : IFriendsListRepository
 {
     private readonly IDBRepository db;
 
@@ -11,7 +11,7 @@ public class FriendsListRepository //: IFriendsListRepository
         db = new DBRepository(options.CurrentValue.DbConn);
     }
 
-    //public Task<IEnumerable<FriendsList>> GetFriendsListByUserID(int user_ID) => db.GetFriendsListByUserID(user_ID);
-    //public Task<IEnumerable<FriendsList>> GetFriendsListByID(int id) => db.GetFriendsListByID(id);
-    //public Task<int?> UpsertFriendsList(FriendsList friendsList) => db.UpsertFriendsList(friendsList);
+    public Task<IEnumerable<FriendsList>> GetFriendsListByUserID(int user_ID) => db.GetFriendsListByUserID(user_ID);
+    public Task<IEnumerable<FriendsList>> GetFriendsList() => db.GetFriendsList();
+    public Task<int?> UpsertFriendsList(FriendsList friendsList) => db.UpsertFriendsList(friendsList);
 }

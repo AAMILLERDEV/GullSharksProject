@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Options;
 
 namespace GullSharksLib;
-public class WishlistRepository //: IWishlistRepository
+public class WishlistRepository : IWishlistRepository
 {
     private readonly IDBRepository db;
 
@@ -11,7 +11,7 @@ public class WishlistRepository //: IWishlistRepository
         db = new DBRepository(options.CurrentValue.DbConn);
     }
 
-    //public Task<IEnumerable<Wishlist>> GetWishlistByUserID(int user_ID) => db.GetWishlistByUserID(user_ID);
-    //public Task<IEnumerable<Wishlist>> GetWishlistByID(int id) => db.GetWishlistByID(id);
-    //public Task<int?> UpsertWishlist(Wishlist wishlist) => db.UpsertWishlist(wishlist);
+    public Task<IEnumerable<Wishlist>> GetWishlistByUserID(int user_ID) => db.GetWishlistByUserID(user_ID);
+    public Task<IEnumerable<Wishlist>> GetWishlist() => db.GetWishlists();
+    public Task<int?> UpsertWishlist(Wishlist wishlist) => db.UpsertWishlist(wishlist);
 }

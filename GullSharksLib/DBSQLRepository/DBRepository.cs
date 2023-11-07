@@ -79,12 +79,12 @@ public class DBRepository : IDBRepository
     }
 
     //DB methods for the cartItems object
-    public async Task<IEnumerable<CartItems>> GetCartItems()
+    public async Task<IEnumerable<CartItems>> GetCartItems(int user_ID)
     {
         try
         {
             using IDbConnection connection = new SqlConnection(connectionString);
-            return await connection.QueryAsync<CartItems>("hist.cartItems_GET", commandType: CommandType.StoredProcedure);
+            return await connection.QueryAsync<CartItems>("hist.cartItems_GET", new { user_ID }, commandType: CommandType.StoredProcedure);
 
         }
         catch (Exception ex)
@@ -232,6 +232,20 @@ public class DBRepository : IDBRepository
         {
             using IDbConnection connection = new SqlConnection(connectionString);
             return await connection.QueryAsync<FriendsList>("hist.friendsList_GET", commandType: CommandType.StoredProcedure);
+
+        }
+        catch (Exception ex)
+        {
+            return default;
+        }
+    }
+
+    public async Task<IEnumerable<FriendsList>> GetFriendsListByUserID(int user_ID)
+    {
+        try
+        {
+            using IDbConnection connection = new SqlConnection(connectionString);
+            return await connection.QueryAsync<FriendsList>("hist.friendsListByUserID_GET", new { user_ID }, commandType: CommandType.StoredProcedure);
 
         }
         catch (Exception ex)
@@ -805,12 +819,12 @@ public class DBRepository : IDBRepository
         return insertedID ?? ins.ID;
     }
 
-    public async Task<IEnumerable<OrderDetails>> GetOrderDetailsByID(int orderDetails_ID)
+    public async Task<OrderDetails> GetOrderDetailsByID(int orderDetails_ID)
     {
         try
         {
             using IDbConnection connection = new SqlConnection(connectionString);
-            return await connection.QueryAsync<OrderDetails>("hist.orderDetailsByID_GET", new { orderDetails_ID }, commandType: CommandType.StoredProcedure);
+            return await connection.QueryFirstOrDefaultAsync<OrderDetails>("hist.orderDetailsByID_GET", new { orderDetails_ID }, commandType: CommandType.StoredProcedure);
         }
         catch (Exception ex)
         {
@@ -819,7 +833,7 @@ public class DBRepository : IDBRepository
     }
 
     // DB methods for the order object
-    public async Task<int?> UpsertOrders(Order ins)
+    public async Task<int?> UpsertOrder(Order ins)
     {
         int? insertedID = 0;
 

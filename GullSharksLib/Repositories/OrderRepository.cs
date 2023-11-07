@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Options;
 
 namespace GullSharksLib;
-public class OrderRepository //: IOrderRepository
+public class OrderRepository : IOrderRepository
 {
     private readonly IDBRepository db;
 
@@ -11,8 +11,8 @@ public class OrderRepository //: IOrderRepository
         db = new DBRepository(options.CurrentValue.DbConn);
     }
 
-    //public Task<IEnumerable<Order>> GetOrders() => db.GetOrders();
-    //public Task<Order> GetOrderByID(int id) => db.GetOrderByID(id);
-    //public Task<int?> UpsertOrder(Order order) => db.UpsertOrder(order);
+    public Task<IEnumerable<Order>> GetOrders() => db.GetOrders();
+    public Task<IEnumerable<Order>> GetOrdersByUserID(int user_ID) => db.GetOrdersByUserID(user_ID);
+    public Task<int?> UpsertOrder(Order order) => db.UpsertOrder(order);
 }
 

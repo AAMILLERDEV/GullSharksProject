@@ -16,7 +16,7 @@
             <button class="btn btn-primary ms-3"(click)="showWishlistOffCanvas()"><i class="bi bi-cart3"></i> Wishlist ({{wishlist.length}})</button>
           </div>
           <div *ngIf="showingHome && cart != null && cart.length > 0">
-            <button class="btn btn-warning ms-3" ><i class="bi bi-bag-check"></i> Checkout</button>
+            <button class="btn btn-warning ms-3" [routerLink]="'/checkout'"><i class="bi bi-bag-check"></i> Checkout</button>
           </div>
         </div>
         <div class="text-center col-4">
@@ -43,10 +43,10 @@
         <a class="nav-link wishlistURL" [routerLink]="'/profile'"><i class="bi bi-file-person-fill"></i> Profile</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link wishlistURL" [routerLink]="'/cart'"><i class="bi bi-bag-check"></i> Checkout</a>
+        <a class="nav-link wishlistURL" [routerLink]="'/checkout'"><i class="bi bi-bag-check"></i> Checkout</a>
       </li>
       <li class="nav-item">
-        <a class="nav-link wishlistURL"><i class="bi bi-cart3"></i> Cart</a>
+        <a class="nav-link wishlistURL" (click)="showOffCanvas()"><i class="bi bi-cart3"></i> Cart</a>
       </li>
       <hr>
       <li class="nav-item">

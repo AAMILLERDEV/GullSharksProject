@@ -107,7 +107,7 @@ export class OffcanvasComponent implements OnInit {
       isDeleted: false, 
       quantity: 1, 
       subtotal: game.priceInCAD, 
-      total: (game.priceInCAD * 13), 
+      total: 0, 
       user_ID: this.user!.id, 
       game: game
     };

@@ -6,6 +6,7 @@ import { AdminComponent } from './admin/admin.component';
 import { ProfileComponent } from './profile/profile.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
 import { ValidationComponent } from './validation/validation.component';
+import { CheckoutComponent } from './checkout/checkout.component';
 
 const routes: Routes = [
   {path: "", component: HomeComponent},
@@ -14,6 +15,7 @@ const routes: Routes = [
   {path: "admin", component: AdminComponent},
   {path: "profile", component: ProfileComponent},
   {path: "signup", component: SignUpComponent},
+  {path: "checkout", component: CheckoutComponent},
   {path: "Validation/:username", component: ValidationComponent}
 ];
 
