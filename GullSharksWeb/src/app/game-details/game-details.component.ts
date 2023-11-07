@@ -22,6 +22,9 @@ import { Ratings } from 'src/models/Ratings';
 import { ActivatedRoute } from '@angular/router';
 import { Platform } from 'src/models/Platform';
 import { PlatformsGamesLookUp } from 'src/models/PlatformsGamesLookUp';
+import { GameCategory } from 'src/models/GameCategory';
+import { CategoryPreference } from 'src/models/CategoryPreference';
+import { GameCategoryService } from 'src/services/gameCategories.service';
 
 @Component({
   selector: 'app-game-details',
@@ -40,6 +43,7 @@ export class GameDetailsComponent implements OnInit{
   public ratings: Ratings[] = [];
   public platforms: Platform[] = [];
   public platformLookUp: PlatformsGamesLookUp[] = [];
+  public categories: GameCategory[] = [];
   public viewReady: boolean = false;
 
   public gameName: Game[] = [];
@@ -61,6 +65,7 @@ export class GameDetailsComponent implements OnInit{
     public cartItemService: CartItemService,
     public wishlistService: WishlistService,
     public platformService: PlatformService,
+    public categoryService: GameCategoryService,
     public ratingService: RatingService) {
 
   }
@@ -101,20 +106,41 @@ export class GameDetailsComponent implements OnInit{
 
     this.getPlatform(gameId);
 
-
+    this.getCategory(gameId);
   }
 
   public async getPlatform(gameId: number){
 
     this.platformLookUp = await this.platformService.getPlatformGamesLookUpByGame(gameId);
-    const allPlatforms: Platform[] = await this.platformService.getPlatforms(); // Assuming getPlatforms returns Platform[]
+    const allPlatforms: Platform[] = await this.platformService.getPlatforms();
 
-    // Filter platforms based on platformLookUp
     this.platforms = allPlatforms.filter((platform: Platform) =>
       this.platformLookUp.some((lookupItem: PlatformsGamesLookUp) => lookupItem.platform_ID === platform.id)
     );
 
 }
+
+  public async getCategory(gameId: number){
+
+    this.gameDetails = await this.gameDetailService.getGameDetails();
+    this.gameDetails = this.gameDetails.filter(gameDetail => gameDetail.id === gameId);
+
+  if (!this.gameDetails || this.gameDetails.length === 0) {
+    console.error('No game details found for gameId:', gameId);
+    return;
+  }
+
+  const gameDetail = this.gameDetails[0]; // Assuming there's only one gameDetail for a gameId
+  const categoryID = gameDetail.category_ID;
+
+  const allCategories: GameCategory[] = await this.categoryService.GetGameCategories();
+
+  this.categories = allCategories.filter((category: GameCategory) =>
+    category.id === categoryID
+  );
+
+
+  }
 
   public async relatedGames(gameId: number) {
 
