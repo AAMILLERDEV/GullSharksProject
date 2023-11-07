@@ -243,21 +243,72 @@ export class CheckoutComponent implements OnInit {
     this.toastr.success("Success, address updated");
   }
 
-  public placeOrder(){
+  public placeOrder(cardType: any){
+    if (this.paymentDetailsForm.invalid){
+      this.toastr.error("Please fill out all form fields.");
+      return;
+    }
 
+    if (this.checkForValidCardNumber(cardType) == false){
+      return;
+    }
+
+    if (this.validateExpiry(this.paymentDetailsForm.controls['expiryDateControl'].value) == false){
+      this.toastr.error("Expiry date must be in the future.");
+      return;
+    }
   }
+
+  public expiryDateFormatter() {
+    let DobVal = this.paymentDetailsForm.controls['expiryDateControl'].value;
+    if (DobVal.length == 2) {
+        this.paymentDetailsForm.controls['expiryDateControl'].setValue(DobVal + '/');
+    }
+}
 
   public calculateCartTotal(){
     let total: number = 0;
-
     for (let x of this.cartItems){
       total += x.subtotal;
     }
-
     total = this.calculateCanadianTax(total, this.address.provinceTerritoryAB)!;
     if (total > 0){
       this.cartTotal = total;
     }
+  }
+
+  public checkForValidCardNumber(val: string){
+    let pattern = new RegExp('');
+
+    if (val == "1"){
+      pattern = new RegExp('^4[0-9]{12}(?:[0-9]{3})?$');
+    } else if (val == "2"){
+      pattern = new RegExp('^(?:5[1-5][0-9]{2}|222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720)[0-9]{12}$');
+    } else {
+      pattern = new RegExp('^4[0-9]{15}$');
+    }
+
+    let result = pattern.test(this.paymentDetailsForm.controls['cardNumberControl'].value.toString());
+
+    if (result == false){
+      this.toastr.error("Card number is incorrect, please review.");
+      return false;
+    }
+    return true;
+  }
+
+  public validateExpiry (input: string) {
+    // ensure basic format is correct
+    if (input.match(/^((0[1-9]|1[0-2])\/\d{2})$/)) {
+      const {0: month, 1: year} = input.split("/");
+  
+      // get midnight of first day of the next month
+      const expiry = new Date(parseInt("20" + year), parseInt(month));
+      const current = new Date();
+      
+      return expiry.getTime() > current.getTime();
+      
+    } else return false;
   }
 
 }
