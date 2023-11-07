@@ -134,10 +134,10 @@ export class OffcanvasComponent implements OnInit {
     }
 
     let wishlistItem: Wishlist = {
-      game_ID: game.id, 
-      id: 0, 
-      isDeleted: false, 
-      quantity: 1, 
+      game_ID: game.id,
+      id: 0,
+      isDeleted: false,
+      quantity: 1,
       user_ID: this.user!.id,
       dateAdded: new Date(),
       game: game
@@ -170,6 +170,7 @@ export class OffcanvasComponent implements OnInit {
       this.offcanvasWishlist?.hide();
     }
   }
+
 
   public checkout(){
     this.router.navigateByUrl("/checkout");

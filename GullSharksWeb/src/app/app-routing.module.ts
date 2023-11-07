@@ -5,6 +5,7 @@ import { LoginComponent } from './login/login.component';
 import { AdminComponent } from './admin/admin.component';
 import { ProfileComponent } from './profile/profile.component';
 import { SignUpComponent } from './sign-up/sign-up.component';
+import { GameDetailsComponent } from './game-details/game-details.component';
 import { ValidationComponent } from './validation/validation.component';
 import { CheckoutComponent } from './checkout/checkout.component';
 
@@ -15,6 +16,7 @@ const routes: Routes = [
   {path: "admin", component: AdminComponent},
   {path: "profile", component: ProfileComponent},
   {path: "signup", component: SignUpComponent},
+  {path: "game-details/:id", component: GameDetailsComponent},
   {path: "checkout", component: CheckoutComponent},
   {path: "Validation/:username", component: ValidationComponent}
 ];
