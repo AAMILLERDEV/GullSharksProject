@@ -10,7 +10,8 @@
             <p class="card-text text-center">{{i.gameDetails?.publisher}}</p>
             <div class="text-center">
               <button class="btn btn-success text-center me-2" (click)="addToCart(i)">Add to Cart <span><i class="bi bi-cart2"></i></span></button>
-              <button class="btn gradient border-dark text-white text-center">View Details </button>
+              <button class="btn gradient border-dark text-white text-center" [routerLink]="['/game-details', i.id]">View Details</button>
+
             </div>
             <div class="text-center pt-1 m-2">
               <label class="customBorder1 p-1" style="width: 40%;">

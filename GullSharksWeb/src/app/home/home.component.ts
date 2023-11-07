@@ -71,6 +71,8 @@ export class HomeComponent implements OnInit {
     console.log(this.games);
   }
 
+
+
   public applyGameRatings(){
     for (let x of this.games){
       let ratings = this.ratings.filter(y => y.game_ID == x.id);
@@ -79,7 +81,7 @@ export class HomeComponent implements OnInit {
         x.rating = 0;
         continue;
       }
-  
+
       let total: number = 0;
       for (let z of ratings){
           total += z.ratingNumber;
@@ -151,5 +153,6 @@ export class HomeComponent implements OnInit {
   public async addToCart(game: Game){
     this.offcanvas.addToCart(game);
   }
+
 
 }

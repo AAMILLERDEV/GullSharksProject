@@ -1,1 +1,29 @@
-<p>game-details works!</p>
+<app-navbar></app-navbar>
+<div *ngIf="gameDetails.length > 0">
+  <h2>Game</h2>
+  <ul>
+    <li *ngFor="let game of games">
+      <p>ID: {{ game.id }}</p>
+      <img [src]="game.src!" style="max-height: 30%; min-height: 50%; padding: 1em; border-radius: 2.5%;"  class="card-img-top customBorder1" alt="..." (mouseover)="game.src = game.srcBack"
+          (mouseout)="game.src = game.srcFront">
+      <p>Name: {{ game.gameName }}</p>
+      <p>Price: {{ game.priceInCAD }}</p>
+      <p>Asset ID: {{ game.asset_ID }}</p>
+      <p>Detail ID: {{ game.gameDetail_ID }}</p>
+      <p>Deleted: {{ game.isDeleted ? 'Yes' : 'No' }}</p>
+    </li>
+  </ul>
+</div>
+  <h2>Game Details</h2>
+  <ul>
+    <li *ngFor="let game of gameDetails">
+      <p>ID: {{ game.id }}</p>
+      <p>Publisher: {{ game.publisher }}</p>
+      <p>Category ID: {{ game.category_ID }}</p>
+      <p>Description: {{ game.description }}</p>
+      <p>Deleted: {{ game.isDeleted ? 'Yes' : 'No' }}</p>
+    </li>
+  </ul>
+<div *ngIf="gameDetails.length === 0">
+  <p>No game details found.</p>
+</div>
