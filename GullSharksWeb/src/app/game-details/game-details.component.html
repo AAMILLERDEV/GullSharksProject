@@ -10,8 +10,9 @@
       <p>Price: {{ game.priceInCAD }}</p>
       <p>Asset ID: {{ game.asset_ID }}</p>
       <p>Detail ID: {{ game.gameDetail_ID }}</p>
-      <p>Deleted: {{ game.isDeleted ? 'Yes' : 'No' }}</p>
-    </li>
+      <li *ngFor="let platform of platforms">
+          <p>Platform: {{ platform.platformName }}</p>
+      </li>
   </ul>
 </div>
   <h2>Game Details</h2>
@@ -21,9 +22,32 @@
       <p>Publisher: {{ game.publisher }}</p>
       <p>Category ID: {{ game.category_ID }}</p>
       <p>Description: {{ game.description }}</p>
-      <p>Deleted: {{ game.isDeleted ? 'Yes' : 'No' }}</p>
     </li>
   </ul>
+
+  <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      <div class="carousel-item active">
+        <p>1</p>
+      </div>
+      <div class="carousel-item">
+        <p>2</p>
+      </div>
+      <div class="carousel-item">
+        <p>3</p>
+      </div>
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+      <span class="carousel-control-next-icon" aria-hidden="true"></span>
+      <span class="visually-hidden">Next</span>
+    </button>
+  </div>
+
+
 <div *ngIf="gameDetails.length === 0">
   <p>No game details found.</p>
 </div>

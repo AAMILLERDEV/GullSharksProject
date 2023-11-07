@@ -28,5 +28,5 @@ export class PlatformService {
   public upsertPlatformGamesLookUp(plat: PlatformsGamesLookUp){
     return this.sharedService.upsert(`PlatformGameLookUp/UpsertPlatformGameLookup`, plat);
   }
-  
+
 }

@@ -14,11 +14,14 @@ import { GameService } from 'src/services/game.service';
 import { GameDetailService } from 'src/services/gameDetails.service';
 import { UserService } from 'src/services/user.service';
 import { WishlistService } from 'src/services/wishlist.service';
+import { PlatformService } from 'src/services/platform.service';
 import { OffcanvasComponent } from '../offcanvas/offcanvas.component';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { RatingService } from 'src/services/rating.service';
 import { Ratings } from 'src/models/Ratings';
 import { ActivatedRoute } from '@angular/router';
+import { Platform } from 'src/models/Platform';
+import { PlatformsGamesLookUp } from 'src/models/PlatformsGamesLookUp';
 
 @Component({
   selector: 'app-game-details',
@@ -35,6 +38,8 @@ export class GameDetailsComponent implements OnInit{
   public wishlist: Wishlist[] = [];
   public readyGames: Game[] = [];
   public ratings: Ratings[] = [];
+  public platforms: Platform[] = [];
+  public platformLookUp: PlatformsGamesLookUp[] = [];
   public viewReady: boolean = false;
 
   public gameName: Game[] = [];
@@ -55,6 +60,7 @@ export class GameDetailsComponent implements OnInit{
     public assetService: AssetService,
     public cartItemService: CartItemService,
     public wishlistService: WishlistService,
+    public platformService: PlatformService,
     public ratingService: RatingService) {
 
   }
@@ -92,6 +98,34 @@ export class GameDetailsComponent implements OnInit{
 
     this.gameDetails = await this.gameDetailService.getGameDetails();
     this.gameDetails = this.gameDetails.filter(gameDetail => gameDetail.id === gameId);
+
+    this.getPlatform(gameId);
+
+
+  }
+
+  public async getPlatform(gameId: number){
+
+    this.platformLookUp = await this.platformService.getPlatformGamesLookUpByGame(gameId);
+    const allPlatforms: Platform[] = await this.platformService.getPlatforms(); // Assuming getPlatforms returns Platform[]
+
+    // Filter platforms based on platformLookUp
+    this.platforms = allPlatforms.filter((platform: Platform) =>
+      this.platformLookUp.some((lookupItem: PlatformsGamesLookUp) => lookupItem.platform_ID === platform.id)
+    );
+
+}
+
+  public async relatedGames(gameId: number) {
+
+    this.games = await this.gameService.getGames();
+    this.games.map(x => x.gameAsset = this.assets.find(z => z.id == x.asset_ID));
+    this.games.map(x => x.srcFront = "assets/game_assets/" + this.assets.find(z => z.id == x.asset_ID)?.assetURL + "/front.jpg");
+    this.games.map(x => x.src = "assets/game_assets/" + this.assets.find(z => z.id == x.asset_ID)?.assetURL + "/front.jpg");
+
+    this.gameDetails = await this.gameDetailService.getGameDetails();
+
+
   }
 
 }
