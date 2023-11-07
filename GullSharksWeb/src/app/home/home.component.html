@@ -1,4 +1,4 @@
-<app-navbar (openCart)="toggleOffCanvas()" (openWishlist)="toggleWishlistOffCanvas()" (filterVal)="filterGames($event)" [showingHome]="true"></app-navbar>
+<app-navbar *ngIf="viewReady" (openCart)="toggleOffCanvas()" (openWishlist)="toggleWishlistOffCanvas()" (filterVal)="filterGames($event)" [showingHome]="true"></app-navbar>
 <div class="container customBorder1" *ngIf="viewReady">
   <div class="row row-cols-3 text-center">
     <div *ngFor="let i of readyGames" class="col pt-2 justify-content-center">
@@ -24,7 +24,8 @@
               </label>
             </div>
             <div class="text-center">
-              <h1 class="mt-3 {{i.textColor}}">{{i.rating!.toFixed(0)}}%</h1>
+              <h1 *ngIf="i.rating! > 0" class="mt-3 {{i.textColor}}">{{i.rating!.toFixed(0)}}%</h1>
+              <h5 *ngIf="i.rating! == 0" class="mt-3 fst-italic text-white">No Rating Yet</h5>
             </div>
           </div>
         </div>

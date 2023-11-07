@@ -14,10 +14,10 @@ export class CartItemService {
   }
 
   public getCartItemsByUserID(user_ID: number){
-    return this.sharedService.get(`CartItem/getCartItemsByUserID/${user_ID}`);
+    return this.sharedService.get(`CartItems/GetCartItemsByUserID/${user_ID}`);
   }
 
   public upsertCartItem(cartItem: CartItem){
-    return this.sharedService.upsert(`CartItem/UpsertCartItem`, cartItem);
+    return this.sharedService.upsert(`CartItems/UpsertCartItem`, cartItem);
   }
 }

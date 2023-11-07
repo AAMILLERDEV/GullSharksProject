@@ -10,10 +10,10 @@
             </li>
           </div>
           <div *ngIf="showingHome && cart != null && cart.length > 0">
-            <button class="btn btn-primary ms-3"(click)="showOffCanvas()"><i class="bi bi-cart3"></i> Cart ({{cart.length}})</button>
+            <button class="btn btn-primary ms-3"(click)="showOffCanvas()"><i class="bi bi-cart3 me-1"></i> Cart ({{cart.length}})</button>
           </div>
           <div *ngIf="showingHome && wishlist != null && wishlist.length > 0">
-            <button class="btn btn-primary ms-3"(click)="showWishlistOffCanvas()"><i class="bi bi-cart3"></i> Wishlist ({{wishlist.length}})</button>
+            <button class="btn btn-primary ms-3"(click)="showWishlistOffCanvas()"><i class="bi bi-calendar2-heart me-1"></i> Wishlist ({{wishlist.length}})</button>
           </div>
           <div *ngIf="showingHome && cart != null && cart.length > 0">
             <button class="btn btn-warning ms-3" [routerLink]="'/checkout'"><i class="bi bi-bag-check"></i> Checkout</button>
@@ -40,18 +40,18 @@
   <div class="offcanvas-body glass">
     <ul class="nav flex-column">
       <li class="nav-item">
+        <a class="nav-link wishlistURL" aria-current="page" [routerLink]="'/home'"><i class="bi bi-house"></i> Home</a>
+      </li>
+      <li class="nav-item">
         <a class="nav-link wishlistURL" [routerLink]="'/profile'"><i class="bi bi-file-person-fill"></i> Profile</a>
       </li>
       <li class="nav-item">
         <a class="nav-link wishlistURL" [routerLink]="'/checkout'"><i class="bi bi-bag-check"></i> Checkout</a>
       </li>
-      <li class="nav-item">
+      <li class="nav-item" *ngIf="showingHome">
         <a class="nav-link wishlistURL" (click)="showOffCanvas()"><i class="bi bi-cart3"></i> Cart</a>
       </li>
       <hr>
-      <li class="nav-item">
-        <a class="nav-link wishlistURL" aria-current="page" [routerLink]="'/home'"><i class="bi bi-house"></i> Home</a>
-      </li>
       <li class="nav-item">
         <a class="nav-link wishlistURL" aria-current="page" (click)="logout()"><i class="bi bi-door-open"></i> Logout</a>
       </li>

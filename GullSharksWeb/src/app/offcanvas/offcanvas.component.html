@@ -1,7 +1,7 @@
 <div class="offcanvas offcanvas-end" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
     <div class="offcanvas-header gradient">
       <h5 class="offcanvas-title text-white" id="offcanvasScrollingLabel">Your Cart <span class="ms-2"><i class="bi bi-cart2"></i></span></h5>
-      <button *ngIf="cartItems != null && cartItems.length > 0" class="btn customBorder1 me-2 btn-success">Checkout</button>
+      <button *ngIf="cartItems != null && cartItems.length > 0" [routerLink]="'/checkout'" class="btn customBorder1 me-2 btn-success">Checkout</button>
       <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
     </div>
     <div class="offcanvas-body">
@@ -16,7 +16,7 @@
                 <p class="card-text">Subtotal: {{i.subtotal.toFixed(2)}}</p>
               </div>
               <div class="col text-end">
-                <img src='assets/game_assets/{{i.game!.gameAsset?.assetURL}}/front.jpg' style="height: 100%; width: 75%;"  class="card-img-top text-end pb-4" alt="">
+                <img [src]='i.game?.src' style="height: 100%; width: 75%;"  class="card-img-top text-end pb-4" alt="">
               </div>
             </div>
             <button (click)="deleteCartItem(i)" class="btn btn-secondary customBorder1">Delete</button>

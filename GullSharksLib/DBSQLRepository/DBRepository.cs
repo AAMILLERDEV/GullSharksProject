@@ -100,7 +100,7 @@ public class DBRepository : IDBRepository
         var parameters = new DynamicParameters(new Dictionary<string, object>
         {
             { "@id", ins.ID },
-            { "@game_ID", ins.GameID},
+            { "@game_ID", ins.Game_ID},
             { "@quantity", ins.Quantity },
             { "@subtotal", ins.Subtotal },
             { "@total", ins.Total },

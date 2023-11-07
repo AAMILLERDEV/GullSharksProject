@@ -1,6 +1,6 @@
 export interface Province {
   id: number;
   provinceName: string;
-  provinceAb: string;
+  provinceAB: string;
   isDeleted: boolean;
 }

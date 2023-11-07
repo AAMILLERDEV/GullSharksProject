@@ -31,7 +31,8 @@ export class OffcanvasComponent implements OnInit {
 
   @Output() updateSignal: EventEmitter<any> = new EventEmitter();
 
-  public test:string = '';
+  public offCanvasReady: boolean = false;
+  public test: string = '';
 
   public offcanvas?: bootstrap.Offcanvas;
   public offcanvasWishlist?: bootstrap.Offcanvas;
@@ -46,30 +47,39 @@ export class OffcanvasComponent implements OnInit {
     public router: Router){
   }
 
-  ngOnInit(): void {
-    this.setupOffcanvas();
-  }
+  async ngOnInit() {
 
-  public setupOffcanvas(){
+    await this.updateCartAndWishlist();
     this.offcanvas = new bootstrap.Offcanvas(document.getElementById("offcanvasScrolling")!, {backdrop: false});
     this.offcanvasWishlist = new bootstrap.Offcanvas(document.getElementById("offcanvasScrollingWishlist")!, {backdrop: false});
-    this.cartItems = JSON.parse(sessionStorage.getItem("cart")!);
-    this.wishlist = JSON.parse(sessionStorage.getItem("wishlist")!);
+    this.offCanvasReady = true;
 
-    if (this.cartItems == null){
-      this.cartItems = [];
+  }
+
+  public async setupOffcanvas(){
+    this.wishlist = await this.wishlistService.getWishlistByUserID(this.user!.id);
+    if (this.wishlist){
+      this.wishlist = this.wishlist.map(x => {
+        x.game = this.games.find(y => y.id == x.game_ID)!;
+        return x;
+      });
     }
-
-    if (this.wishlist == null){
-      this.wishlist = [];
+    this.cartItems = await this.cartItemService.getCartItemsByUserID(this.user!.id);
+    if (this.cartItems){
+      this.cartItems = this.cartItems.map(x => {
+        x.game = this.games.find(y => y.id == x.game_ID);
+        return x;
+      });
     }
   }
 
-  public updateCartAndWishlist(){
+  public async updateCartAndWishlist(){
+    await this.setupOffcanvas();
     this.updateSignal.emit();
   }
 
   public toggleCanvas(){
+    this.offcanvasWishlist!.hide();
     this.offcanvas!.toggle();
   }
 
@@ -78,6 +88,7 @@ export class OffcanvasComponent implements OnInit {
   }
 
   public toggleCanvasWishlist(){
+    this.offcanvas!.hide();
     this.offcanvasWishlist!.toggle();
   }
 
@@ -90,14 +101,14 @@ export class OffcanvasComponent implements OnInit {
     this.showCanvas();
 
     if (this.cartItems!= null && this.cartItems.find(x => x.game_ID == game.id)){
-      let newCartItem = this.cartItems.find(x => x.game_ID == game.id);
-      newCartItem!.quantity++;
-      newCartItem!.subtotal = newCartItem!.subtotal + game.priceInCAD;
-      this.cartItems = this.cartItems.filter(x => x.game_ID != newCartItem!.game_ID);
-      this.cartItems.push(newCartItem!);
-      //await this.cartItemService.upsertCartItem(cartItem);
-      sessionStorage.setItem("cart", JSON.stringify(this.cartItems));
-      this.updateCartAndWishlist();
+      let cartItem = this.cartItems.find(x => x.game_ID == game.id);
+      this.cartItems = this.cartItems.map(x => {if (x.game_ID == game.id){
+        x.subtotal = x.subtotal + game.priceInCAD;
+        x.quantity++;
+      } return x;});
+
+      await this.cartItemService.upsertCartItem(cartItem!);
+      await this.updateCartAndWishlist();
       return;
     }
 
@@ -113,9 +124,8 @@ export class OffcanvasComponent implements OnInit {
     };
 
     this.cartItems.push(cartItem)
-    //await this.cartItemService.upsertCartItem(cartItem);
-    sessionStorage.setItem("cart", JSON.stringify(this.cartItems));
-    this.updateCartAndWishlist();
+    await this.cartItemService.upsertCartItem(cartItem);
+    await this.updateCartAndWishlist();
   }
 
   public async addItemToWishlist(game: Game){
@@ -123,13 +133,13 @@ export class OffcanvasComponent implements OnInit {
     this.showCanvasWishlist();
 
     if (this.wishlist != null && this.wishlist.find(x => x.game_ID == game.id)){
-      let newWishListItem = this.wishlist.find(x => x.game_ID == game.id);
-      newWishListItem!.quantity++;
-      this.wishlist = this.wishlist.filter(x => x.game_ID != newWishListItem!.game_ID);
-      this.wishlist.push(newWishListItem!);
-      sessionStorage.setItem("wishlist", JSON.stringify(this.wishlist));
-      //await this.wishlistService.upsertWishlist(wishlistItem);
-      this.updateCartAndWishlist();
+      let wishListItem = this.wishlist.find(x => x.game_ID == game.id);
+      this.wishlist = this.wishlist.map(x => {if (x.game_ID == game.id){
+        x.quantity++;
+      } return x;});
+
+      await this.wishlistService.upsertWishlist(wishListItem!);
+      await this.updateCartAndWishlist();
       return;
     }
 
@@ -142,19 +152,15 @@ export class OffcanvasComponent implements OnInit {
       dateAdded: new Date(),
       game: game
     };
-
-    this.wishlist.push(wishlistItem);
-    sessionStorage.setItem("wishlist", JSON.stringify(this.wishlist));
-    //await this.wishlistService.upsertWishlist(wishlistItem);
-    this.updateCartAndWishlist();
+    await this.wishlistService.upsertWishlist(wishlistItem);
+    await this.updateCartAndWishlist();
   }
 
   public async deleteCartItem(cartItem: CartItem){
     cartItem.isDeleted = true;
     this.cartItems = this.cartItems.filter(x => x.game_ID != cartItem.game_ID);
-    //await this.cartItemService.upsertCartItem(cartItem);
-    sessionStorage.setItem("cart", JSON.stringify(this.cartItems));
-    this.updateCartAndWishlist();
+    await this.cartItemService.upsertCartItem(cartItem);
+    await this.updateCartAndWishlist();
     if (this.cartItems.length == 0){
       this.offcanvas?.hide();
     }
@@ -163,9 +169,8 @@ export class OffcanvasComponent implements OnInit {
   public async deleteWishlistItem(wishlist: Wishlist){
     wishlist.isDeleted = true;
     this.wishlist = this.wishlist.filter(x => x.game_ID != wishlist.game_ID);
-    //await this.wishlistService.upsertWishlist(wishlist);
-    sessionStorage.setItem("wishlist", JSON.stringify(this.wishlist));
-    this.updateCartAndWishlist();
+    await this.wishlistService.upsertWishlist(wishlist);
+    await this.updateCartAndWishlist();
     if (this.wishlist.length == 0){
       this.offcanvasWishlist?.hide();
     }

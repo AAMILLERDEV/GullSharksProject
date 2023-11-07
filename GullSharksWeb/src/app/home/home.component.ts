@@ -67,11 +67,7 @@ export class HomeComponent implements OnInit {
     await this.getGameData();
     this.offCanvasReady = true;
     this.viewReady = true;
-    console.log(this.ratings);
-    console.log(this.games);
   }
-
-
 
   public applyGameRatings(){
     for (let x of this.games){
@@ -81,7 +77,7 @@ export class HomeComponent implements OnInit {
         x.rating = 0;
         continue;
       }
-
+  
       let total: number = 0;
       for (let z of ratings){
           total += z.ratingNumber;
@@ -122,17 +118,10 @@ export class HomeComponent implements OnInit {
     this.games.map(x => x.srcBack = "assets/game_assets/" + this.assets.find(z => z.id == x.asset_ID)?.assetURL + "/back.jpg");
     this.applyGameRatings();
     this.readyGames = this.games;
-    // if (this.wishlist != []){
-    //   sessionStorage.setItem("wishlist", JSON.stringify(this.wishlist));
-    // }
-
-    // if (this.cartItems != []){
-    //   sessionStorage.setItem("cart", JSON.stringify(this.cartItems));
-    // }
-
-    //this.wishlist = await this.wishlistService.getWishlistByUserID(this.user!.id);
-    //this.cartItems = await this.cartItemService.getCartItemsByUserID(this.user!.id);
+    console.log(this.games);
   }
+
+
 
   public openOffCanvas(){
     this.offcanvas.showCanvas();
@@ -148,11 +137,12 @@ export class HomeComponent implements OnInit {
 
   public async addItemToWishlist(game: Game){
     this.offcanvas.addItemToWishlist(game);
+    this.navbar.getData();
   }
 
   public async addToCart(game: Game){
     this.offcanvas.addToCart(game);
+    this.navbar.getData();
   }
-
 
 }

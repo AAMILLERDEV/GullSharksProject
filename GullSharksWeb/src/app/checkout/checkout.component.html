@@ -1,26 +1,176 @@
-<app-navbar (openCart)="toggleOffCanvas()" [showingHome]="true"></app-navbar>
+<app-navbar></app-navbar>
 <div class="container customBorder1" *ngIf="viewReady">
-  <div class="row row-cols-3 text-center">
-    <div *ngFor="let i of cartItems" class="col pt-2 justify-content-center">
-      <div class="card p-2 customBorder2 text-center" style="width: 24rem; overflow: none; min-height: 650px; max-height: 800px; width: 75%; height: 75%;">
-          <img [src]="i.game!.src" style="max-height: 30%; min-height: 50%; padding: 1em; border-radius: 2.5%;"  class="card-img-top customBorder1" alt="..." (mouseover)="i.game!.src = i.game!.srcBack"
-          (mouseout)="i.game!.src = i.game!.srcFront">
-          <div class="card-body pt-2 mt-2 text-white customGameBG" style="border-radius: 2.5%;" >
-            <h5 class="card-title text-center">{{i}}</h5>
-            <p class="card-text text-center">{{i.game!.gameDetails!.publisher}}</p>
-            <div class="text-center">
-              <button class="btn btn-success text-center me-2">Remove from Cart <span><i class="bi bi-cart2"></i></span></button>
-              <button class="btn gradient border-dark text-white text-center">View Details </button>
+    <div *ngIf="cartItems.length > 0">
+        <div class="m-2">
+            <div class="d-flex p-2 mb-2 mt-2 customBorder2">
+                <h3 class="pe-1">Shipping Address</h3>
+                <button class="btn border-dark ms-3" (click)="openAddressModal()">Edit/Add Shipping Address</button>
             </div>
-            <div class="text-center pt-1 m-2">
-              <label class="customBorder1 p-1" style="width: 40%; background-color:white; color:black; border-radius: 5%;">
-                  C$ {{i.total}}
-              </label>
+            <div>
+                <ul *ngIf="address" class="list-group" style="max-width: 25%;" >
+                    <li class="list-group-item"><span class="fst-italic">Name:</span> {{userDetails.firstName}} {{userDetails.lastName}}</li>
+                    <li class="list-group-item"><span class="fst-italic">Street Address: </span>{{address.streetAddress}}</li>
+                    <li class="list-group-item">{{address.city}}, {{address.provinceTerritoryAB}}, {{address.postalCode}}, {{address.countryName}}</li>
+                    <li class="list-group-item"><span class="fst-italic">Phone Number: </span>{{userDetails.phoneNumber}}</li>
+                    <li class="list-group-item"><span class="fst-italic">Delivery Instructions: </span>{{address.deliveryInstructions}}</li>
+                  </ul>
             </div>
-          </div>
+        </div>
+        <hr>
+        <div class="m-2">
+            <div class="d-flex p-2 mb-2 mt-2 customBorder2">
+                <h3>Payment Method</h3>
+            </div>
+            <form [formGroup]="paymentDetailsForm">
+                <div class="row" style="max-width: 50%;">
+                    <div class="input-group pt-3">
+                        <span class="input-group-text border border-dark">Name on Card</span>
+                        <input type="text" class="form-control border border-dark" formControlName="cvsControl" required>
+                    </div>
+                    <div class="input-group pt-3">
+                        <span class="input-group-text border border-dark">Card Type</span>
+                        <select class="form-select border border-dark" formControlName="cardTypeControl" required>
+                            <option [selected]="true" disabled>Card Type</option>
+                            <option value="1">Visa</option>
+                            <option value="2">Mastercard</option>
+                            <option value="3">Debit</option>
+                        </select>
+                    </div>
+                    <div class="input-group pt-3">
+                        <span class="input-group-text border border-dark">Card Number / CVS</span>
+                        <input type="number" class="form-control border border-dark" formControlName="cvsControl" required>
+                        <input type="number" class="form-control border border-dark" formControlName="cvsControl" required>
+                    </div>
+                </div>
+      
+            </form>
+        </div>
+        <hr>
+    
+        <div class="m-2">
+            <div class="d-flex p-2 mb-2 mt-2 customBorder2 justify-content-between">
+                <h3>Cart <i class="bi bi-cart3 me-1"></i></h3>
+                <h4>Order Total After Tax (CAD): <span style="font-size: 1.5rem; border-radius: 2em;" class="border border-dark p-2 ps-3 pe-3 me-3 ms-3">${{cartTotal.toFixed(2)}}</span></h4>
+                <button class="btn btn-warning" (click)="placeOrder()">Place your order</button>
+            </div>
+            <div class="row row-cols-4">
+                <div *ngFor="let i of cartItems" class="pb-2">
+                    <div class="card" style="width: 18rem; max-height: 15rem; min-height: 15rem;">
+                      <div class="card-body">
+                        <div class="row">
+                          <div  class="col">
+                            <h5 class="card-title">{{i.game!.gameName}}</h5>
+                            <h6 class="card-subtitle mb-2 text-success fst-italic">In Stock</h6>
+                            <p class="card-text">Quantity: {{i.quantity}}</p>
+                            <p class="card-text">Subtotal: {{i.subtotal.toFixed(2)}}</p>
+                          </div>
+                          <div class="col text-end">
+                            <img [src]='i.game?.src' style="height: 100%; width: 75%; min-height: 100px; max-height: 120px;"  class="card-img-top text-end pb-4" alt="">
+                          </div>
+                        </div>
+                        <div class="pt-4">
+                            <button class="btn btn-success" (click)="removeFromCart(i)">Remove <span><i class="bi bi-cart2"></i></span></button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+            </div>
         </div>
     </div>
-  </div>
+    <div *ngIf="cartItems.length == 0" class="pt-5 pb-5 text-center">
+        <div class="p-2 mb-2 pt-5 pb-5">
+            <div>
+                <h1>
+                    <i class="bi bi-cart3 me-1"></i>
+                </h1>
+            </div>
+            <div>
+                <h3 class="pe-1">Your cart is empty</h3>
+            </div>
+           
+            <div class="nav-item pt-5">
+                <button class="btn gradient btn-secondary text-white" [routerLink]="'/home'">Return Home</button>
+            </div>
+        </div>
+    </div>
 </div>
 
-<app-offcanvas (updateSignal)="updateNav()" [user]="user" [games]="games" [gameDetails]="gameDetails" [assets]="assets" [cartItems]="cartItems" [wishlist]="wishlist" #offcanvas></app-offcanvas>
+
+<!--The Address Modal-->
+<div class="modal fade" #addressModal id="addressModal" data-bs-backdrop="static" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Shipping Address</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="resetShippingForm()"></button>
+        </div>
+        <div class="modal-body">
+            <form [formGroup]="addressForm" class="form-group container customBorder2 p-5 alignRight">
+                <!--City/Country-->
+                <div class="row py-3">
+                    <div class="col-2">
+                        <label>Country:</label>
+                    </div>
+                    <div class="col-4">
+                        <ng-select formControlName="countryControl" [items]="countries" bindLabel="countryName" bindValue="id" class="customNGSelect">
+                        </ng-select>
+                    </div>
+                    <div class="col-2">
+                        <label>City:</label>
+                    </div>
+                    <div class="col-4">
+                        <input type="text" formControlName="cityControl" class="form-control customBorder2" required>
+                    </div>
+                </div>
+                <!--Province/Postal Code-->
+                <div class="row py-3" *ngIf="addressForm.controls['countryControl'].value == canada_ID">
+                    <div class="col-2">
+                        <label>Province:</label>
+                    </div>
+                    <div class="col-4">
+                        <ng-select formControlName="provinceControl" [items]="provinces" [bindLabel]="'provinceName'" [bindValue]="'id'" class="customNGSelect">
+                        </ng-select>
+                    </div>
+                    <div class="col-2">
+                        <label>Postal Code:</label>
+                    </div>
+                    <div class="col-4">
+                        <input type="text" formControlName="postalCodeControl" pattern="^(\d{5}(-\d{4})?|[A-Z]\d[A-Z] *\d[A-Z]\d)$" class="form-control customBorder2">
+                    </div>
+                </div>
+                <!--Phone Number-->
+                <div class="row py-3">
+                    <div class="col-2">
+                        <label>Phone Number:</label>
+                    </div>
+                    <div class="col-10">
+                        <input type="text" formControlName="phoneNumberControl" pattern="^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$" class="form-control customBorder2" required>
+                    </div>
+                </div>
+                <!--Street Address-->
+                <div class="row py-3">
+                    <div class="col-2">
+                        <label>Street Address:</label>
+                    </div>
+                    <div class="col-10">
+                        <input type="text" formControlName="streetAddressControl" class="form-control customBorder2" required>
+                    </div>
+                </div>
+                <!--Delivery Instructions-->
+                <div class="row py-3r">
+                    <div class="col-2">
+                        <label>Delivery Instructions:</label>
+                    </div>
+                    <div class="col-10">
+                        <textarea rows="3" class="form-control customBorder2" placeholder="Enter Instructions Here" formControlName="instructionsControl"></textarea>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="modal-footer justify-content-center">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="resetShippingForm()">Close</button>
+          <button type="button" class="btn btn-primary" (click)="updateShippingAddress()">Save changes</button>
+        </div>
+      </div>
+    </div>
+</div>
