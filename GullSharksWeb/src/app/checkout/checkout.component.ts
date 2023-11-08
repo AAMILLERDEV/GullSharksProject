@@ -120,19 +120,21 @@ export class CheckoutComponent implements OnInit {
   }
 
   public async getUserData(){
-    this.userDetails = await this.userDetailsService.getUserDetailsByID(this.user!.id);
     this.countries = await this.countryService.getCountries();
     this.provinces = await this.provinceService.getProvinces();
-    this.shippingAddress = await this.shippingAddressService.getShippingAddress(this.userDetails!.id);
+
+    this.userDetails = await this.userDetailsService.getUserDetailsByID(this.user!.id);
+
+    this.shippingAddress = await this.shippingAddressService.getShippingAddress(this.user!.id);
     if (this.shippingAddress == null){
-      this.address = await this.billingAddressService.getBillingAddress(this.userDetails!.id);
+      this.address = await this.billingAddressService.getBillingAddress(this.user!.id);
     } else {
       this.address = this.shippingAddress;
     }
 
     this.address.countryName = this.countries.find(x => x.id == this.address.country_ID)?.countryName;
     this.address.provinceTerritoryAB = this.provinces!.find(x => x.id === this.address.province_ID)!.provinceAB;
-
+    console.log(this.address);
     this.loadAddressData();
   }
 
@@ -193,15 +195,16 @@ export class CheckoutComponent implements OnInit {
     }
   }
 
-  public async resetShippingForm(){
-    this.addressForm.reset();
-  }
-
   public openAddressModal(){
     this.addressModal.toggle();
   }
 
   public async updateShippingAddress(){
+
+    if (this.addressForm.invalid){
+      this.toastr.error("Please fill out all form fields");
+      return;
+    }
 
     if (this.shippingAddress != null){
       this.shippingAddress.city = this.addressForm.controls['cityControl'].value;
@@ -211,10 +214,10 @@ export class CheckoutComponent implements OnInit {
       this.shippingAddress.postalCode = this.addressForm.controls['postalCodeControl'].value;
       this.shippingAddress.streetAddress = this.addressForm.controls['streetAddressControl'].value;
       await this.shippingAddressService.upsertShippingAddress(this.shippingAddress);
-      this.resetShippingForm();
       this.addressModal.toggle();
       await this.getUserData();
       this.toastr.success("Success, address updated");
+      this.calculateCartTotal();
       return;
     }
 
@@ -227,7 +230,7 @@ export class CheckoutComponent implements OnInit {
       postalCode: this.addressForm.controls['postalCodeControl'].value,
       province_ID: this.addressForm.controls['provinceControl'].value,
       streetAddress: this.addressForm.controls['streetAddressControl'].value,
-      userDetails_ID: this.userDetails.id
+      user_ID: this.user!.id
     };
 
     let shipRes = await this.shippingAddressService.upsertShippingAddress(shippingAddress);
@@ -237,10 +240,11 @@ export class CheckoutComponent implements OnInit {
       return;
     }
 
-    this.resetShippingForm();
     this.addressModal.toggle();
-    await this.getUserData();
     this.toastr.success("Success, address updated");
+    this.calculateCartTotal();
+    await this.getUserData();
+
   }
 
   public placeOrder(cardType: any){
@@ -268,13 +272,26 @@ export class CheckoutComponent implements OnInit {
 
   public calculateCartTotal(){
     let total: number = 0;
+
+
+
     for (let x of this.cartItems){
       total += x.subtotal;
     }
+
+    if (this.address == null){
+      console.log(this.cartTotal);
+      return this.cartTotal = (total * 1.13);
+    }
+    console.log(this.cartTotal);
     total = this.calculateCanadianTax(total, this.address.provinceTerritoryAB)!;
+    console.log(this.cartTotal);
     if (total > 0){
       this.cartTotal = total;
+
     }
+
+    return;
   }
 
   public checkForValidCardNumber(val: string){

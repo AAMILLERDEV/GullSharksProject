@@ -287,7 +287,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       province_ID: this.addressForm.controls['provinceControl'].value,
       streetAddress: this.addressForm.controls['streetAddressControl'].value,
       matchShipping: this.addressForm.controls['shippingAddressControl'].value,
-      userDetails_ID: this.userDetails.id
+      user_ID: this.userDetails.id
     };
 
     let res = await this.billingAddressService.upsertBillingAddress(billingAddress);
@@ -311,7 +311,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
           postalCode: this.addressForm.controls['postalCodeControl'].value,
           province_ID: this.addressForm.controls['provinceControl'].value,
           streetAddress: this.addressForm.controls['streetAddressControl'].value,
-          userDetails_ID: this.userDetails.id
+          user_ID: this.userDetails.id
         };
     
         let shipRes = await this.shippingAddressService.upsertShippingAddress(shippingAddress);
@@ -367,7 +367,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
         postalCode: this.addressForm.controls['postalCodeControl'].value,
         province_ID: this.addressForm.controls['provinceControl'].value,
         streetAddress: this.addressForm.controls['streetAddressControl'].value,
-        userDetails_ID: this.userDetails.id
+        user_ID: this.user!.id
       };
   
       let shipRes = await this.shippingAddressService.upsertShippingAddress(shippingAddress);

@@ -8,10 +8,10 @@
             </div>
             <div>
                 <ul *ngIf="address" class="list-group" style="max-width: 25%;" >
-                    <li class="list-group-item"><span class="fst-italic">Name:</span> {{userDetails.firstName}} {{userDetails.lastName}}</li>
+                    <li *ngIf="userDetails != null" class="list-group-item"><span class="fst-italic">Name:</span> {{userDetails.firstName}} {{userDetails.lastName}}</li>
                     <li class="list-group-item"><span class="fst-italic">Street Address: </span>{{address.streetAddress}}</li>
                     <li class="list-group-item">{{address.city}}, {{address.provinceTerritoryAB}}, {{address.postalCode}}, {{address.countryName}}</li>
-                    <li class="list-group-item"><span class="fst-italic">Phone Number: </span>{{userDetails.phoneNumber}}</li>
+                    <li *ngIf="userDetails != null" class="list-group-item"><span class="fst-italic">Phone Number: </span>{{userDetails.phoneNumber}}</li>
                     <li class="list-group-item"><span class="fst-italic">Delivery Instructions: </span>{{address.deliveryInstructions}}</li>
                   </ul>
             </div>
@@ -108,7 +108,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">Shipping Address</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="resetShippingForm()"></button>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="openAddressModal()"></button>
         </div>
         <div class="modal-body">
             <form [formGroup]="addressForm" class="form-group container customBorder2 p-5 alignRight">
@@ -144,15 +144,6 @@
                         <input type="text" formControlName="postalCodeControl" pattern="^(\d{5}(-\d{4})?|[A-Z]\d[A-Z] *\d[A-Z]\d)$" class="form-control customBorder2">
                     </div>
                 </div>
-                <!--Phone Number-->
-                <div class="row py-3">
-                    <div class="col-2">
-                        <label>Phone Number:</label>
-                    </div>
-                    <div class="col-10">
-                        <input type="text" formControlName="phoneNumberControl" pattern="^(\+\d{1,2}\s)?\(?\d{3}\)?[\s.-]\d{3}[\s.-]\d{4}$" class="form-control customBorder2" required>
-                    </div>
-                </div>
                 <!--Street Address-->
                 <div class="row py-3">
                     <div class="col-2">
@@ -174,7 +165,7 @@
             </form>
         </div>
         <div class="modal-footer justify-content-center">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="resetShippingForm()">Close</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="openAddressModal()">Close</button>
           <button type="button" class="btn btn-primary" (click)="updateShippingAddress()">Save changes</button>
         </div>
       </div>

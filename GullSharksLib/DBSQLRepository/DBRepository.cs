@@ -17,12 +17,12 @@ public class DBRepository : IDBRepository
     }
 
     //DB methods for the billingAddress object
-    public async Task<BillingAddress> GetBillingAddressByID(int userDetails_ID)
+    public async Task<BillingAddress> GetBillingAddressByID(int user_ID)
     {
         try
         {
             using IDbConnection connection = new SqlConnection(connectionString);
-            return await connection.QueryFirstOrDefaultAsync<BillingAddress>("hist.billingAddressByID_GET", new { userDetails_ID }, commandType: CommandType.StoredProcedure);
+            return await connection.QueryFirstOrDefaultAsync<BillingAddress>("hist.billingAddressByID_GET", new { user_ID }, commandType: CommandType.StoredProcedure);
         }
         catch (Exception ex)
         {
@@ -37,7 +37,7 @@ public class DBRepository : IDBRepository
         var parameters = new DynamicParameters(new Dictionary<string, object>
         {
             { "@id", ins.ID },
-            { "@userDetails_ID", ins.UserDetails_ID },
+            { "@user_ID", ins.User_ID },
             { "@city", ins.City },
             { "@country_ID", ins.Country_ID },
             { "@province_ID", ins.Province_ID },
@@ -375,12 +375,12 @@ public class DBRepository : IDBRepository
     }
 
     //DB methods for the shippingAddress object
-    public async Task<ShippingAddress> GetShippingAddressByID(int userDetails_ID)
+    public async Task<ShippingAddress> GetShippingAddressByID(int user_ID)
     {
         try
         {
             using IDbConnection connection = new SqlConnection(connectionString);
-            return await connection.QueryFirstOrDefaultAsync<ShippingAddress>("hist.shippingAddressByID_GET", new { userDetails_ID }, commandType: CommandType.StoredProcedure);
+            return await connection.QueryFirstOrDefaultAsync<ShippingAddress>("hist.shippingAddressByID_GET", new { user_ID }, commandType: CommandType.StoredProcedure);
         }
         catch (Exception ex)
         {
@@ -395,7 +395,7 @@ public class DBRepository : IDBRepository
         var parameters = new DynamicParameters(new Dictionary<string, object>
         {
             { "@id", ins.ID },
-            { "@userDetails_ID", ins.UserDetails_ID },
+            { "@user_ID", ins.User_ID },
             { "@city", ins.City },
             { "@country_ID", ins.Country_ID },
             { "@deliveryInstructions", ins.DeliveryInstructions },
