@@ -99,8 +99,6 @@ export class CheckoutComponent implements OnInit {
     this.viewReady = true;
   }
 
-
-
   public async getGameData(){
     this.games = await this.gameService.getGames();
     this.gameDetails = await this.gameDetailService.getGameDetails();
@@ -110,8 +108,6 @@ export class CheckoutComponent implements OnInit {
     this.games.map(x => x.srcFront = "assets/game_assets/" + this.assets.find(z => z.id == x.asset_ID)?.assetURL + "/front.jpg");
     this.games.map(x => x.src = "assets/game_assets/" + this.assets.find(z => z.id == x.asset_ID)?.assetURL + "/front.jpg");
     this.games.map(x => x.srcBack = "assets/game_assets/" + this.assets.find(z => z.id == x.asset_ID)?.assetURL + "/back.jpg");
-
-
   }
 
   public async getCartData(){
@@ -146,6 +142,7 @@ export class CheckoutComponent implements OnInit {
     cart.isDeleted = true;
     this.cartItems = this.cartItems.filter(x => x.game_ID != cart.game_ID);
     await this.cartItemService.upsertCartItem(cart);
+    this.calculateCartTotal();
   }
 
   public loadAddressData(){
@@ -186,7 +183,6 @@ export class CheckoutComponent implements OnInit {
       YT: 1.05, // Yukon
     };
   
-    // Check if the provided province/territory ID is valid
     if (taxRates.hasOwnProperty(provinceTerritoryAB)) {      
       return (amount * taxRates[provinceTerritoryAB]);
 
@@ -200,7 +196,6 @@ export class CheckoutComponent implements OnInit {
   }
 
   public async updateShippingAddress(){
-
     if (this.addressForm.invalid){
       this.toastr.error("Please fill out all form fields");
       return;
@@ -273,22 +268,18 @@ export class CheckoutComponent implements OnInit {
   public calculateCartTotal(){
     let total: number = 0;
 
-
-
     for (let x of this.cartItems){
       total += x.subtotal;
     }
 
     if (this.address == null){
-      console.log(this.cartTotal);
       return this.cartTotal = (total * 1.13);
     }
-    console.log(this.cartTotal);
+
     total = this.calculateCanadianTax(total, this.address.provinceTerritoryAB)!;
-    console.log(this.cartTotal);
+
     if (total > 0){
       this.cartTotal = total;
-
     }
 
     return;
