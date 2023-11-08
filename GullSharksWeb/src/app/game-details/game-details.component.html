@@ -1,56 +1,41 @@
 <app-navbar></app-navbar>
-<div *ngIf="gameDetails.length > 0">
-  <h2>Game</h2>
-  <ul>
-    <li *ngFor="let game of games">
-      <p>ID: {{ game.id }}</p>
-      <img [src]="game.src!" style="max-height: 30%; min-height: 50%; padding: 1em; border-radius: 2.5%;"  class="card-img-top customBorder1" alt="..." (mouseover)="game.src = game.srcBack"
-          (mouseout)="game.src = game.srcFront">
-      <p>Name: {{ game.gameName }}</p>
-      <p>Price: {{ game.priceInCAD }}</p>
-      <p>Asset ID: {{ game.asset_ID }}</p>
-      <p>Detail ID: {{ game.gameDetail_ID }}</p>
-      <li *ngFor="let platform of platforms">
-          <p>Platform: {{ platform.platformName }}</p>
-      </li>
-      <li *ngFor="let category of categories">
-        <p>Category: {{ category.categoryName }}</p>
-    </li>
-  </ul>
-</div>
-  <h2>Game Details</h2>
-  <ul>
-    <li *ngFor="let game of gameDetails">
-      <p>ID: {{ game.id }}</p>
-      <p>Publisher: {{ game.publisher }}</p>
-      <p>Category ID: {{ game.category_ID }}</p>
-      <p>Description: {{ game.description }}</p>
-    </li>
-  </ul>
 
-  <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
-    <div class="carousel-inner">
-      <div class="carousel-item active">
-        <p>1</p>
+<div *ngIf="gameDetails.length > 0">
+  <div>
+    <button class="btn gradient border-dark text-white text-center bl" [routerLink]="'/home'">Go Back?</button>
+  </div>
+  <div *ngFor="let game of readyGames">
+    <div class="game-container">
+      <div>
+        <h1 class="tl">{{ game.gameName }}</h1>
+        <img [src]="game.src!" style="max-height: 30%; min-height: 50%; padding: 1em; border-radius: 2.5%;"  class="card-img-top customBorder1" alt="..." (mouseover)="game.src = game.srcBack" (mouseout)="game.src = game.srcFront">
+        <p class="tl">Price: ${{ game.priceInCAD }} CAD</p>
+        <div *ngFor="let i of readyGames" class="gleft">
+            <button class="btn btn-success text-center me-2 " (click)="addToCart(game)">Add to Cart <span><i class="bi bi-cart2"></i></span></button>
+        </div>
+        <div class="gleft" >
+          <label class="fst-italic pt-1 wishlistURL">
+              Add to Wishlist <span><i class="bi bi-calendar2-heart ps-1"></i></span>
+          </label>
+        </div>
       </div>
-      <div class="carousel-item">
-        <p>2</p>
-      </div>
-      <div class="carousel-item">
-        <p>3</p>
+      <div>
+        <div *ngFor="let game of gameDetails">
+            <p class="left top">Publisher: {{ game.publisher }}</p>
+            <p class="left">Description:</p>
+            <p class="description-box left"> {{ game.description }}</p>
+
+            <div *ngFor="let genre of categories">
+              <p class="left">Genre: {{genre.categoryName}}</p>
+          </div>
+          <div class="platforms-container left">
+            <span>Platforms: </span>
+            <div class="platform-names">
+              <span *ngFor="let platform of platforms">{{platform.platformName}}</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-      <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Previous</span>
-    </button>
-    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-      <span class="carousel-control-next-icon" aria-hidden="true"></span>
-      <span class="visually-hidden">Next</span>
-    </button>
   </div>
-
-
-<div *ngIf="gameDetails.length === 0">
-  <p>No game details found.</p>
 </div>
