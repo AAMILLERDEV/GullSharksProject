@@ -99,8 +99,6 @@ export class CheckoutComponent implements OnInit {
     this.viewReady = true;
   }
 
-
-
   public async getGameData(){
     this.games = await this.gameService.getGames();
     this.gameDetails = await this.gameDetailService.getGameDetails();
@@ -110,8 +108,6 @@ export class CheckoutComponent implements OnInit {
     this.games.map(x => x.srcFront = "assets/game_assets/" + this.assets.find(z => z.id == x.asset_ID)?.assetURL + "/front.jpg");
     this.games.map(x => x.src = "assets/game_assets/" + this.assets.find(z => z.id == x.asset_ID)?.assetURL + "/front.jpg");
     this.games.map(x => x.srcBack = "assets/game_assets/" + this.assets.find(z => z.id == x.asset_ID)?.assetURL + "/back.jpg");
-
-
   }
 
   public async getCartData(){
@@ -120,19 +116,21 @@ export class CheckoutComponent implements OnInit {
   }
 
   public async getUserData(){
-    this.userDetails = await this.userDetailsService.getUserDetailsByID(this.user!.id);
     this.countries = await this.countryService.getCountries();
     this.provinces = await this.provinceService.getProvinces();
-    this.shippingAddress = await this.shippingAddressService.getShippingAddress(this.userDetails!.id);
+
+    this.userDetails = await this.userDetailsService.getUserDetailsByID(this.user!.id);
+
+    this.shippingAddress = await this.shippingAddressService.getShippingAddress(this.user!.id);
     if (this.shippingAddress == null){
-      this.address = await this.billingAddressService.getBillingAddress(this.userDetails!.id);
+      this.address = await this.billingAddressService.getBillingAddress(this.user!.id);
     } else {
       this.address = this.shippingAddress;
     }
 
     this.address.countryName = this.countries.find(x => x.id == this.address.country_ID)?.countryName;
     this.address.provinceTerritoryAB = this.provinces!.find(x => x.id === this.address.province_ID)!.provinceAB;
-
+    console.log(this.address);
     this.loadAddressData();
   }
 
@@ -144,6 +142,7 @@ export class CheckoutComponent implements OnInit {
     cart.isDeleted = true;
     this.cartItems = this.cartItems.filter(x => x.game_ID != cart.game_ID);
     await this.cartItemService.upsertCartItem(cart);
+    this.calculateCartTotal();
   }
 
   public loadAddressData(){
@@ -184,7 +183,6 @@ export class CheckoutComponent implements OnInit {
       YT: 1.05, // Yukon
     };
   
-    // Check if the provided province/territory ID is valid
     if (taxRates.hasOwnProperty(provinceTerritoryAB)) {      
       return (amount * taxRates[provinceTerritoryAB]);
 
@@ -193,15 +191,15 @@ export class CheckoutComponent implements OnInit {
     }
   }
 
-  public async resetShippingForm(){
-    this.addressForm.reset();
-  }
-
   public openAddressModal(){
     this.addressModal.toggle();
   }
 
   public async updateShippingAddress(){
+    if (this.addressForm.invalid){
+      this.toastr.error("Please fill out all form fields");
+      return;
+    }
 
     if (this.shippingAddress != null){
       this.shippingAddress.city = this.addressForm.controls['cityControl'].value;
@@ -211,10 +209,10 @@ export class CheckoutComponent implements OnInit {
       this.shippingAddress.postalCode = this.addressForm.controls['postalCodeControl'].value;
       this.shippingAddress.streetAddress = this.addressForm.controls['streetAddressControl'].value;
       await this.shippingAddressService.upsertShippingAddress(this.shippingAddress);
-      this.resetShippingForm();
       this.addressModal.toggle();
       await this.getUserData();
       this.toastr.success("Success, address updated");
+      this.calculateCartTotal();
       return;
     }
 
@@ -227,7 +225,7 @@ export class CheckoutComponent implements OnInit {
       postalCode: this.addressForm.controls['postalCodeControl'].value,
       province_ID: this.addressForm.controls['provinceControl'].value,
       streetAddress: this.addressForm.controls['streetAddressControl'].value,
-      userDetails_ID: this.userDetails.id
+      user_ID: this.user!.id
     };
 
     let shipRes = await this.shippingAddressService.upsertShippingAddress(shippingAddress);
@@ -237,15 +235,35 @@ export class CheckoutComponent implements OnInit {
       return;
     }
 
-    this.resetShippingForm();
     this.addressModal.toggle();
-    await this.getUserData();
     this.toastr.success("Success, address updated");
+    this.calculateCartTotal();
+    await this.getUserData();
+
   }
 
-  public placeOrder(){
+  public placeOrder(cardType: any){
+    if (this.paymentDetailsForm.invalid){
+      this.toastr.error("Please fill out all form fields.");
+      return;
+    }
 
+    if (this.checkForValidCardNumber(cardType) == false){
+      return;
+    }
+
+    if (this.validateExpiry(this.paymentDetailsForm.controls['expiryDateControl'].value) == false){
+      this.toastr.error("Expiry date must be in the future.");
+      return;
+    }
   }
+
+  public expiryDateFormatter() {
+    let DobVal = this.paymentDetailsForm.controls['expiryDateControl'].value;
+    if (DobVal.length == 2) {
+        this.paymentDetailsForm.controls['expiryDateControl'].setValue(DobVal + '/');
+    }
+}
 
   public calculateCartTotal(){
     let total: number = 0;
@@ -254,10 +272,51 @@ export class CheckoutComponent implements OnInit {
       total += x.subtotal;
     }
 
+    if (this.address == null){
+      return this.cartTotal = (total * 1.13);
+    }
+
     total = this.calculateCanadianTax(total, this.address.provinceTerritoryAB)!;
+
     if (total > 0){
       this.cartTotal = total;
     }
+
+    return;
+  }
+
+  public checkForValidCardNumber(val: string){
+    let pattern = new RegExp('');
+
+    if (val == "1"){
+      pattern = new RegExp('^4[0-9]{12}(?:[0-9]{3})?$');
+    } else if (val == "2"){
+      pattern = new RegExp('^(?:5[1-5][0-9]{2}|222[1-9]|22[3-9][0-9]|2[3-6][0-9]{2}|27[01][0-9]|2720)[0-9]{12}$');
+    } else {
+      pattern = new RegExp('^4[0-9]{15}$');
+    }
+
+    let result = pattern.test(this.paymentDetailsForm.controls['cardNumberControl'].value.toString());
+
+    if (result == false){
+      this.toastr.error("Card number is incorrect, please review.");
+      return false;
+    }
+    return true;
+  }
+
+  public validateExpiry (input: string) {
+    // ensure basic format is correct
+    if (input.match(/^((0[1-9]|1[0-2])\/\d{2})$/)) {
+      const {0: month, 1: year} = input.split("/");
+  
+      // get midnight of first day of the next month
+      const expiry = new Date(parseInt("20" + year), parseInt(month));
+      const current = new Date();
+      
+      return expiry.getTime() > current.getTime();
+      
+    } else return false;
   }
 
 }

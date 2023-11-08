@@ -15,8 +15,8 @@ public class BillingAddressController : ControllerBase
     }
 
     [HttpGet]
-    [Route("[controller]/GetBillingAddress/{userDetails_ID}")]
-    public Task<BillingAddress> GetBillingAddress(int userDetails_ID) => db.GetBillingAddressByID(userDetails_ID);
+    [Route("[controller]/GetBillingAddress/{user_ID}")]
+    public Task<BillingAddress> GetBillingAddress(int user_ID) => db.GetBillingAddressByID(user_ID);
     [HttpPost]
     [Route("[controller]/UpsertBillingAddress")]
     public Task<int?> UpsertBillingAddress(BillingAddress gd) => db.UpsertBillingAddress(gd);

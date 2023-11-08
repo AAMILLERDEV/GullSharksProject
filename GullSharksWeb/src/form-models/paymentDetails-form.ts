@@ -4,5 +4,5 @@ export const PaymentDetailsForm = new FormGroup ({
     cardTypeControl: new FormControl(),
     cardNumberControl: new FormControl(),
     cvsControl: new FormControl(),
-    totalControl: new FormControl()
+    expiryDateControl: new FormControl()
 })
