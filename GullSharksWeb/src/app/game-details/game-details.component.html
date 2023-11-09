@@ -2,10 +2,6 @@
 
 
 <div *ngIf="viewReady" class="container customBorder1 p-5">
-  <div>
-
-  </div>
-
   <div class="row">
     <div class="col-6">
       <div class="d-flex">
@@ -37,23 +33,27 @@
         <div class="list-group-item" style="height: 2.5em;">
           <p class="">Price: ${{ game.priceInCAD }} CAD</p>
         </div>
+        <div class="list-group-item" style="height: 2.5em;">
+          <p class="">Rating: {{game.rating?.toFixed(0)}} / 100</p>
+        </div>
       </div>
       <hr>
       <div class="p-3">
-          <button class="btn btn-success me-2 left" (click)="addToCart(game)">Add to Cart <span><i class="bi bi-cart2"></i></span></button>
+          <button class="btn btn-success me-2" (click)="addToCart(game)">Add to Cart  <span><i class="bi bi-cart2"></i></span></button>
+          <button class="btn btn-info me-2 text-white" (click)="addReview(game)">Write a Review  <span><i class="bi bi-pencil-fill"></i></span></button>
       </div>
     </div>
   
     <div class="col-6" style="margin-top: 4em; text-align: -webkit-center;">
       <div style="width: 75%;"> 
         <img [src]="game.src!" (mouseover)="game.src = game.srcBack"
-        (mouseout)="game.src = game.srcFront" style="height: 480px; max-height: 30%; min-height: 50%; padding: 1em; border-radius: 2.5%;"  class="card-img-top customBorder1">
+        (mouseout)="game.src = game.srcFront" style="height: 420px; max-height: 30%; min-height: 50%; padding: 1em; border-radius: 2.5%;"  class="card-img-top customBorder1">
       </div>
     </div>
   </div>
 
   <!--Game Recommendatiosn component-->
-  <div *ngIf="games.length > 0" class="w-100 customBorder1 p-3">
+  <div *ngIf="games.length > 0" class="w-100 customBorder1 p-3 mt-5">
     <div class="p-2 m-1">
       <h1>Game Recommendations</h1>
     </div>
@@ -62,8 +62,59 @@
     </div>
   </div>
 
-  <div>
+  <div *ngIf="offCanvasReady">
     <app-offcanvas (updateSignal)="updateNav()" [user]="user!" [games]="games" [gameDetails]="gameDetails" [assets]="assets" [cartItems]="cartItems" [wishlist]="wishlist" #offcanvas></app-offcanvas>
+  </div>
+</div>
+
+<!--The Reviews Modal-->
+<div class="modal fade" #reviewsModal id="reviewsModal" data-bs-backdrop="static" tabindex="-1">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Game Reviews</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="closeReviewModal()"></button>
+      </div>
+      <div class="modal-body">
+          <form [formGroup]="reviewsForm" class="alignRight">
+              <div class="form-group container p-5">
+                  <!--Game/Rating-->
+                  <div class="row py-3">
+                      <div class="col-2">
+                          <label>Game:</label>
+                      </div>
+                      <div class="col-4">
+                          <input type="text" formControlName="gameControl" class="form-control customBorder2" readonly>
+                      </div>
+                      <div class="col-3">
+                          <label>Rating (0 - 100):</label>
+                      </div>
+                      <div class="col-3">
+                          <input type="number" formControlName="ratingControl" class="form-control customBorder2" required>
+                      </div>
+                  </div>
+                  <!--Description-->
+                  <div class="row py-3">
+                      <div class="col-2">
+                          <label>Description:</label>
+                      </div>
+                      <div class="col-10">
+                          <textarea rows="3" formControlName="descriptionControl" class="form-control customBorder2" required></textarea>
+                      </div>
+                  </div>
+                  <div class="row">
+                      <div class="col text-right">
+                          <input type="button" class="btn btn-success" [value]="'Submit'" (click)="upsertReview()">
+                      </div>
+                      <div class="col" style="text-align: left;">
+                          <input type="button" class="btn btn-danger" [value]="'Cancel'" (click)="closeReviewModal()">
+                      </div>
+                  </div>
+             </div>
+          </form>
+      </div>
+
+    </div>
   </div>
 </div>
 

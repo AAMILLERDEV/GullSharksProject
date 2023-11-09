@@ -26,6 +26,10 @@ import { GameCategory } from 'src/models/GameCategory';
 import { CategoryPreference } from 'src/models/CategoryPreference';
 import { GameCategoryService } from 'src/services/gameCategories.service';
 import { GameRecommendationsComponent } from '../game-recommendations/game-recommendations.component';
+import { ReviewsForm } from 'src/form-models/reviews-form';
+import { FormGroup } from '@angular/forms';
+import { GameReview } from 'src/models/GameReview';
+import { GameReviewService } from 'src/services/gameReview.service';
 
 @Component({
   selector: 'app-game-details',
@@ -55,6 +59,11 @@ export class GameDetailsComponent implements OnInit{
   public viewReady: boolean = false;
   public offCanvasReady: boolean = false;
 
+  public reviewsForm: FormGroup;
+
+
+  public reviewsModal!: bootstrap.Modal;
+
   @ViewChild(OffcanvasComponent) offcanvas!: OffcanvasComponent;
   @ViewChild(NavbarComponent) navbar!: NavbarComponent;
 
@@ -69,8 +78,10 @@ export class GameDetailsComponent implements OnInit{
     public wishlistService: WishlistService,
     public platformService: PlatformService,
     public categoryService: GameCategoryService,
-    public ratingService: RatingService) {
+    public ratingService: RatingService,
+    public gameReviewService: GameReviewService) {
       this.offCanvasReady = true;
+      this.reviewsForm = ReviewsForm;
   }
 
   public async ngOnInit(){
@@ -79,7 +90,7 @@ export class GameDetailsComponent implements OnInit{
     if (!this.user){
       this.router.navigateByUrl("login");
     }
-    
+
     this.route.paramMap.subscribe(params => {
       const gameId = params.get('id');
       if (gameId !== null) {
@@ -93,6 +104,7 @@ export class GameDetailsComponent implements OnInit{
       }
     });
 
+    this.reviewsModal = bootstrap.Modal.getOrCreateInstance('#reviewsModal', {keyboard: true});
     await this.getGameData();
     this.viewReady = true;
   }
@@ -117,6 +129,56 @@ export class GameDetailsComponent implements OnInit{
     this.categories = await this.categoryService.GetGameCategories();
     this.gameDetails?.map(x => x.categoryName = this.categories.find(y => y.id == x.category_ID)?.categoryName); 
     this.offCanvasReady = true;
+  }
+
+  public async addReview(game: Game){
+    this.reviewsForm.controls['gameControl'].setValue(game.gameName);
+    this.reviewsModal.toggle();
+  }
+
+  public async upsertReview(){
+    if (this.reviewsForm.invalid){
+      this.toastr.error("Please fill out all form fields.");
+      return;
+    }
+
+    let rating: Ratings = {
+      game_ID: this.game.id,
+      id: 0,
+      isDeleted: false,
+      ratingNumber: this.reviewsForm.controls['ratingControl'].value,
+      user_ID: this.user!.id
+    };
+
+    let ratingRes = await this.ratingService.upsertRating(rating);
+
+    let gameReview: GameReview = {
+      dateAdded: new Date(),
+      description: this.reviewsForm.controls['descriptionControl'].value,
+      game_ID: this.game.id,
+      id: 0,
+      isApproved: false,
+      isDeleted: false,
+      rating_ID: ratingRes,
+      user_ID: this.user!.id
+    };
+
+    let gameRevRes = await this.gameReviewService.upsertGameReview(gameReview);
+
+    if (gameRevRes > 0){
+      await this.applyGameRatings();
+      this.toastr.success("Thank you for your review!");
+      this.reviewsModal.toggle();
+      this.reviewsForm.reset();
+      return;
+    }
+
+    this.toastr.error("Could not save. Error.");
+    return;
+  }
+
+  public closeReviewModal(){
+    this.reviewsModal.toggle();
   }
 
   public async relatedGames(gameId: number) {
@@ -154,7 +216,8 @@ export class GameDetailsComponent implements OnInit{
   }
 
 
-  public applyGameRatings(){
+  public async applyGameRatings(){
+    this.ratings = await this.ratingService.getRatings();
     for (let x of this.games){
       let ratings = this.ratings.filter(y => y.game_ID == x.id);
       console.log(ratings);

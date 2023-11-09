@@ -5,7 +5,7 @@ export interface GameReview {
   isApproved: boolean;
   description: string;
   rating_ID: number;
-  review_name: string;
+  review_name?: string;
   isDeleted: boolean;
   dateAdded: Date;
 }
