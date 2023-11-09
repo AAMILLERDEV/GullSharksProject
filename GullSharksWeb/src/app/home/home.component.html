@@ -7,7 +7,7 @@
           (mouseout)="i.src = i.srcFront">
           <div class="card-body pt-2 mt-2 text-white customGameBG" style="border-radius: 2.5%;" >
             <h5 class="card-title text-center">{{i.gameName}}</h5>
-            <p class="card-text text-center">{{i.gameDetails?.publisher}}</p>
+            <p class="card-text text-center">{{i.gameDetails?.publisher}}, {{i.gameDetails?.categoryName}}</p>
             <div class="text-center">
               <button class="btn btn-success text-center me-2" (click)="addToCart(i)">Add to Cart <span><i class="bi bi-cart2"></i></span></button>
               <button class="btn gradient border-dark text-white text-center gradientBtn" [routerLink]="['/game-details', i.id]">View Details</button>

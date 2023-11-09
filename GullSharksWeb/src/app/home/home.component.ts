@@ -18,6 +18,8 @@ import { OffcanvasComponent } from '../offcanvas/offcanvas.component';
 import { NavbarComponent } from '../navbar/navbar.component';
 import { RatingService } from 'src/services/rating.service';
 import { Ratings } from 'src/models/Ratings';
+import { GameCategoryService } from 'src/services/gameCategories.service';
+import { GameCategory } from 'src/models/GameCategory';
 
 @Component({
   selector: 'app-home',
@@ -51,7 +53,8 @@ export class HomeComponent implements OnInit {
     public assetService: AssetService,
     public cartItemService: CartItemService,
     public wishlistService: WishlistService,
-    public ratingService: RatingService) {
+    public ratingService: RatingService,
+    public categoryService: GameCategoryService) {
 
   }
 
@@ -115,6 +118,8 @@ export class HomeComponent implements OnInit {
     this.games.map(x => x.srcFront = "assets/game_assets/" + this.assets.find(z => z.id == x.asset_ID)?.assetURL + "/front.jpg");
     this.games.map(x => x.src = "assets/game_assets/" + this.assets.find(z => z.id == x.asset_ID)?.assetURL + "/front.jpg");
     this.games.map(x => x.srcBack = "assets/game_assets/" + this.assets.find(z => z.id == x.asset_ID)?.assetURL + "/back.jpg");
+    let categories: GameCategory[] = await this.categoryService.GetGameCategories();
+    this.gameDetails?.map(x => x.categoryName = categories.find(y => y.id == x.category_ID)?.categoryName); 
     this.applyGameRatings();
     this.readyGames = this.games;
     console.log(this.games);

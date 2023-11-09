@@ -53,12 +53,12 @@
   </div>
 
   <!--Game Recommendatiosn component-->
-  <div *ngIf="games.length > 0" class="w-100 customBorder1 p-3 mt-5">
+  <div *ngIf="recommendedGames.length > 0" class="w-100 customBorder1 p-2 mt-4">
     <div class="p-2 m-1">
-      <h1>Game Recommendations</h1>
+      <h2 class="text-center">Game Recommendations</h2>
     </div>
-    <div class="justify-content-center">
-      <app-game-recommendations [games]="games"></app-game-recommendations>
+    <div>
+      <app-game-recommendations style="text-align: -webkit-center;" [games]="recommendedGames"></app-game-recommendations>
     </div>
   </div>
 
@@ -113,7 +113,6 @@
              </div>
           </form>
       </div>
-
     </div>
   </div>
 </div>

@@ -30,6 +30,7 @@ import { ReviewsForm } from 'src/form-models/reviews-form';
 import { FormGroup } from '@angular/forms';
 import { GameReview } from 'src/models/GameReview';
 import { GameReviewService } from 'src/services/gameReview.service';
+import { PreferenceService } from 'src/services/preference.service';
 
 @Component({
   selector: 'app-game-details',
@@ -40,6 +41,7 @@ export class GameDetailsComponent implements OnInit{
 
   public user?: User;
   public games: Game[] = [];
+  public recommendedGames: Game[] = [];
   public game!: Game;
   public gameDetails!: GameDetails[];
   public gameDetail!: GameDetails;
@@ -79,7 +81,8 @@ export class GameDetailsComponent implements OnInit{
     public platformService: PlatformService,
     public categoryService: GameCategoryService,
     public ratingService: RatingService,
-    public gameReviewService: GameReviewService) {
+    public gameReviewService: GameReviewService,
+    public preferenceService: PreferenceService) {
       this.offCanvasReady = true;
       this.reviewsForm = ReviewsForm;
   }
@@ -128,6 +131,7 @@ export class GameDetailsComponent implements OnInit{
 
     this.categories = await this.categoryService.GetGameCategories();
     this.gameDetails?.map(x => x.categoryName = this.categories.find(y => y.id == x.category_ID)?.categoryName); 
+    await this.relatedGames();
     this.offCanvasReady = true;
   }
 
@@ -181,16 +185,22 @@ export class GameDetailsComponent implements OnInit{
     this.reviewsModal.toggle();
   }
 
-  public async relatedGames(gameId: number) {
+  public async relatedGames() {
+    let gamePreferenceList: number[] = [];
+    let userPref = await this.preferenceService.getCategoryPreferences(this.user!.id);
+    gamePreferenceList.push(this.game.gameDetails?.category_ID!);
+    
+    for (let x of userPref){
+      gamePreferenceList.push(x.category_ID);
+    }
 
-    this.games = await this.gameService.getGames();
-    this.games.map(x => x.gameAsset = this.assets.find(z => z.id == x.asset_ID));
-    this.games.map(x => x.srcFront = "assets/game_assets/" + this.assets.find(z => z.id == x.asset_ID)?.assetURL + "/front.jpg");
-    this.games.map(x => x.src = "assets/game_assets/" + this.assets.find(z => z.id == x.asset_ID)?.assetURL + "/front.jpg");
-    this.games.map(x => x.srcBack = "assets/game_assets/" + this.assets.find(z => z.id == x.asset_ID)?.assetURL + "/back.jpg");
+    for (let x of gamePreferenceList){
+      this.recommendedGames.push(this.games.find(y => y.gameDetails!.category_ID == x)!);
+    }
 
-    this.gameDetails = await this.gameDetailService.getGameDetails();
+    this.recommendedGames = this.games.filter(x => gamePreferenceList.includes(x.gameDetails?.category_ID!) && x.id != this.game!.id)
   }
+
 
 
   public openOffCanvas(){
