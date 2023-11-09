@@ -14,6 +14,11 @@
     background-image: linear-gradient(to right bottom, #002f74, #565c95, #8f8eb7, #c7c5db, #8f8eb7b6);
 }
 
+.gradientBtn:hover {
+    color: white;
+    background-image: linear-gradient(to right top, #002f74, #565c95, #8f8eb7, #8f8eb7, #8f8eb7b6);
+}
+
 .gradientReversed {
     background-image: linear-gradient(to right top, #002f74, #565c95, #8f8eb7, #8f8eb7, #8f8eb7b6);
 }
@@ -70,4 +75,22 @@
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
     border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+@media (min-width: 768px) {
+    
+    .carousel-inner .carousel-item-end.active,
+    .carousel-inner .carousel-item-next {
+      transform: translateX(25%);
+    }
+    
+    .carousel-inner .carousel-item-start.active, 
+    .carousel-inner .carousel-item-prev {
+      transform: translateX(-25%);
+    }
+}
+
+.carousel-inner .carousel-item-end,
+.carousel-inner .carousel-item-start { 
+  transform: translateX(0);
 }

@@ -104,7 +104,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
     }
 
     this.buildModals();
-
   }
 
   public openUserDetailsModal(){
@@ -148,7 +147,6 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
     if (this.userDetails){
       this.billingAddress = await this.billingAddressService.getBillingAddress(this.userDetails.id);
-      console.log(this.billingAddress);
       this.shippingAddress = await this.shippingAddressService.getShippingAddress(this.userDetails.id);
       
       this.firstname = this.userDetails.firstName;

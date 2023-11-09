@@ -3,4 +3,5 @@ export interface PlatformsGamesLookUp {
   platform_ID: number;
   gameDetails_ID: number;
   isDeleted: boolean;
+  platformName?: string;
 }

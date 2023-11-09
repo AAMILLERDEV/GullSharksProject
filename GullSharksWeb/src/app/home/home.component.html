@@ -1,4 +1,4 @@
-<app-navbar *ngIf="viewReady" (openCart)="toggleOffCanvas()" (openWishlist)="toggleWishlistOffCanvas()" (filterVal)="filterGames($event)" [showingHome]="true"></app-navbar>
+<app-navbar *ngIf="viewReady" (openCart)="toggleOffCanvas()" (openWishlist)="toggleWishlistOffCanvas()" (filterVal)="filterGames($event)" [showingHome]="true" [showingSearch]="true"></app-navbar>
 <div class="container customBorder1" *ngIf="viewReady">
   <div class="row row-cols-3 text-center">
     <div *ngFor="let i of readyGames" class="col pt-2 justify-content-center">
@@ -10,7 +10,7 @@
             <p class="card-text text-center">{{i.gameDetails?.publisher}}</p>
             <div class="text-center">
               <button class="btn btn-success text-center me-2" (click)="addToCart(i)">Add to Cart <span><i class="bi bi-cart2"></i></span></button>
-              <button class="btn gradient border-dark text-white text-center" [routerLink]="['/game-details', i.id]">View Details</button>
+              <button class="btn gradient border-dark text-white text-center gradientBtn" [routerLink]="['/game-details', i.id]">View Details</button>
 
             </div>
             <div class="text-center pt-1 m-2">

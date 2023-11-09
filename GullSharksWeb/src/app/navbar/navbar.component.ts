@@ -22,6 +22,7 @@ export class NavbarComponent implements OnInit {
   public offcanvasMenu?: bootstrap.Offcanvas;
 
   @Input() public showingHome: boolean = false;
+  @Input() public showingSearch: boolean = false;
 
   @Output() openCart: EventEmitter<any> = new EventEmitter();
   @Output() openWishlist: EventEmitter<any> = new EventEmitter();
@@ -39,7 +40,6 @@ export class NavbarComponent implements OnInit {
     this.user = JSON.parse(sessionStorage.getItem("User")!);
   
     this.offcanvasMenu = new bootstrap.Offcanvas(document.getElementById("offcanvasMenu")!, {backdrop: false});
-    this.offcanvasMenu!.show();
 
     if (this.showingHome){
       await this.getData();

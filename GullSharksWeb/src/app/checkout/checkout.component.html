@@ -4,7 +4,7 @@
         <div class="m-2">
             <div class="d-flex p-2 mb-2 mt-2 customBorder2">
                 <h3 class="pe-1">Shipping Address</h3>
-                <button class="btn border-dark ms-3" (click)="openAddressModal()">Edit/Add Shipping Address</button>
+                <button class="btn border-dark ms-3 gradientBtn" (click)="openAddressModal()">Edit/Add Shipping Address</button>
             </div>
             <div>
                 <ul *ngIf="address" class="list-group" style="max-width: 25%;" >
@@ -95,7 +95,7 @@
             </div>
            
             <div class="nav-item pt-5">
-                <button class="btn gradient btn-secondary text-white" [routerLink]="'/home'">Return Home</button>
+                <button class="btn gradient gradientBtn btn-secondary text-white" [routerLink]="'/home'">Return Home</button>
             </div>
         </div>
     </div>

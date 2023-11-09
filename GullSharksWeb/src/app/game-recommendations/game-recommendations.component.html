@@ -1,0 +1,29 @@
+
+<div class="container" class="w-100 p-2">
+    <owl-carousel-o [options]="customOptions">
+
+        <ng-container *ngFor="let slide of games">
+          <ng-template carouselSlide [id]="slide.id.toString()">
+
+            <div class="card" style="width: 18rem; margin-bottom: 1em; border-radius: 5em;" >
+                <div class="gradient p-1" style="border-radius:0.5em;">
+                    <div class="card-body bg-white" style="max-height: 9em">
+                        <div class="row">
+                          <div  class="col-6">
+                            <h5 class="card-title">{{slide!.gameName}}</h5>
+                            <p class="card-subtitle">{{slide!.gameDetails?.categoryName}}</p>
+                            <p class="card-subtitle text-success fst-italic">In Stock</p>
+                            <p (click)="goToDetails('/game-details/' + slide.id)" class="wishlistURL">View Details</p>
+                          </div>
+                          <div class="col-6" (click)="goToDetails('/game-details/' + slide.id)">
+                              <img [src]="slide.srcFront" [height]="120" style="max-height: 110px;" [width]="240" [alt]="slide.gameName" [title]="slide.gameName">
+                          </div>
+                        </div>
+                      </div>
+                </div>
+              </div>
+          </ng-template>
+        </ng-container>
+      
+      </owl-carousel-o>
+</div>

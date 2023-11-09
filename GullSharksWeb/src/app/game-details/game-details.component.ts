@@ -36,30 +36,27 @@ export class GameDetailsComponent implements OnInit{
 
   public user?: User;
   public games: Game[] = [];
-  public gameDetails: GameDetails[] = [];
+  public game!: Game;
+  public gameDetails!: GameDetails[];
+  public gameDetail!: GameDetails;
+
+  public game_ID: number = 0;
+
   public assets: Asset[] = [];
   public cartItems: CartItem[] = [];
   public wishlist: Wishlist[] = [];
   public readyGames: Game[] = [];
   public ratings: Ratings[] = [];
   public platforms: Platform[] = [];
-  public platformLookUp: PlatformsGamesLookUp[] = [];
+  public platformsForGame: PlatformsGamesLookUp[] = [];
   public categories: GameCategory[] = [];
+  public categoryForGame?: GameCategory;
+
   public viewReady: boolean = false;
-
-  public gameName: Game[] = [];
-
-  public asset_ID: Game[] = [];
-
   public offCanvasReady: boolean = false;
 
   @ViewChild(OffcanvasComponent) offcanvas!: OffcanvasComponent;
   @ViewChild(NavbarComponent) navbar!: NavbarComponent;
-
-  //public gameDetail
-  //asset_ID: number;
-  //gameDetail_ID: number;
-  //priceInCAD: number;
 
   constructor (public userService: UserService,
     private route: ActivatedRoute,
@@ -73,16 +70,20 @@ export class GameDetailsComponent implements OnInit{
     public platformService: PlatformService,
     public categoryService: GameCategoryService,
     public ratingService: RatingService) {
-
+      this.offCanvasReady = true;
   }
 
   public async ngOnInit(){
+    this.user = JSON.parse(sessionStorage.getItem("User")!);
 
+    if (!this.user){
+      this.router.navigateByUrl("login");
+    }
+    
     this.route.paramMap.subscribe(params => {
       const gameId = params.get('id');
       if (gameId !== null) {
-        // Convert gameId to number and call getGame
-        this.getGame(+gameId);
+        this.game_ID = parseInt(gameId);
       } else {
         // Handle the case where gameId is null
         // Perhaps redirect back to home or show an error message
@@ -92,66 +93,30 @@ export class GameDetailsComponent implements OnInit{
       }
     });
 
-
+    await this.getGameData();
+    this.viewReady = true;
   }
 
-  public async setGame(){
-
-  }
-
-  public async getGame(gameId: number) {
-
+  public async getGameData(){
     this.games = await this.gameService.getGames();
-    this.games = this.games.filter(games => games.id === gameId);
     this.gameDetails = await this.gameDetailService.getGameDetails();
-    this.gameDetails = this.gameDetails.filter(gameDetail => gameDetail.id === gameId);
     this.assets = await this.assetService.getAssets();
     this.ratings = await this.ratingService.getRatings();
-    this.games.map(x => x.gameDetails = this.gameDetails.find(y => y.id == x.gameDetail_ID));
+    this.games.map(x => x.gameDetails = this.gameDetails!.find(y => y.id == x.gameDetail_ID));
     this.games.map(x => x.gameAsset = this.assets.find(z => z.id == x.asset_ID));
     this.games.map(x => x.srcFront = "assets/game_assets/" + this.assets.find(z => z.id == x.asset_ID)?.assetURL + "/front.jpg");
     this.games.map(x => x.src = "assets/game_assets/" + this.assets.find(z => z.id == x.asset_ID)?.assetURL + "/front.jpg");
     this.games.map(x => x.srcBack = "assets/game_assets/" + this.assets.find(z => z.id == x.asset_ID)?.assetURL + "/back.jpg");
+    this.game = this.games.find(x => x.id == this.game_ID)!;
     this.applyGameRatings();
 
+    this.platformsForGame = await this.platformService.getPlatformGamesLookUpByGame(this.game_ID);
+    this.platforms = await this.platformService.getPlatforms();
+    this.platformsForGame.map(x => x.platformName = this.platforms.find(y => y.id == x.platform_ID)?.platformName);
 
-
-    this.getPlatform(gameId);
-
-    this.getCategory(gameId);
-  }
-
-  public async getPlatform(gameId: number){
-
-    this.platformLookUp = await this.platformService.getPlatformGamesLookUpByGame(gameId);
-    const allPlatforms: Platform[] = await this.platformService.getPlatforms();
-
-    this.platforms = allPlatforms.filter((platform: Platform) =>
-      this.platformLookUp.some((lookupItem: PlatformsGamesLookUp) => lookupItem.platform_ID === platform.id)
-    );
-
-}
-
-  public async getCategory(gameId: number){
-
-    this.gameDetails = await this.gameDetailService.getGameDetails();
-    this.gameDetails = this.gameDetails.filter(gameDetail => gameDetail.id === gameId);
-
-  if (!this.gameDetails || this.gameDetails.length === 0) {
-    console.error('No game details found for gameId:', gameId);
-    return;
-  }
-
-  const gameDetail = this.gameDetails[0]; // Assuming there's only one gameDetail for a gameId
-  const categoryID = gameDetail.category_ID;
-
-  const allCategories: GameCategory[] = await this.categoryService.GetGameCategories();
-
-  this.categories = allCategories.filter((category: GameCategory) =>
-    category.id === categoryID
-  );
-
-
+    this.categories = await this.categoryService.GetGameCategories();
+    this.gameDetails?.map(x => x.categoryName = this.categories.find(y => y.id == x.category_ID)?.categoryName); 
+    this.offCanvasReady = true;
   }
 
   public async relatedGames(gameId: number) {
@@ -166,12 +131,26 @@ export class GameDetailsComponent implements OnInit{
   }
 
 
+  public openOffCanvas(){
+    this.offcanvas.showCanvas();
+  }
+
+  public toggleOffCanvas(){
+    this.offcanvas.toggleCanvas();
+  }
+
+  toggleWishlistOffCanvas(){
+    this.offcanvas.toggleCanvasWishlist();
+  }
+
   public async addItemToWishlist(game: Game){
     this.offcanvas.addItemToWishlist(game);
+    this.navbar.getData();
   }
 
   public async addToCart(game: Game){
     this.offcanvas.addToCart(game);
+    this.navbar.getData();
   }
 
 

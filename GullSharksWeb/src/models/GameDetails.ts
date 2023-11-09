@@ -4,4 +4,5 @@ export interface GameDetails {
   category_ID: number;
   description: string;
   isDeleted: boolean;
+  categoryName?: string;
 }
