@@ -117,4 +117,8 @@ public interface IDBRepository
     public Task<IEnumerable<Wishlist>> GetWishlistByUserID(int user_ID);
     public Task<IEnumerable<Wishlist>> GetWishlists();
     public Task<int?> UpsertWishlist(Wishlist wishlist);
+
+    //User Games
+    public Task<IEnumerable<UserGame>> GetUserGames(int user_ID);
+    public Task<int?> UpsertUserGame(UserGame ins);
 }

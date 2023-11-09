@@ -6,7 +6,7 @@
     </div>
     <div class="offcanvas-body">
       <div *ngFor="let i of cartItems" class="pb-2">
-        <div class="card" style="width: 18rem;">
+        <div class="card" style="width: 22rem;">
           <div class="card-body">
             <div class="row">
               <div  class="col">
@@ -16,10 +16,13 @@
                 <p class="card-text">Subtotal: {{i.subtotal.toFixed(2)}}</p>
               </div>
               <div class="col text-end">
-                <img [src]='i.game?.src' style="height: 100%; width: 75%;"  class="card-img-top text-end pb-4" alt="">
+                <img src='assets/game_assets/{{i.game!.gameAsset?.assetURL}}/front.jpg' style="height: 100%; width: 75%;"  class="card-img-top text-end" alt="">
+              </div>
+              <div class="">
+                <button (click)="deleteCartItem(i)" class="btn btn-secondary customBorder1">Delete</button>
               </div>
             </div>
-            <button (click)="deleteCartItem(i)" class="btn btn-secondary customBorder1">Delete</button>
+
           </div>
         </div>
       </div>
@@ -36,7 +39,7 @@
     <div class="card card-body">
         <div class="offcanvas-body">
             <div *ngFor="let i of wishlist" class="pb-2">
-                <div class="card" style="width: 18rem;">
+                <div class="card" style="width: 20rem;">
                     <div class="card-body">
                         <div class="row">
                             <div  class="col">
@@ -47,8 +50,12 @@
                             <div class="col text-end">
                                 <img src='assets/game_assets/{{i.game!.gameAsset?.assetURL}}/front.jpg' style="height: 100%; width: 75%;"  class="card-img-top text-end" alt="">
                             </div>
+                            <div>
+                              <button (click)="deleteWishlistItem(i)" class="btn btn-secondary customBorder1" value="Delete">Delete</button>
+                            </div>
+
                         </div>
-                        <button (click)="deleteWishlistItem(i)" class="btn btn-secondary customBorder1" value="Delete">Delete</button>
+              
                     </div>
                 </div>
             </div>

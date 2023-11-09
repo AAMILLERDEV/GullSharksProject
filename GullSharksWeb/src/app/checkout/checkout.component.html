@@ -37,7 +37,7 @@
                     </div>
                     <div class="input-group pt-3">
                         <span class="input-group-text border border-dark">Card Number / CVS</span>
-                        <input pattern="^4[0-9]{15}(?:[0-9]{3})?$" type="number" class="form-control border border-dark" style="width: 50%;" formControlName="cardNumberControl" required>
+                        <input type="number" class="form-control border border-dark" style="width: 50%;" formControlName="cardNumberControl" required>
                         <input type="text"class="form-control border border-dark" [maxLength]="3" formControlName="cvsControl" required>
                     </div>
                     <div class="input-group pt-3">
@@ -167,6 +167,33 @@
         <div class="modal-footer justify-content-center">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="openAddressModal()">Close</button>
           <button type="button" class="btn btn-primary" (click)="updateShippingAddress()">Save changes</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<div class="modal fade" #successModal id="successModal" data-bs-backdrop="static" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header text-center row">
+            <!--Modal Title-->
+            <div class="col-12 customBorder2">
+                <img class="text-center" src="/assets/CVGS.png" alt="Logo"  height="100">
+            </div>
+
+            <div class="col-12">
+                <h1 class="text-center pt-3">Success! Your order is being processed!</h1>
+            </div>
+        </div>
+        <!--Modal Body/Content-->
+        <div class="modal-body">
+            <div class="p5">      
+                <p class="text-center fw-bold">Please check your profile's game library to view your recent purchases and download any games you may own</p>
+            </div>
+        </div>
+        <div class="modal-footer justify-content-center">
+            <input type="button" class="btn btn-info text-center" (click)="goToProfile(true)" value="Profile">
+            <input type="button" class="btn gradient border-dark text-center text-white" (click)="goToProfile(false)" value="Return Home">
         </div>
       </div>
     </div>

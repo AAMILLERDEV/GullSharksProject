@@ -1,9 +1,7 @@
 using GullSharksLib;
 using GullSharksLib.Interfaces;
 using GullSharksLib.Repositories;
-using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Options;
-using static System.Net.Mime.MediaTypeNames;
 
 try {
     var builder = WebApplication.CreateBuilder(args);
@@ -39,6 +37,7 @@ try {
     builder.Services.AddSingleton<IPaymentDetailsRepository, PaymentDetailsRepository>(x => new PaymentDetailsRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
     builder.Services.AddSingleton<ICardTypeRepository, CardTypeRepository>(x => new CardTypeRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
     builder.Services.AddSingleton<ICartItemsRepository, CartItemsRepository>(x => new CartItemsRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
+    builder.Services.AddSingleton<IUserGamesRepository, UserGamesRepository>(x => new UserGamesRepository(x.GetRequiredService<IOptionsMonitor<AppSetting>>()));
 
     builder.Services.AddCors(o => o.AddDefaultPolicy(builder =>
     {

@@ -2,7 +2,7 @@ export interface PaymentDetail {
   id: number;
   order_ID: number;
   cardType_ID: number;
-  cardNumber: number;
+  cardNumber: string;
   securityCode: number;
   user_ID: number;
   total: number;

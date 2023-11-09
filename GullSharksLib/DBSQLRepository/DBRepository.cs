@@ -841,10 +841,7 @@ public class DBRepository : IDBRepository
         {
             { "@id", ins.ID },
             { "@game_ID", ins.Game_ID },
-            { "@subtotal", ins.Subtotal },
-            { "@total", ins.Total },
             { "isConfirmed", ins.IsConfirmed },
-            { "@dateCreated", ins.DateCreated },
             { "@orderDetail_ID", ins.OrderDetail_ID },
             { "@User_ID", ins.User_ID },
             { "@isDeleted", ins.IsDeleted }
@@ -1156,6 +1153,52 @@ public class DBRepository : IDBRepository
         {
             using IDbConnection connection = new SqlConnection(connectionString);
             await connection.ExecuteAsync("hist.languagePref_lookUp_UPSERT", parameters, commandType: CommandType.StoredProcedure);
+            insertedID = parameters.Get<int?>("@insertedID");
+        }
+        catch (Exception ex)
+        {
+            return default;
+        }
+
+        return insertedID ?? ins.ID;
+    }
+
+    //User Games Procedures
+
+    public async Task<IEnumerable<UserGame>> GetUserGames(int user_ID)
+    {
+        try
+        {
+            using IDbConnection connection = new SqlConnection(connectionString);
+            return await connection.QueryAsync<UserGame>("hist.userGames_GET", new { user_ID }, commandType: CommandType.StoredProcedure);
+
+        }
+        catch (Exception ex)
+        {
+            return default;
+        }
+    }
+
+
+
+    public async Task<int?> UpsertUserGame(UserGame ins)
+    {
+        int? insertedID = 0;
+
+        var parameters = new DynamicParameters(new Dictionary<string, object>
+        {
+            { "@id", ins.ID },
+            { "@game_ID", ins.Game_ID },
+            { "@user_ID", ins.User_ID },
+            { "@isDeleted", ins.IsDeleted }
+        });
+
+        parameters.Add("@insertedID", 0, direction: ParameterDirection.Output);
+
+        try
+        {
+            using IDbConnection connection = new SqlConnection(connectionString);
+            await connection.ExecuteAsync("hist.userGames_UPSERT", parameters, commandType: CommandType.StoredProcedure);
             insertedID = parameters.Get<int?>("@insertedID");
         }
         catch (Exception ex)

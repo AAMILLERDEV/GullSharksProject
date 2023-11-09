@@ -29,6 +29,14 @@ import { FormGroup } from '@angular/forms';
 import { AddressForm } from 'src/form-models/address-form';
 import { Province } from 'src/models/Province';
 import { PaymentDetailsForm } from 'src/form-models/paymentDetails-form';
+import { Order } from 'src/models/Order';
+import { OrderDetail } from 'src/models/OrderDetail';
+import { UserGame } from 'src/models/UserGames';
+import { OrderService } from 'src/services/order.service';
+import { OrderDetailService } from 'src/services/orderDetails.service';
+import { PaymentDetailsService } from 'src/services/paymentDetail.service';
+import { UserGameService } from 'src/services/userGame.service';
+import { PaymentDetail } from 'src/models/PaymentDetail';
 
 
 @Component({
@@ -55,6 +63,7 @@ export class CheckoutComponent implements OnInit {
   public cartTotal: number = 0;
 
   public addressModal!: bootstrap.Modal;
+  public successModal!: bootstrap.Modal;
 
   public address!: any;
   public canada_ID: number = 36;
@@ -78,7 +87,12 @@ export class CheckoutComponent implements OnInit {
     public provinceService: ProvinceService,
     public countryService: CountryService,
     public shippingAddressService: ShippingAddressService,
-    public billingAddressService: BillingAddressService) {
+    public billingAddressService: BillingAddressService,
+    public orderService: OrderService,
+    public orderDetailService: OrderDetailService,
+    public paymentDetailService: PaymentDetailsService,
+    public userGameService: UserGameService
+    ) {
       this.addressForm = AddressForm;
       this.paymentDetailsForm = PaymentDetailsForm;
   }
@@ -91,12 +105,13 @@ export class CheckoutComponent implements OnInit {
     }
 
     this.addressModal = bootstrap.Modal.getOrCreateInstance('#addressModal', {keyboard: true});
-
+    this.successModal = bootstrap.Modal.getOrCreateInstance('#successModal', {keyboard: true});
     await this.getGameData();
     await this.getCartData();
     await this.getUserData();
     this.calculateCartTotal();
     this.viewReady = true;
+    console.log(this.cartItems);
   }
 
   public async getGameData(){
@@ -242,7 +257,7 @@ export class CheckoutComponent implements OnInit {
 
   }
 
-  public placeOrder(cardType: any){
+  public async placeOrder(cardType: any){
     if (this.paymentDetailsForm.invalid){
       this.toastr.error("Please fill out all form fields.");
       return;
@@ -256,6 +271,82 @@ export class CheckoutComponent implements OnInit {
       this.toastr.error("Expiry date must be in the future.");
       return;
     }
+
+    if (this.cartItems == null || this.cartItems.length < 1){
+      return;
+    }
+
+    for (let x of this.cartItems){
+      let gameOrder: Order = {
+        game_ID: x.game_ID,
+        id: 0,
+        isConfirmed: false,
+        isDeleted: false,
+        orderDetail_ID: 0,
+        user_ID: this.user!.id
+      };
+
+      let orderRes = await this.orderService.upsertOrder(gameOrder);
+
+      if (orderRes == 0){
+        this.toastr.error("Failed to process order.");
+        console.log(orderRes, x);
+        return;
+      }
+
+      let orderDetails: OrderDetail = {
+        dateCreated: new Date(),
+        id: 0,
+        isDeleted: false,
+        quantity: x.quantity,
+        subtotal: x.subtotal,
+        total: x.total,
+        useShippingAddress: true
+      };
+
+      let orderDetailRes = await this.orderDetailService.upsertOrderDetails(orderDetails);
+
+      if (orderDetailRes == 0){
+        this.toastr.error("Failed to process order.");
+        console.log(orderDetailRes, x);
+        return;
+      }
+
+      gameOrder.orderDetail_ID = orderDetailRes;
+      gameOrder.id = orderRes;
+      await this.orderService.upsertOrder(gameOrder);
+
+      let paymentDetail: PaymentDetail = {
+        cardNumber: this.paymentDetailsForm.controls['cardNumberControl'].value.toString(),
+        cardType_ID: parseInt(this.paymentDetailsForm.controls['cardTypeControl'].value),
+        id: 0,
+        isDeleted: false,
+        order_ID: orderRes,
+        securityCode: parseInt(this.paymentDetailsForm.controls['cvsControl'].value),
+        total: x.total,
+        user_ID: this.user!.id
+      };
+
+      console.log(paymentDetail);
+
+      let paymentDetailRes = await this.paymentDetailService.upsertPaymentDetails(paymentDetail);
+
+      let userGame: UserGame = {
+        game_ID: x.game_ID,
+        id: 0,
+        isDeleted: false,
+        user_ID: this.user!.id
+      };
+
+      await this.userGameService.upsertUserGame(userGame);
+
+      x.isDeleted = true;
+
+      await this.cartItemService.upsertCartItem(x);
+    }
+
+    this.toastr.success("Thank you! You're order has been processed.");
+    this.successModal.toggle();
   }
 
   public expiryDateFormatter() {
@@ -269,6 +360,12 @@ export class CheckoutComponent implements OnInit {
     let total: number = 0;
 
     for (let x of this.cartItems){
+      if (this.address != null){
+        x.total = this.calculateCanadianTax(x.subtotal, this.address.provinceTerritoryAB)!;
+      } else {
+        x.total = (x.subtotal * 1.13);
+      }
+   
       total += x.subtotal;
     }
 
@@ -317,6 +414,16 @@ export class CheckoutComponent implements OnInit {
       return expiry.getTime() > current.getTime();
       
     } else return false;
+  }
+
+  public goToProfile(val: boolean){
+    this.successModal.toggle();
+    if (val){
+      this.router.navigateByUrl('/profile');
+      return;
+    }
+
+    this.router.navigateByUrl('/home');
   }
 
 }

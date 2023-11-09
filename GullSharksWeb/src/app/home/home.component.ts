@@ -57,7 +57,6 @@ export class HomeComponent implements OnInit {
 
 
   public async ngOnInit(){
-
     this.user = JSON.parse(sessionStorage.getItem("User")!);
 
     if (!this.user){
