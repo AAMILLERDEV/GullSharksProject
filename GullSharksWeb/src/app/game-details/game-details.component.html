@@ -4,20 +4,12 @@
   <div>
     <button class="btn gradient border-dark text-white text-center bl" [routerLink]="'/home'">Go Back?</button>
   </div>
-  <div *ngFor="let game of readyGames">
+  <div *ngFor="let game of games">
     <div class="game-container">
       <div>
         <h1 class="tl">{{ game.gameName }}</h1>
-        <img [src]="game.src!" style="max-height: 30%; min-height: 50%; padding: 1em; border-radius: 2.5%;"  class="card-img-top customBorder1" alt="..." (mouseover)="game.src = game.srcBack" (mouseout)="game.src = game.srcFront">
-        <p class="tl">Price: ${{ game.priceInCAD }} CAD</p>
-        <div *ngFor="let i of readyGames" class="gleft">
-            <button class="btn btn-success text-center me-2 " (click)="addToCart(game)">Add to Cart <span><i class="bi bi-cart2"></i></span></button>
-        </div>
-        <div class="gleft" >
-          <label class="fst-italic pt-1 wishlistURL">
-              Add to Wishlist <span><i class="bi bi-calendar2-heart ps-1"></i></span>
-          </label>
-        </div>
+        <img [src]="game.src!" style="max-height: 30%; min-height: 50%; padding: 1em; border-radius: 2.5%;"  class="card-img-top customBorder1">
+
       </div>
       <div>
         <div *ngFor="let game of gameDetails">
@@ -31,11 +23,26 @@
           <div class="platforms-container left">
             <span>Platforms: </span>
             <div class="platform-names">
-              <span *ngFor="let platform of platforms">{{platform.platformName}}</span>
+              <span class="pbox" *ngFor="let platform of platforms">{{platform.platformName}}</span>
             </div>
           </div>
+          <div class="top">
+          <div *ngFor="let game of games">
+            <p class="left">Price: ${{ game.priceInCAD }} CAD</p>
+            <div *ngFor="let game of games" class="">
+                <button class="btn btn-success me-2 left" (click)="addToCart(game)">Add to Cart <span><i class="bi bi-cart2"></i></span></button>
+            </div>
+            <div class="left" (click)="addItemToWishlist(game)">
+              <label class="fst-italic pt-1 wishlistURL">
+                  Add to Wishlist <span><i class="bi bi-calendar2-heart ps-1"></i></span>
+              </label>
+            </div>
+          </div>
+        </div>
         </div>
       </div>
     </div>
   </div>
 </div>
+<br>
+<app-game-recommendations></app-game-recommendations>

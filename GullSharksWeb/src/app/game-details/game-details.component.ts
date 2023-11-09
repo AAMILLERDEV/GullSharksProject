@@ -25,6 +25,7 @@ import { PlatformsGamesLookUp } from 'src/models/PlatformsGamesLookUp';
 import { GameCategory } from 'src/models/GameCategory';
 import { CategoryPreference } from 'src/models/CategoryPreference';
 import { GameCategoryService } from 'src/services/gameCategories.service';
+import { GameRecommendationsComponent } from '../game-recommendations/game-recommendations.component';
 
 @Component({
   selector: 'app-game-details',
@@ -118,8 +119,6 @@ export class GameDetailsComponent implements OnInit{
     this.getPlatform(gameId);
 
     this.getCategory(gameId);
-
-    this.readyGames = this.games;
   }
 
   public async getPlatform(gameId: number){
@@ -208,5 +207,9 @@ export class GameDetailsComponent implements OnInit{
   public updateNav(){
     this.navbar.getData();
   }
+
+
+
+
 }
 
