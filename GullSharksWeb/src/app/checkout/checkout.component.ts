@@ -143,10 +143,12 @@ export class CheckoutComponent implements OnInit {
       this.address = this.shippingAddress;
     }
 
-    this.address.countryName = this.countries.find(x => x.id == this.address.country_ID)?.countryName;
-    this.address.provinceTerritoryAB = this.provinces!.find(x => x.id === this.address.province_ID)!.provinceAB;
-    console.log(this.address);
-    this.loadAddressData();
+    if (this.address){
+      this.address.countryName = this.countries.find(x => x.id == this.address.country_ID)?.countryName;
+      this.address.provinceTerritoryAB = this.provinces!.find(x => x.id === this.address.province_ID)!.provinceAB;
+      this.loadAddressData();
+    }
+
   }
 
   public updateNav(){

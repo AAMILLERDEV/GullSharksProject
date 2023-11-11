@@ -71,39 +71,45 @@
                         <div class="accordion-body">
                             <div>
                                 <li class="pb-2 pt-2">
-                                    <input type="button" value="Add New Friend" class="btn lightblue btn-sm">
-                                </li>
-                                <li class="pb-2 pt-2">
-                                    <input type="button" value="Pending Friend Requests" class="btn lightblue btn-sm">
+                                    <input type="button" value="Add New Friend" class="btn lightblue btn-sm" (click)="openAddFriendModal()">
                                 </li>
                             </div>
-                            <div *ngIf="friendsList != null && friendsList.length > 0">
-                                <div class="text-left">
-                                    <h3>- Friends List</h3>
-                                </div>
-                                <div *ngFor="let i of friendsList" class="pb-1">
-                                    <div class="card customBorder2" style="width: 10rem; max-height: 16rem;">
-                                        <div class="card-body">
+                            <div *ngIf="userFriendsList != null && userFriendsList.length > 0" class="row row-cols-6 customBorder2 m-3">
+                                <div *ngFor="let i of userFriendsList" class="customBorder2 p-3">
+                                    <div class="card" style="width: 10rem; max-height: 112rem; min-height: 12em;">
+                                        <div class="card-body text-center justify-content-center">
                                             <div class="row pb-1">
-                                                <div  class="col">
-                                                    <h5 class="card-title">{{i.user!.username}}</h5>
+                                                <div  class="col text-center">
+                                                    <p class="card-title">{{i.user!.username}}</p>
+                                                    <p *ngIf="i.isConfirmed" style="font-size: 11px;" class="fst-italic">Friends Since {{i.dateAdded.toLocaleString().substring(0, 10)}}</p>
                                                 </div>                                    
                                             </div>
-                                            <div class="row pb-2">
+                                            <div class="row pb-1">
                                                 <div class="col" style="text-align: -webkit-center;">
-                                                    <div style="height:120px; width:80px;">
+                                                    <div style="height:50px; width:50px;">
                                                         <img src='assets/Default_Profile.png' style="height: 100%; width: 100%;" alt="">
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="wishlistURL text-center">
-                                                <button class="btn border-dark gradientBtn" id="downloadBtn" >View Their Wishlist</button>
+                                            <div *ngIf="i.isConfirmed" class="wishlistURL pt-2 text-center">
+                                                <button class="btn border-dark gradientBtn btn-sm" (click)="openWishlistModal(i.user!.id)">View Wishlist</button>
+                                            </div>
+                                            <div *ngIf="!i.isConfirmed && i.user_ID != user!.id" class="row d-flex">
+                                                <div class="col-6">
+                                                    <a type="button" class="btn" (click)="confirmFriendRequest(i, true)"><span style="font-size: 13px;" class="confirmURL">Confirm <i class="bi bi-check-square"></i></span></a>
+                                                </div>
+                                                <div class="col-6">
+                                                    <a type="button" class="btn" (click)="confirmFriendRequest(i, false)" ><span style="font-size: 13px;" class="rejectURL">Ignore <i class="bi bi-person-x-fill"></i></span></a>
+                                                </div>
+                                            </div>
+                                            <div *ngIf="!i.isConfirmed && i.user_ID == user!.id" class="text-center">
+                                                <p class="fst-italic">Request Sent</p>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                           <div *ngIf="friendsList == null || friendsList.length == 0" class="text-center customBorder1 p-5">
+                           <div *ngIf="userFriendsList == null || userFriendsList.length == 0" class="text-center customBorder1 p-5">
                                 <h4>
                                     You friends & family list is empty <i class="bi bi-emoji-frown"></i>
                                 </h4>
@@ -120,7 +126,7 @@
                     </h2>
                     <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionProfileMenu">
                         <div class="accordion-body">
-                            <div class="row row-cols-6 text-center pb-2">
+                            <div *ngIf="userGames != null && userGames.length > 0" class="row row-cols-6 text-center pb-2">
                                 <div *ngFor="let i of userGames" class="pb-1">
                                     <div class="card customBorder2" style="width: 10rem; max-height: 16rem;">
                                         <div class="card-body">
@@ -137,12 +143,17 @@
                                                 </div>
                                             </div>
                                             <div class="wishlistURL text-center">
-                                                <a class="btn border-dark gradientBtn" id="downloadBtn" download="{{i.game!.gameName}}" href="data:text/plain;charset=utf-8,{{i.game!.gameName}}" (click)="downloadGame(i)" style="width: 100%;">Download <i class="bi bi-download"></i></a>
+                                                <a class="btn border-dark gradientBtn" id="downloadBtn" download="{{i.game!.gameName}}" href="data:text/plain;charset=utf-8,{{i.game!.gameName}}" style="width: 100%;">Download <i class="bi bi-download"></i></a>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                            <div *ngIf="userGames == null || userGames.length == 0" class="text-center customBorder1 p-5">
+                                <h4>
+                                    You games library is empty <i class="bi bi-emoji-frown"></i>
+                                </h4>
+                           </div>
                         </div>
                     </div>
                 </div>
@@ -158,6 +169,12 @@
                         <ul>
                             <li class="pb-2 pt-2">
                                 <input type="button" value="Update Your Profile Information" class="btn lightblue btn-sm" (click)="openUserDetailsModal()">
+                            </li>
+                            <li class="pb-2 pt-2">
+                                <input type="button" value="View Your Game Reviews" class="btn lightblue btn-sm" (click)="openReviewsModal()">
+                            </li>
+                            <li class="pb-2 pt-2">
+                                <input type="button" value="Your Wishlist" class="btn lightblue btn-sm" (click)="openWishlistModal(user!.id)">
                             </li>
                             <li class="pb-2 pt-2">
                                 <input type="button" value="Profile Preferences" class="btn lightblue btn-sm" (click)="openPreferencesModal()">
@@ -183,10 +200,7 @@
                         <div class="accordion-body">
                             <ul>
                                 <li class="pb-2 pt-2">
-                                    <input type="button" value="View Order History" class="btn lightblue btn-sm">
-                                </li>
-                                <li class="pb-2 pt-2">
-                                    <input type="button" value="View Payment Details" class="btn lightblue btn-sm">
+                                    <input type="button" value="View Order History" (click)="openOrdersModal()" class="btn lightblue btn-sm">
                                 </li>
                             </ul>
                         </div>
@@ -440,6 +454,222 @@
           <button *ngIf="doUserDetailsExist" type="button" class="btn btn-primary" (click)="updateUserDetails()">Save changes</button>
           <button *ngIf="!doUserDetailsExist" type="button" class="btn btn-primary" (click)="insertUserDetails()">Save changes</button>
         </div>
+      </div>
+    </div>
+</div>
+
+
+<!--The Add Friends Modal-->
+<div class="modal fade" #addFriendsModal id="addFriendsModal" data-bs-backdrop="static" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Search for a member</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="resetForms()"></button>
+        </div>
+        <div class="modal-body">
+            <form [formGroup]="searchForm" class="form-group container customBorder1 p-5 alignRight">
+                <!--First/Last Name-->
+                <div class="row">
+                    <div class="col-4">
+                        <label class="input-group-text">Member's Username:</label>
+                    </div>
+                    <div class="col-8">
+                        <ng-select  [searchable]="true" formControlName="usernameControl" (keyup)="filterItems(search.searchTerm)" #search  [items]="usersForSearch" bindLabel="username" bindValue="id">
+                        </ng-select>       
+                    </div>
+              
+                </div>
+           </form>
+        </div>
+        <div class="modal-footer justify-content-center">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="resetForms()">Close</button>
+          <button *ngIf="doUserDetailsExist" type="button" class="btn btn-primary" (click)="sendFriendRequest()">Send Friend Request</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!--The Orders Modal-->
+<div class="modal fade" #ordersModal id="ordersModal" data-bs-backdrop="static" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Your Order History</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="resetForms()"></button>
+        </div>
+        <div *ngIf="viewReady" class="modal-body">
+            <form [formGroup]="ordersForm" class="form-group container customBorder2 p-5">
+                <div class="row py-3">
+                    <div class="col">
+                        <ng-select [items]="orders" [placeholder]="'Select an order from the list'" #order (change)="updateOrdersForm()" bindLabel="orderName" bindValue="id" class="customNGSelect" formControlName="orderNameControl"></ng-select>
+                    </div>
+                </div>
+                <div class="row py-3">
+                    <div class="col-6">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" formControlName="gameControl" readonly>
+                            <label for="floatingInputGrid">Game Name</label>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" formControlName="quantityControl" readonly>
+                            <label for="floatingInputGrid">Quantity</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row py-3">
+                    <div class="col-6">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" formControlName="orderDateControl" readonly>
+                            <label for="floatingInputGrid">Order Date</label>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" formControlName="totalCostControl" readonly>
+                            <label for="floatingInputGrid">Total Cost</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row py-3">
+                    <div class="col-6">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" formControlName="cardNumberControl" readonly>
+                            <label for="floatingInputGrid">Card Number</label>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-floating">
+                            <select class="form-control" aria-label=".form-select-sm example" formControlName="cardTypeControl" [disabled]="true"> 
+                                <option value="1" disabled>Visa</option>
+                                <option value="2" disabled>Mastercard</option>
+                                <option value="3" disabled>Debit</option>
+                            </select>
+                            <label for="floatingInputGrid">Card Type</label>
+                        </div>
+              
+                    </div>
+                </div>
+                <div class="row py-3">
+                    <div class="col-6">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" formControlName="addressControl" readonly>
+                            <label for="floatingInputGrid">Address for Delivery:</label>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <label class="form-control"> Is Your Order Confirmed By CVGS? </label>
+                    </div>
+                    <div class="col-2">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input form-control p-3" formControlName="isConfirmedControl" [checked]="false">
+                        </div>
+                    </div>
+                </div>
+           </form>
+        </div>
+        <div class="modal-footer justify-content-center">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="resetForms()">Close</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!--The Wishlist Modal-->
+<div class="modal fade" #wishlistModal id="wishlistModal" data-bs-backdrop="static" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">{{wishlistUser}} Wishlist <span><i class="bi bi-calendar2-heart ps-1"></i></span></h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <div *ngIf="currentWishlist != null && currentWishlist.length > 0" class="row row-cols-4 text-center pb-2">
+                <div *ngFor="let i of currentWishlist" class="p-2 m-2">
+                    <div class="card customBorder2" style="width: 12rem; max-height: 20rem;">
+                        <div class="card-body">
+                            <div class=" pb-1">
+                                <h5 class="card-title">{{i.game!.gameName}}</h5>
+                                <p class="fst-italic" style="font-size: 11px;">Date Added: {{i.dateAdded.toLocaleString().substring(0, 10)}}</p>
+                                <p class="fst-italic" style="font-size: 11px;">Quantity: {{i.quantity}}</p>                               
+                            </div>
+                            <div class=" pb-2">
+                                <div class="col" style="text-align: -webkit-center;">
+                                    <div style="height:120px; width:80px;">
+                                        <img src='assets/game_assets/{{i.game!.gameAsset?.assetURL}}/front.jpg' style="height: 100%; width: 100%;" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="i.user_ID == user!.id">
+                                <button (click)="deleteWishlistItem(i, user!.id)" class="btn btn-secondary customBorder1" value="Delete">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center" *ngIf="currentWishlist == null || currentWishlist.length == 0">
+                <h5 class="text-center">The wishlist is empty! <span><i class="bi bi-calendar2-heart ps-1"></i></span></h5>
+            </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+<!--The Reviews Modal-->
+<div class="modal fade" #reviewsModal id="reviewsModal" data-bs-backdrop="static" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Game Reviews</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <form [formGroup]="reviewsForm" class="alignRight">
+                <div class="form-group container p-5">
+                     <!--Review Selector-->
+                     <div class="row py-3">
+                        <div class="col-2">
+                            <label>Select Review:</label>
+                        </div>
+                        <div class="col-10">
+                            <select formControlName="reviewsListControl" #option class="form-control customBorder2" (input)="updateReviewsForm(option.value)">
+                                <option *ngFor="let i of reviewsList"  [value]="i.id">{{i.review_name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="text-center d-flex justify-content-center" *ngIf="option.value">
+                        <h4 class="text-center fst-italic customBorder2" >Review Status: {{reviewStatus}}</h4>
+                    </div>
+                    <!--Game/Rating-->
+                    <div class="row py-3">
+                        <div class="col-2">
+                            <label>Game:</label>
+                        </div>
+                        <div class="col-4">
+                            <input type="text" formControlName="gameControl" class="form-control customBorder2" readonly>
+                        </div>
+                        <div class="col-2">
+                            <label>Rating:</label>
+                        </div>
+                        <div class="col-4">
+                            <input type="number" formControlName="ratingControl" class="form-control customBorder2" readonly>
+                        </div>
+                    </div>
+                    <!--Description-->
+                    <div class="row py-3">
+                        <div class="col-2">
+                            <label>Description:</label>
+                        </div>
+                        <div class="col-10">
+                            <textarea rows="3" formControlName="descriptionControl" class="form-control customBorder2" readonly></textarea>
+                        </div>
+                    </div>
+               </div>
+            </form>
+        </div>
+
       </div>
     </div>
 </div>

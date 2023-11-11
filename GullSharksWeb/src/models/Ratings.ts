@@ -5,4 +5,5 @@ export interface Ratings {
   ratingNumber: number;
   isDeleted: boolean;
   game_rating?: number;
+  isApproved?: boolean;
 }

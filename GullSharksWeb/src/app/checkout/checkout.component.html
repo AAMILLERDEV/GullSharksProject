@@ -13,7 +13,8 @@
                     <li class="list-group-item">{{address.city}}, {{address.provinceTerritoryAB}}, {{address.postalCode}}, {{address.countryName}}</li>
                     <li *ngIf="userDetails != null" class="list-group-item"><span class="fst-italic">Phone Number: </span>{{userDetails.phoneNumber}}</li>
                     <li class="list-group-item"><span class="fst-italic">Delivery Instructions: </span>{{address.deliveryInstructions}}</li>
-                  </ul>
+                </ul>
+                <h5 *ngIf="!address">Add an address before placing your order</h5>
             </div>
         </div>
         <hr>

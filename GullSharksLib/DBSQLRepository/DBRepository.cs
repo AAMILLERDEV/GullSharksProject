@@ -264,7 +264,8 @@ public class DBRepository : IDBRepository
             { "@user_ID", ins.User_ID },
             { "@friend_ID", ins.Friend_ID },
             { "@isConfirmed", ins.IsConfirmed },
-            { "@isDeleted", ins.IsDeleted }
+            { "@isDeleted", ins.IsDeleted },
+            { "@dateAdded", ins.DateAdded }
         });
 
         parameters.Add("@insertedID", 0, direction: ParameterDirection.Output);

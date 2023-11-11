@@ -23,9 +23,7 @@ import { ActivatedRoute } from '@angular/router';
 import { Platform } from 'src/models/Platform';
 import { PlatformsGamesLookUp } from 'src/models/PlatformsGamesLookUp';
 import { GameCategory } from 'src/models/GameCategory';
-import { CategoryPreference } from 'src/models/CategoryPreference';
 import { GameCategoryService } from 'src/services/gameCategories.service';
-import { GameRecommendationsComponent } from '../game-recommendations/game-recommendations.component';
 import { ReviewsForm } from 'src/form-models/reviews-form';
 import { FormGroup } from '@angular/forms';
 import { GameReview } from 'src/models/GameReview';
@@ -45,7 +43,7 @@ export class GameDetailsComponent implements OnInit{
   public game!: Game;
   public gameDetails!: GameDetails[];
   public gameDetail!: GameDetails;
-
+  public reviews: GameReview[] = [];
   public game_ID: number = 0;
 
   public assets: Asset[] = [];
@@ -57,6 +55,7 @@ export class GameDetailsComponent implements OnInit{
   public platformsForGame: PlatformsGamesLookUp[] = [];
   public categories: GameCategory[] = [];
   public categoryForGame?: GameCategory;
+  public gameName: string = "";
 
   public viewReady: boolean = false;
   public offCanvasReady: boolean = false;
@@ -116,14 +115,21 @@ export class GameDetailsComponent implements OnInit{
     this.games = await this.gameService.getGames();
     this.gameDetails = await this.gameDetailService.getGameDetails();
     this.assets = await this.assetService.getAssets();
+    this.reviews = await this.gameReviewService.getGameReviews();
     this.ratings = await this.ratingService.getRatings();
+    this.ratings = this.ratings.map(x => {
+      x.isApproved = this.reviews.find(y => y.rating_ID == x.id)!.isApproved;
+      return x;
+    });
     this.games.map(x => x.gameDetails = this.gameDetails!.find(y => y.id == x.gameDetail_ID));
     this.games.map(x => x.gameAsset = this.assets.find(z => z.id == x.asset_ID));
     this.games.map(x => x.srcFront = "assets/game_assets/" + this.assets.find(z => z.id == x.asset_ID)?.assetURL + "/front.jpg");
     this.games.map(x => x.src = "assets/game_assets/" + this.assets.find(z => z.id == x.asset_ID)?.assetURL + "/front.jpg");
     this.games.map(x => x.srcBack = "assets/game_assets/" + this.assets.find(z => z.id == x.asset_ID)?.assetURL + "/back.jpg");
     this.game = this.games.find(x => x.id == this.game_ID)!;
-    this.applyGameRatings();
+    this.gameName = this.game.gameName;
+
+    await this.applyGameRatings();
 
     this.platformsForGame = await this.platformService.getPlatformGamesLookUpByGame(this.game_ID);
     this.platforms = await this.platformService.getPlatforms();
@@ -229,7 +235,7 @@ export class GameDetailsComponent implements OnInit{
   public async applyGameRatings(){
     this.ratings = await this.ratingService.getRatings();
     for (let x of this.games){
-      let ratings = this.ratings.filter(y => y.game_ID == x.id);
+      let ratings = this.ratings.filter(y => y.game_ID == x.id && y.isApproved);
       console.log(ratings);
       if (ratings == null || ratings.length == 0){
         x.rating = 0;

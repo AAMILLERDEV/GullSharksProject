@@ -222,7 +222,7 @@
                             </select>
                         </div>
                     </div>
-                    <div class="text-center fst-italic customBorder2" *ngIf="approved">
+                    <div class="text-center fst-italic customBorder2" *ngIf="approved && option.value != null">
                         <h4>Review Status: Approved</h4>
                     </div>
                     <!--Game/Rating-->
@@ -251,10 +251,10 @@
                     </div>
                     <div class="row">
                         <div class="col text-right">
-                            <input type="button" class="btn btn-success" formControlName="approveControl" (click)="updateReview(true)">
+                            <input type="button" class="btn btn-success" value="Approve" (click)="updateReview(true)">
                         </div>
                         <div class="col" style="text-align: left;">
-                            <input type="button" class="btn btn-danger" formControlName="rejectControl" (click)="updateReview(false)">
+                            <input type="button" class="btn btn-danger" value="Reject" (click)="updateReview(false)">
                         </div>
                     </div>
                </div>

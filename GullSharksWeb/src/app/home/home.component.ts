@@ -20,6 +20,8 @@ import { RatingService } from 'src/services/rating.service';
 import { Ratings } from 'src/models/Ratings';
 import { GameCategoryService } from 'src/services/gameCategories.service';
 import { GameCategory } from 'src/models/GameCategory';
+import { GameReviewService } from 'src/services/gameReview.service';
+import { GameReview } from 'src/models/GameReview';
 
 @Component({
   selector: 'app-home',
@@ -39,6 +41,7 @@ export class HomeComponent implements OnInit {
   public readyGames: Game[] = [];
   public ratings: Ratings[] = [];
   public viewReady: boolean = false;
+  public reviews: GameReview[] = [];
 
   public offCanvasReady: boolean = false;
 
@@ -54,7 +57,8 @@ export class HomeComponent implements OnInit {
     public cartItemService: CartItemService,
     public wishlistService: WishlistService,
     public ratingService: RatingService,
-    public categoryService: GameCategoryService) {
+    public categoryService: GameCategoryService,
+    public gameReviewService: GameReviewService) {
 
   }
 
@@ -73,7 +77,7 @@ export class HomeComponent implements OnInit {
 
   public applyGameRatings(){
     for (let x of this.games){
-      let ratings = this.ratings.filter(y => y.game_ID == x.id);
+      let ratings = this.ratings.filter(y => y.game_ID == x.id && y.isApproved);
       console.log(ratings);
       if (ratings == null || ratings.length == 0){
         x.rating = 0;
@@ -112,7 +116,12 @@ export class HomeComponent implements OnInit {
     this.games = await this.gameService.getGames();
     this.gameDetails = await this.gameDetailService.getGameDetails();
     this.assets = await this.assetService.getAssets();
+    this.reviews = await this.gameReviewService.getGameReviews();
     this.ratings = await this.ratingService.getRatings();
+    this.ratings = this.ratings.map(x => {
+      x.isApproved = this.reviews.find(y => y.rating_ID == x.id)!.isApproved;
+      return x;
+    });
     this.games.map(x => x.gameDetails = this.gameDetails.find(y => y.id == x.gameDetail_ID));
     this.games.map(x => x.gameAsset = this.assets.find(z => z.id == x.asset_ID));
     this.games.map(x => x.srcFront = "assets/game_assets/" + this.assets.find(z => z.id == x.asset_ID)?.assetURL + "/front.jpg");

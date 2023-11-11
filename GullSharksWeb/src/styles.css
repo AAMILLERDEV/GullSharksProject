@@ -94,3 +94,13 @@
 .carousel-inner .carousel-item-start { 
   transform: translateX(0);
 }
+
+.confirmURL:hover {
+    color: green;
+    text-decoration: underline;
+}
+
+.rejectURL:hover {
+    color: red;
+    text-decoration: underline;
+}

@@ -21,7 +21,7 @@ public class WishlistController : ControllerBase
     public Task<IEnumerable<Wishlist>> GetWishlistByUserID(int user_ID) => db.GetWishlistByUserID(user_ID);
 
     [HttpGet]
-    [Route("[controller]/GetWishlistByID")]
+    [Route("[controller]/GetWishlist")]
     public Task<IEnumerable<Wishlist>> GetWishlist() => db.GetWishlist();
 
     [HttpPost]
