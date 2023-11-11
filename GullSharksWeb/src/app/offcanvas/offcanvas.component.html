@@ -39,25 +39,23 @@
     <div class="card card-body">
         <div class="offcanvas-body">
             <div *ngFor="let i of wishlist" class="pb-2">
-                <div class="card" style="width: 20rem;">
-                    <div class="card-body">
-                        <div class="row">
-                            <div  class="col">
-                                <h5 class="card-title">{{i.game!.gameName}}</h5>
-                                <h6 class="card-subtitle mb-2 text-success fst-italic">In Stock</h6>
-                                <p class="card-text">Quantity: {{i.quantity}}</p>
-                            </div>
-                            <div class="col text-end">
-                                <img src='assets/game_assets/{{i.game!.gameAsset?.assetURL}}/front.jpg' style="height: 100%; width: 75%;"  class="card-img-top text-end" alt="">
-                            </div>
-                            <div>
-                              <button (click)="deleteWishlistItem(i)" class="btn btn-secondary customBorder1" value="Delete">Delete</button>
-                            </div>
-
-                        </div>
-              
-                    </div>
+              <div class="card" style="width: 20rem;">
+                <div class="card-body">
+                  <div class="row">
+                      <div  class="col">
+                          <h5 class="card-title">{{i.game!.gameName}}</h5>
+                          <h6 class="card-subtitle mb-2 text-success fst-italic">In Stock</h6>
+                          <p class="card-text">Quantity: {{i.quantity}}</p>
+                      </div>
+                      <div class="col text-end">
+                          <img src='assets/game_assets/{{i.game!.gameAsset?.assetURL}}/front.jpg' style="height: 100%; width: 75%;"  class="card-img-top text-end" alt="">
+                      </div>
+                      <div>
+                        <button (click)="deleteWishlistItem(i)" class="btn btn-secondary customBorder1" value="Delete">Delete</button>
+                      </div>
+                  </div>
                 </div>
+              </div>
             </div>
         </div>
     </div>

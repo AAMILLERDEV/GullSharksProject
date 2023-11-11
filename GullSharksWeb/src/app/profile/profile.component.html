@@ -1,6 +1,6 @@
 <app-navbar></app-navbar>
 
-<ng-container >
+<ng-container *ngIf="viewReady">
         <!--The According Component-->
         <div class="form-group container customBorder1 p-5">
 
@@ -60,17 +60,90 @@
 
 
             <div class="accordion" id="accordionProfileMenu">
+                <!--The Friends List-->
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="headingZero">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseZero" aria-expanded="true" aria-controls="collapseZero">
+                            Friends & Family
+                        </button>
+                    </h2>
+                    <div id="collapseZero" class="accordion-collapse collapse show" aria-labelledby="headingZero" data-bs-parent="#accordionProfileMenu">
+                        <div class="accordion-body">
+                            <div>
+                                <li class="pb-2 pt-2">
+                                    <input type="button" value="Add New Friend" class="btn lightblue btn-sm">
+                                </li>
+                                <li class="pb-2 pt-2">
+                                    <input type="button" value="Pending Friend Requests" class="btn lightblue btn-sm">
+                                </li>
+                            </div>
+                            <div *ngIf="friendsList != null && friendsList.length > 0">
+                                <div class="text-left">
+                                    <h3>- Friends List</h3>
+                                </div>
+                                <div *ngFor="let i of friendsList" class="pb-1">
+                                    <div class="card customBorder2" style="width: 10rem; max-height: 16rem;">
+                                        <div class="card-body">
+                                            <div class="row pb-1">
+                                                <div  class="col">
+                                                    <h5 class="card-title">{{i.user!.username}}</h5>
+                                                </div>                                    
+                                            </div>
+                                            <div class="row pb-2">
+                                                <div class="col" style="text-align: -webkit-center;">
+                                                    <div style="height:120px; width:80px;">
+                                                        <img src='assets/Default_Profile.png' style="height: 100%; width: 100%;" alt="">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="wishlistURL text-center">
+                                                <button class="btn border-dark gradientBtn" id="downloadBtn" >View Their Wishlist</button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                           <div *ngIf="friendsList == null || friendsList.length == 0" class="text-center customBorder1 p-5">
+                                <h4>
+                                    You friends & family list is empty <i class="bi bi-emoji-frown"></i>
+                                </h4>
+                           </div>
+                        </div>
+                    </div>
+                  </div>
                 <!--The Games Items-->
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="headingOne">
-                      <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                      <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
                           Games Library
                       </button>
                     </h2>
-                    <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionProfileMenu">
-                      <div class="accordion-body">
-           
-                      </div>
+                    <div id="collapseOne" class="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#accordionProfileMenu">
+                        <div class="accordion-body">
+                            <div class="row row-cols-6 text-center pb-2">
+                                <div *ngFor="let i of userGames" class="pb-1">
+                                    <div class="card customBorder2" style="width: 10rem; max-height: 16rem;">
+                                        <div class="card-body">
+                                            <div class="row pb-1">
+                                                <div  class="col">
+                                                    <h5 class="card-title">{{i.game!.gameName}}</h5>
+                                                </div>                                    
+                                            </div>
+                                            <div class="row pb-2">
+                                                <div class="col" style="text-align: -webkit-center;">
+                                                    <div style="height:120px; width:80px;">
+                                                        <img src='assets/game_assets/{{i.game!.gameAsset?.assetURL}}/front.jpg' style="height: 100%; width: 100%;" alt="">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="wishlistURL text-center">
+                                                <a class="btn border-dark gradientBtn" id="downloadBtn" download="{{i.game!.gameName}}" href="data:text/plain;charset=utf-8,{{i.game!.gameName}}" (click)="downloadGame(i)" style="width: 100%;">Download <i class="bi bi-download"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <!--Profile Items-->
@@ -108,7 +181,14 @@
                     </h2>
                     <div id="collapseThree" class="accordion-collapse collapse hide" aria-labelledby="headingThree" data-bs-parent="#accordionProfileMenu">
                         <div class="accordion-body">
-            
+                            <ul>
+                                <li class="pb-2 pt-2">
+                                    <input type="button" value="View Order History" class="btn lightblue btn-sm">
+                                </li>
+                                <li class="pb-2 pt-2">
+                                    <input type="button" value="View Payment Details" class="btn lightblue btn-sm">
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>

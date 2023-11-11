@@ -72,7 +72,7 @@
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Game Reviews</h5>
+        <h5 class="modal-title">Game Review for {{this.game!.gameName}}</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="closeReviewModal()"></button>
       </div>
       <div class="modal-body">
@@ -96,10 +96,10 @@
                   <!--Description-->
                   <div class="row py-3">
                       <div class="col-2">
-                          <label>Description:</label>
+                          <label>Review:</label>
                       </div>
                       <div class="col-10">
-                          <textarea rows="3" formControlName="descriptionControl" class="form-control customBorder2" required></textarea>
+                          <textarea rows="3" formControlName="descriptionControl" placeholder="Write your review here" class="form-control customBorder2" required></textarea>
                       </div>
                   </div>
                   <div class="row">

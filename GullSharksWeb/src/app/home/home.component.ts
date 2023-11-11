@@ -121,8 +121,7 @@ export class HomeComponent implements OnInit {
     let categories: GameCategory[] = await this.categoryService.GetGameCategories();
     this.gameDetails?.map(x => x.categoryName = categories.find(y => y.id == x.category_ID)?.categoryName); 
     this.applyGameRatings();
-    this.readyGames = this.games;
-    console.log(this.games);
+    this.readyGames = this.games.sort((x, y) => x.gameName.localeCompare(y.gameName));
   }
 
 

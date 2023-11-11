@@ -7,30 +7,45 @@ import { AddressForm } from 'src/form-models/address-form';
 import { PasswordForm } from 'src/form-models/passwordForm';
 import { PreferencesForm } from 'src/form-models/preferences-form';
 import { UserDetailsForm } from 'src/form-models/user-details-form';
+import { Asset } from 'src/models/Asset';
 import { BillingAddress } from 'src/models/BillingAddress';
 import { CategoryPreference } from 'src/models/CategoryPreference';
 import { Country } from 'src/models/Country';
 import { Credentials } from 'src/models/Credentials';
+import { FriendsList } from 'src/models/FriendsList';
+import { Game } from 'src/models/Game';
 import { GameCategory } from 'src/models/GameCategory';
+import { GameDetails } from 'src/models/GameDetails';
 import { Language } from 'src/models/Language';
 import { LanguagePreference } from 'src/models/LanguagePreference';
 import { Platform } from 'src/models/Platform';
 import { PlatformPreference } from 'src/models/PlatformPreference';
 import { Province } from 'src/models/Province';
+import { Ratings } from 'src/models/Ratings';
 import { ShippingAddress } from 'src/models/ShippingAddress';
 import { User } from 'src/models/User';
 import { UserDetails } from 'src/models/UserDetails';
+import { UserGame } from 'src/models/UserGames';
+import { Wishlist } from 'src/models/Wishlist';
+import { AssetService } from 'src/services/asset.service';
 import { BillingAddressService } from 'src/services/billingAddress.service';
+import { CartItemService } from 'src/services/cartItem.service';
 import { CountryService } from 'src/services/country.service';
 import { CredentialService } from 'src/services/credential.service';
+import { FriendsListService } from 'src/services/friendslist.service';
+import { GameService } from 'src/services/game.service';
 import { GameCategoryService } from 'src/services/gameCategories.service';
+import { GameDetailService } from 'src/services/gameDetails.service';
 import { LanguageService } from 'src/services/language.service';
 import { PlatformService } from 'src/services/platform.service';
 import { PreferenceService } from 'src/services/preference.service';
 import { ProvinceService } from 'src/services/province.service';
+import { RatingService } from 'src/services/rating.service';
 import { ShippingAddressService } from 'src/services/shippingAddress.service';
 import { UserService } from 'src/services/user.service';
 import { UserDetailsService } from 'src/services/userDetail.service';
+import { UserGameService } from 'src/services/userGame.service';
+import { WishlistService } from 'src/services/wishlist.service';
 
 @Component({
   selector: 'app-profile',
@@ -69,12 +84,23 @@ export class ProfileComponent implements OnInit, OnDestroy {
   public firstname: string = "None Yet";
   public lastname: string = "None Yet";
   public validated: boolean = false;
+  public viewReady: boolean = false;
+
+  public userGames?: UserGame[];
+  public games: Game[] = [];
+  public gameDetails: GameDetails[] = [];
+  public assets: Asset[] = [];
+  public wishlist: Wishlist[] = [];
+  public ratings: Ratings[] = [];
 
   public canada_ID: number = 36;
 
   public platforms: Platform[] = [];
   public categories: GameCategory[] = [];
   public languages: Language[] = [];
+
+  public userFriendsList: FriendsList[] = [];
+  public friendsList: FriendsList[] = [];
 
   constructor(public router: Router,
     public userService: UserService,
@@ -88,7 +114,16 @@ export class ProfileComponent implements OnInit, OnDestroy {
     public categoryService: GameCategoryService,
     public billingAddressService: BillingAddressService,
     public shippingAddressService: ShippingAddressService,
-    public credentialService: CredentialService){
+    public credentialService: CredentialService,
+    public gameService: GameService,
+    public gameDetailService: GameDetailService,
+    public assetService: AssetService,
+    public cartItemService: CartItemService,
+    public wishlistService: WishlistService,
+    public ratingService: RatingService,
+    public userGameService: UserGameService,
+    public friendsListService: FriendsListService
+    ){
 
     this.preferencesForm = PreferencesForm;
     this.addressForm = AddressForm;
@@ -103,7 +138,8 @@ export class ProfileComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.buildModals();
+    await this.buildModals();
+    this.viewReady = true;
   }
 
   public openUserDetailsModal(){
@@ -128,6 +164,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.addressModal = bootstrap.Modal.getOrCreateInstance('#addressModal', {keyboard: true});
     this.changePasswordModal = bootstrap.Modal.getOrCreateInstance('#changePasswordModal', {keyboard: true});
     await this.getData();
+    await this.getGameData();
   }
 
   public ngOnDestroy() {
@@ -144,6 +181,19 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.categories = await this.categoryService.GetGameCategories();
     this.provinces = await this.provinceService.getProvinces();
     this.users = await this.userService.getAllUsers();
+
+    let userDetails: UserDetails[] = await this.userDetailsService.getAllUserDetails();
+
+    this.friendsList = await this.friendsListService.getFriendsListByUserID(this.user!.id);
+
+    if (this.friendsList != null && this.friendsList.length > 0){
+      this.friendsList = this.friendsList.map(x => {
+        x.user = this.users.find(y => y.id == x.user_ID);
+        x.userDetails = userDetails.find(y => y.user_ID == x.user!.id);
+        return x;
+      })
+    }
+
 
     if (this.userDetails){
       this.billingAddress = await this.billingAddressService.getBillingAddress(this.userDetails.id);
@@ -169,6 +219,59 @@ export class ProfileComponent implements OnInit, OnDestroy {
     }
 
     this.loadUserData();
+  }
+
+  public async getGameData(){
+    this.games = await this.gameService.getGames();
+    this.gameDetails = await this.gameDetailService.getGameDetails();
+    this.assets = await this.assetService.getAssets();
+    this.ratings = await this.ratingService.getRatings();
+    this.userGames = await this.userGameService.getUserGames(this.user!.id);
+    this.games.map(x => x.gameDetails = this.gameDetails.find(y => y.id == x.gameDetail_ID));
+    this.games.map(x => x.gameAsset = this.assets.find(z => z.id == x.asset_ID));
+    this.games.map(x => x.srcFront = "assets/game_assets/" + this.assets.find(z => z.id == x.asset_ID)?.assetURL + "/front.jpg");
+    this.games.map(x => x.src = "assets/game_assets/" + this.assets.find(z => z.id == x.asset_ID)?.assetURL + "/front.jpg");
+    this.games.map(x => x.srcBack = "assets/game_assets/" + this.assets.find(z => z.id == x.asset_ID)?.assetURL + "/back.jpg");
+    let categories: GameCategory[] = await this.categoryService.GetGameCategories();
+    this.gameDetails?.map(x => x.categoryName = categories.find(y => y.id == x.category_ID)?.categoryName);
+    this.userGames = this.userGames!.map(x => {
+      x.game = this.games.find(y => y.id == x.game_ID);
+      return x;
+    });
+
+    this.applyGameRatings();
+  }
+
+  public downloadGame(game: UserGame){
+
+  }
+
+  public applyGameRatings(){
+    for (let x of this.games){
+      let ratings = this.ratings.filter(y => y.game_ID == x.id);
+      console.log(ratings);
+      if (ratings == null || ratings.length == 0){
+        x.rating = 0;
+        continue;
+      }
+  
+      let total: number = 0;
+      for (let z of ratings){
+          total += z.ratingNumber;
+      }
+      x.rating = (total / ratings.length);
+      x.textColor = this.ratingColors(x.rating);
+    }
+  }
+
+  public ratingColors(num: number){
+    if (num <= 50){
+      return "text-secondary";
+    } else if (num > 50 && num <= 75){
+      return "text-warning";
+    } else {
+      return "text-success";
+    }
   }
 
   //Loads user preference data from the api
