@@ -5,6 +5,7 @@ import * as bootstrap from 'bootstrap';
 import { ToastrService } from 'ngx-toastr';
 import { EventsForm } from 'src/form-models/events-form';
 import { GamesForm } from 'src/form-models/games-form';
+import { OrdersForm } from 'src/form-models/orders-form';
 import { PreferencesForm } from 'src/form-models/preferences-form';
 import { ReviewsForm } from 'src/form-models/reviews-form';
 import { Asset } from 'src/models/Asset';
@@ -13,9 +14,13 @@ import { Game } from 'src/models/Game';
 import { GameCategory } from 'src/models/GameCategory';
 import { GameDetails } from 'src/models/GameDetails';
 import { GameReview } from 'src/models/GameReview';
+import { Order } from 'src/models/Order';
+import { OrderDetail } from 'src/models/OrderDetail';
+import { PaymentDetail } from 'src/models/PaymentDetail';
 import { Platform } from 'src/models/Platform';
 import { PlatformsGamesLookUp } from 'src/models/PlatformsGamesLookUp';
 import { Ratings } from 'src/models/Ratings';
+import { ShippingAddress } from 'src/models/ShippingAddress';
 import { User } from 'src/models/User';
 import { AssetService } from 'src/services/asset.service';
 import { EventService } from 'src/services/events.service';
@@ -23,8 +28,12 @@ import { GameService } from 'src/services/game.service';
 import { GameCategoryService } from 'src/services/gameCategories.service';
 import { GameDetailService } from 'src/services/gameDetails.service';
 import { GameReviewService } from 'src/services/gameReview.service';
+import { OrderService } from 'src/services/order.service';
+import { OrderDetailService } from 'src/services/orderDetails.service';
+import { PaymentDetailsService } from 'src/services/paymentDetail.service';
 import { PlatformService } from 'src/services/platform.service';
 import { RatingService } from 'src/services/rating.service';
+import { ShippingAddressService } from 'src/services/shippingAddress.service';
 import { UserService } from 'src/services/user.service';
 
 @Component({
@@ -37,6 +46,7 @@ export class AdminComponent implements OnInit {
   public gamesForm: FormGroup;
   public reviewsForm: FormGroup;
   public eventsForm: FormGroup;
+  public ordersForm: FormGroup;
 
   public users: User[] = [];
   public games: Game[] = [];
@@ -47,6 +57,11 @@ export class AdminComponent implements OnInit {
   public gameCategories: GameCategory[] = [];
   public gameDetailsList: GameDetails[] = [];
   public ratingsList: Ratings[] = [];
+  public shippingAddress: ShippingAddress[] = [];
+
+  public orders: Order[] = [];
+  public orderDetails: OrderDetail[] = [];
+  public paymentDetails: PaymentDetail[] = [];
 
   public selectedGame?: Game;
   public selectedGameDetails?: GameDetails;
@@ -58,11 +73,14 @@ export class AdminComponent implements OnInit {
 
   public user!: User | undefined;
 
+  public viewReady: boolean = false;
+
   public loginCounter: number = 0;
 
   public gamesModal!: bootstrap.Modal;
   public reviewsModal!: bootstrap.Modal;
   public eventsModal!: bootstrap.Modal;
+  public ordersModal!: bootstrap.Modal;
 
   public usersReportModal!: bootstrap.Modal;
   public userDetailsReportModal!: bootstrap.Modal;
@@ -70,6 +88,7 @@ export class AdminComponent implements OnInit {
   public gameDetailsReportModal!: bootstrap.Modal;
   public salesReportModal!: bootstrap.Modal;
   public wishlistReportModal!: bootstrap.Modal;
+
 
   //template strings
   public gameOperation: string = 'Add';
@@ -85,10 +104,15 @@ export class AdminComponent implements OnInit {
     public gameDetailService: GameDetailService,
     public gameCategoryService: GameCategoryService,
     public assetService: AssetService,
-    public reviewService: GameReviewService){
+    public reviewService: GameReviewService,
+    private orderService: OrderService,
+    private paymentDetailService: PaymentDetailsService,
+    private orderDetailService: OrderDetailService,
+    private shippingService: ShippingAddressService){
     this.gamesForm = GamesForm;
     this.reviewsForm = ReviewsForm;
     this.eventsForm = EventsForm;
+    this.ordersForm = OrdersForm;
   }
 
   public async ngOnInit() {
@@ -102,7 +126,7 @@ export class AdminComponent implements OnInit {
 
     await this.getData();
     this.buildModals();
-    console.log(this.games);
+    this.viewReady = true;
   }
 
   public openGamesModal(operation: string){
@@ -114,6 +138,10 @@ export class AdminComponent implements OnInit {
   public openEventsModal(operation: string){
     this.eventOperation = operation;
     this.eventsModal.toggle();
+  }
+
+  public openOrdersModal(){
+    this.ordersModal.toggle();
   }
 
   public clearReviewsModal(){
@@ -134,6 +162,7 @@ export class AdminComponent implements OnInit {
     this.gameDetailsReportModal = bootstrap.Modal.getOrCreateInstance('#gameDetailsReportModal', {keyboard: true});
     this.wishlistReportModal = bootstrap.Modal.getOrCreateInstance('#wishlistReportModal', {keyboard: true});
     this.salesReportModal = bootstrap.Modal.getOrCreateInstance('#salesReportModal', {keyboard: true});
+    this.ordersModal = bootstrap.Modal.getOrCreateInstance('#ordersModal', {keyboard: true});
     this.reviewsForm.disable();
     this.reviewsForm.controls['reviewsListControl'].enable();
     this.reviewsForm.controls['approveControl'].enable();
@@ -153,6 +182,18 @@ export class AdminComponent implements OnInit {
     this.eventList = await this.eventSerivce.getEvents();
     this.reviewsList = await this.reviewService.getGameReviews();
     this.ratingsList = await this.ratingService.getRatings();
+
+
+    this.orders = await this.orderService.getOrders();
+    if (this.orders != null && this.orders.length > 0){
+      for (let x of this.orders){
+        this.paymentDetails = await this.paymentDetailService.getPaymentDetails(x.user_ID);
+        x.orderDetails = await this.orderDetailService.getOrderDetailsByID(x.id);
+        x.shippingAddress = await this.shippingService.getShippingAddress(x.user_ID);
+        x.paymentDetails = this.paymentDetails.find(y => y.order_ID == x.id);
+        x.orderName = this.games.find(y => y.id == x.game_ID)?.gameName + " - " + x.orderDetails?.dateCreated.toLocaleString().substring(0, 10);
+      }
+    }
 
     this.gamesForm.reset();
     this.reviewsForm.reset();
@@ -459,5 +500,28 @@ export class AdminComponent implements OnInit {
     this.eventsForm.controls['startDateControl'].setValue(this.selectedEvent.startDate.toLocaleString().substring(0, 10));
     this.eventsForm.controls['endDateControl'].setValue(this.selectedEvent.endDate.toLocaleString().substring(0, 10));
 
+  }
+
+  public updateOrdersForm(){
+    let order = this.orders.find(x => x.id == parseInt(this.ordersForm.controls['orderNameControl'].value));
+    console.log(order);
+    if (order){
+      this.ordersForm.controls['quantityControl'].setValue(order.orderDetails?.quantity);
+      this.ordersForm.controls['isConfirmedControl'].setValue(order.isConfirmed);
+      this.ordersForm.controls['orderDateControl'].setValue(order.orderDetails?.dateCreated.toLocaleString().substring(0, 10));
+      this.ordersForm.controls['cardTypeControl'].setValue(order.paymentDetails?.cardType_ID);
+      this.ordersForm.controls['cardNumberControl'].setValue("**** **** **** " + order.paymentDetails?.cardNumber.substring(11,15));
+      this.ordersForm.controls['totalCostControl'].setValue(order.paymentDetails?.total.toFixed(2));
+      this.ordersForm.controls['addressControl'].setValue(order.shippingAddress?.streetAddress + ", " + order.shippingAddress?.postalCode);
+      this.ordersForm.controls['gameControl'].setValue(this.games.find(x => x.id == order?.game_ID)?.gameName);
+    }
+  }
+
+  public async updateOrder(){
+    let order = this.orders.find(x => x.id == parseInt(this.ordersForm.controls['orderNameControl'].value));
+    order!.isConfirmed = this.ordersForm.controls['isConfirmedControl'].value;
+    await this.orderService.upsertOrder(order!);
+    this.toastr.success("Order has been updated.");
+    this.ordersForm.reset();
   }
 }

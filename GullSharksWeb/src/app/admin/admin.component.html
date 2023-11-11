@@ -72,7 +72,7 @@
                 <div id="collapseFour" class="accordion-collapse collapse" aria-labelledby="headingFour" data-bs-parent="#accordionExample">
                     <div class="accordion-body">
                         <li class="pb-2 pt-2">
-                            <input type="button" value="Manage Orders" class="btn lightblue btn-sm" >
+                            <input type="button" value="Manage Orders" class="btn lightblue btn-sm" (click)="openOrdersModal()">
                         </li>                   
                     </div>
                 </div>
@@ -332,6 +332,95 @@
     </div>
 </div>
 
+<!--The Orders Modal-->
+<div class="modal fade" id="ordersModal" data-bs-backdrop="static" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Manage Orders</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="resetForms()"></button>
+        </div>
+        <div class="modal-body">
+            <form *ngIf="viewReady" [formGroup]="ordersForm" class="form-group container customBorder2 p-5">
+                <div class="row py-3">
+                    <div class="col">
+                        <ng-select [items]="orders" [placeholder]="'Select an order from the list'" #order (change)="updateOrdersForm()" bindLabel="orderName" bindValue="id" class="customNGSelect" formControlName="orderNameControl"></ng-select>
+                    </div>
+                </div>
+                <div class="row py-3">
+                    <div class="col-6">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" formControlName="gameControl" readonly>
+                            <label for="floatingInputGrid">Game Name</label>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" formControlName="quantityControl" readonly>
+                            <label for="floatingInputGrid">Quantity</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row py-3">
+                    <div class="col-6">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" formControlName="orderDateControl" readonly>
+                            <label for="floatingInputGrid">Order Date</label>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" formControlName="totalCostControl" readonly>
+                            <label for="floatingInputGrid">Total Cost</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row py-3">
+                    <div class="col-6">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" formControlName="cardNumberControl" readonly>
+                            <label for="floatingInputGrid">Card Number</label>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="form-floating">
+                            <select class="form-control" aria-label=".form-select-sm example" formControlName="cardTypeControl" [disabled]="true"> 
+                                <option value="1" disabled>Visa</option>
+                                <option value="2" disabled>Mastercard</option>
+                                <option value="3" disabled>Debit</option>
+                            </select>
+                            <label for="floatingInputGrid">Card Type</label>
+                        </div>
+              
+                    </div>
+                </div>
+                <div class="row py-3">
+                    <div class="col-6">
+                        <div class="form-floating">
+                            <input type="text" class="form-control" formControlName="addressControl" readonly>
+                            <label for="floatingInputGrid">Address for Delivery:</label>
+                        </div>
+                    </div>
+                    <div class="col-4">
+                        <label class="form-control">Confirm this order has been processed? </label>
+                    </div>
+                    <div class="col-2">
+                        <div class="form-check">
+                            <input type="checkbox" class="form-check-input form-control p-3" formControlName="isConfirmedControl" [checked]="false">
+                        </div>
+                    </div>
+                </div>
+           </form>
+        </div>
+        <div class="modal-footer justify-content-center">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="resetForms()">Close</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="updateOrder()">Update</button>
+        </div>
+      </div>
+    </div>
+</div>
+
+
 <!--List of All Members Modal-->
 <div class="modal modal-xl fade" #usersReportModal id="usersReportModal" tabindex="-1">
     <div class="modal-dialog modal-xl">
@@ -381,7 +470,7 @@
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body d-flex">
-            <iframe role="presentation" width="1200" height="800" src="https://app.powerbi.com/rdlEmbed?reportId=6f2dfc7b-a6ca-452c-9907-d9ef8417c856&autoAuth=true&ctid=4ddd393a-e98a-4404-841f-c4becdd925a5&experience=power-bi" frameborder="0" allowFullScreen="true"></iframe>        </div>
+            <iframe role="presentation" width="1200" height="800" src="https://app.powerbi.com/rdlEmbed?reportId=b662805f-a8ef-4c24-ae33-4be1ec292e2e&autoAuth=true&ctid=4ddd393a-e98a-4404-841f-c4becdd925a5&experience=power-bi" frameborder="0" allowFullScreen="true"></iframe>        </div>
       </div>
     </div>
 </div>

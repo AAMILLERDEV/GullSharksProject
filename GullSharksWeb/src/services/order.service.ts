@@ -17,6 +17,10 @@ export class OrderService {
     return this.sharedService.get(`Order/GetOrderByID/${user_ID}`);
   }
 
+  public getOrders(){
+    return this.sharedService.get(`Order/GetOrders`);
+  }
+
   public upsertOrder(order: Order){
     return this.sharedService.upsert(`Order/UpsertOrder`, order);
   }
