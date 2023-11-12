@@ -37,7 +37,7 @@ public class IterationOneUnitTests
     [Fact]
     public async void GetGamesByID_AssertNotNull_Test04()
     {
-        const int game_ID = 11;
+        const int game_ID = 1;
         var game = await db.GetGameByID(game_ID);
         Assert.NotNull(game);
     }
