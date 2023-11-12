@@ -141,6 +141,7 @@ export class AdminComponent implements OnInit {
   }
 
   public openOrdersModal(){
+    this.ordersForm.controls['isConfirmedControl'].enable();
     this.ordersModal.toggle();
   }
 
@@ -506,6 +507,8 @@ export class AdminComponent implements OnInit {
     let order = this.orders.find(x => x.id == parseInt(this.ordersForm.controls['orderNameControl'].value));
     console.log(order);
     if (order){
+      this.ordersForm.controls['userControl'].setValue(order.user_ID!);
+      this.ordersForm.controls['usernameControl'].setValue(this.users.find(x => x.id == order?.user_ID)?.username);
       this.ordersForm.controls['quantityControl'].setValue(order.orderDetails?.quantity);
       this.ordersForm.controls['isConfirmedControl'].setValue(order.isConfirmed);
       this.ordersForm.controls['orderDateControl'].setValue(order.orderDetails?.dateCreated.toLocaleString().substring(0, 10));

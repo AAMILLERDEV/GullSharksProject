@@ -10,5 +10,7 @@ export const OrdersForm = new FormGroup ({
     cardNumberControl: new FormControl(),
     totalCostControl: new FormControl(),
     addressControl: new FormControl(),
-    orderNameControl: new FormControl()
+    orderNameControl: new FormControl(),
+    userControl: new FormControl(),
+    usernameControl: new FormControl()
 })

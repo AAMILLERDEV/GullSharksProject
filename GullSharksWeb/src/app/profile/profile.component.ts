@@ -203,6 +203,10 @@ export class ProfileComponent implements OnInit, OnDestroy {
   }
 
   public openAddFriendModal(){
+    if (this.doUserDetailsExist == false){
+      this.toastr.error("Please update your profile with your first and last name before adding friends.");
+      return;
+    }
     this.addFriendsModal.toggle();
   }
 
@@ -597,6 +601,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   public loadUserData(){
 
     if (!this.userDetails){
+      this.userDetailsForm.reset();
       return;
     }
 

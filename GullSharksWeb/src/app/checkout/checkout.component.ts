@@ -278,6 +278,11 @@ export class CheckoutComponent implements OnInit {
       return;
     }
 
+    if (this.shippingAddress == null){
+      this.toastr.error("Please create a shipping address first.");
+      return;
+    }
+
     for (let x of this.cartItems){
       let gameOrder: Order = {
         game_ID: x.game_ID,
