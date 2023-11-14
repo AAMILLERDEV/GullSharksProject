@@ -129,9 +129,16 @@ export class AdminComponent implements OnInit {
     this.viewReady = true;
   }
 
-  public openGamesModal(operation: string){
+  public async openGamesModal(operation: string){
     this.gamesForm.reset();
     this.gameOperation = operation;
+
+    if (operation == "Add"){
+      this.assets = this.assets.filter(x => !this.games.find(y => y.asset_ID == x.id));
+    }else {
+      this.assets = await this.assetService.getAssets();
+    }
+
     this.gamesModal.toggle();
   }
 
@@ -221,6 +228,11 @@ export class AdminComponent implements OnInit {
       return;
     }
 
+    if (this.gamesForm.controls['gameNameControl'].value != this.assets.find(x => x.id == this.gamesForm.controls['assetControl'].value)?.assetName){
+      this.toastr.error("Game name must match asset name.");
+      return;
+    }
+
     if (this.gamesForm.controls['gameNameControl'].value != null && this.games.find(x => x.gameName == this.gamesForm.controls['gameNameControl'].value)){
       this.toastr.error("A game with that name already exists.");
       return;
@@ -275,6 +287,7 @@ export class AdminComponent implements OnInit {
     }
     
     await this.getData();
+    this.assets = this.assets.filter(x => !this.games.find(y => y.asset_ID == x.id));
     this.toastr.success("Success, a new game has been added!");
   }
 
