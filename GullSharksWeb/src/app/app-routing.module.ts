@@ -8,6 +8,7 @@ import { SignUpComponent } from './sign-up/sign-up.component';
 import { GameDetailsComponent } from './game-details/game-details.component';
 import { ValidationComponent } from './validation/validation.component';
 import { CheckoutComponent } from './checkout/checkout.component';
+import { EventsComponent } from './events/events.component';
 
 const routes: Routes = [
   {path: "", component: HomeComponent},
@@ -18,7 +19,8 @@ const routes: Routes = [
   {path: "signup", component: SignUpComponent},
   {path: "game-details/:id", component: GameDetailsComponent},
   {path: "checkout", component: CheckoutComponent},
-  {path: "Validation/:username", component: ValidationComponent}
+  {path: "Validation/:username", component: ValidationComponent},
+  {path: "events", component: EventsComponent}
 ];
 
 @NgModule({

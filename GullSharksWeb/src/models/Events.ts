@@ -2,7 +2,8 @@ export interface Events {
   id: number;
   eventName: string;
   description: string;
-  startDate: Date;
-  endDate: Date;
+  startDate: Date | string;
+  endDate: Date | string;
   isDeleted: boolean;
+  isRegistered?: boolean;
 }

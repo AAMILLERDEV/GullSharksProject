@@ -1,5 +1,6 @@
 import { Asset } from "./Asset";
 import { GameDetails } from "./GameDetails";
+import { GameReview } from "./GameReview";
 
 export interface Game {
   id: number;
@@ -15,4 +16,5 @@ export interface Game {
   src?: string;
   rating?: number;
   textColor?: string;
+  reviews?: GameReview[];
 }

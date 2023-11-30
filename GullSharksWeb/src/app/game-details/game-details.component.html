@@ -52,10 +52,32 @@
     </div>
   </div>
 
+  <div class="customBorder1">
+    <div class="p-2 m-1">
+      <h2 class="text-center display-6">Game Reviews</h2>
+    </div>
+    <div class="m-1 pb-3">
+      <div *ngFor="let x of game.reviews">
+        <div class="card text-white gradient m-3">
+          <div class="card-title ms-3 mt-3">
+            <div class=" d-flex w-100 justify-content-between">
+              <span class="display-6 fs-5">{{x.username}}, {{x.dateAdded.toLocaleString().substring(0, 10)}}</span> <span class="display-6 fs-5 pe-5">Rating: {{x.rating}}/100</span>
+            </div>
+          </div>
+          <hr>
+          <div class="card-body">
+            <h5 class="display-6 fs-6">{{x.description}}</h5>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
   <!--Game Recommendatiosn component-->
   <div *ngIf="recommendedGames.length > 0" class="w-100 customBorder1 p-2 mt-4">
     <div class="p-2 m-1">
-      <h2 class="text-center">Game Recommendations</h2>
+      <h2 class="text-center display-6">Game Recommendations</h2>
     </div>
     <div>
       <app-game-recommendations style="text-align: -webkit-center;" [games]="recommendedGames"></app-game-recommendations>

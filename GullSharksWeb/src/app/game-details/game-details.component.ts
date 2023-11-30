@@ -57,6 +57,8 @@ export class GameDetailsComponent implements OnInit{
   public categoryForGame?: GameCategory;
   public gameName: string = "";
 
+  public users: User[] = [];
+
   public viewReady: boolean = false;
   public offCanvasReady: boolean = false;
 
@@ -117,6 +119,7 @@ export class GameDetailsComponent implements OnInit{
     this.assets = await this.assetService.getAssets();
     this.reviews = await this.gameReviewService.getGameReviews();
     this.ratings = await this.ratingService.getRatings();
+    this.users = await this.userService.getAllUsers();
     this.ratings = this.ratings.map(x => {
       x.isApproved = this.reviews.find(y => y.rating_ID == x.id)!.isApproved;
       return x;
@@ -126,10 +129,20 @@ export class GameDetailsComponent implements OnInit{
     this.games.map(x => x.srcFront = "assets/game_assets/" + this.assets.find(z => z.id == x.asset_ID)?.assetURL + "/front.jpg");
     this.games.map(x => x.src = "assets/game_assets/" + this.assets.find(z => z.id == x.asset_ID)?.assetURL + "/front.jpg");
     this.games.map(x => x.srcBack = "assets/game_assets/" + this.assets.find(z => z.id == x.asset_ID)?.assetURL + "/back.jpg");
+    this.games.map(x => {
+      x.reviews = this.reviews.filter(y => y.game_ID == x.id && y.isApproved);
+    });
+
     this.game = this.games.find(x => x.id == this.game_ID)!;
     this.gameName = this.game.gameName;
 
     await this.applyGameRatings();
+
+    this.reviews.map(x => {
+      x.username = this.users.find(y => y.id == x.user_ID)?.username;
+      x.rating = this.ratings.find(y => y.id == x.rating_ID)?.ratingNumber;
+      return x;
+    });
 
     this.platformsForGame = await this.platformService.getPlatformGamesLookUpByGame(this.game_ID);
     this.platforms = await this.platformService.getPlatforms();
@@ -139,6 +152,7 @@ export class GameDetailsComponent implements OnInit{
     this.gameDetails?.map(x => x.categoryName = this.categories.find(y => y.id == x.category_ID)?.categoryName); 
     await this.relatedGames();
     this.offCanvasReady = true;
+    console.log(this.game);
   }
 
   public async addReview(game: Game){
@@ -233,34 +247,20 @@ export class GameDetailsComponent implements OnInit{
 
 
   public async applyGameRatings(){
-    this.ratings = await this.ratingService.getRatings();
-    for (let x of this.games){
-      let ratings = this.ratings.filter(y => y.game_ID == x.id && y.isApproved);
-      console.log(ratings);
-      if (ratings == null || ratings.length == 0){
-        x.rating = 0;
-        continue;
-      }
-
-      let total: number = 0;
-      for (let z of ratings){
-          total += z.ratingNumber;
-      }
-      x.rating = (total / ratings.length);
-      x.textColor = this.ratingColors(x.rating);
+    let ratings = this.ratings.filter(y => y.game_ID == this.game.id && y.isApproved);
+    if (ratings == null || ratings.length == 0){
+      this.game.rating = 0;
+      return;
     }
 
+    let total: number = 0;
+    for (let z of ratings){
+        total += z.ratingNumber;
+    }
+
+    this.game.rating = (total / ratings.length);
   }
 
-  public ratingColors(num: number){
-    if (num <= 50){
-      return "text-secondary";
-    } else if (num > 50 && num <= 75){
-      return "text-warning";
-    } else {
-      return "text-success";
-    }
-  }
 
   public updateNav(){
     this.navbar.getData();

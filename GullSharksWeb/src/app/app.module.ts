@@ -29,6 +29,7 @@ import { CheckoutComponent } from './checkout/checkout.component';
 import { GameRecommendationsComponent } from './game-recommendations/game-recommendations.component';
 import { ShareModule } from 'ngx-sharebuttons';
 import { CarouselModule } from 'ngx-owl-carousel-o';
+import { EventsComponent } from './events/events.component';
 
 const globalSettings: RecaptchaSettings = { siteKey: '6LcOuyYTAAAAAHTjFuqhA52fmfJ_j5iFk5PsfXaU' };
 
@@ -45,7 +46,8 @@ const globalSettings: RecaptchaSettings = { siteKey: '6LcOuyYTAAAAAHTjFuqhA52fmf
     OffcanvasComponent,
     GameDetailsComponent,
     CheckoutComponent,
-    GameRecommendationsComponent
+    GameRecommendationsComponent,
+    EventsComponent
   ],
   imports: [
     BrowserModule,

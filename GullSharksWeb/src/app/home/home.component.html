@@ -1,11 +1,11 @@
 <app-navbar *ngIf="viewReady" (openCart)="toggleOffCanvas()" (openWishlist)="toggleWishlistOffCanvas()" (filterVal)="filterGames($event)" [showingHome]="true" [showingSearch]="true"></app-navbar>
-<div class="container customBorder1" *ngIf="viewReady">
+<div class="container customBorder1 mb-5 pb-3" *ngIf="viewReady">
   <div class="row row-cols-3 text-center">
     <div *ngFor="let i of readyGames" class="col pt-2 justify-content-center">
-      <div class="card p-2 customBorder2 text-center" style="width: 24rem; overflow: none; min-height: 650px; max-height: 800px; width: 75%; height: 75%;">
-          <img [src]="i.src!" style="max-height: 30%; min-height: 50%; padding: 1em; border-radius: 2.5%;"  class="card-img-top customBorder1" alt="..." (mouseover)="i.src = i.srcBack"
+      <div class="card p-2 customBorder2 text-center">
+          <img [src]="i.src!" style="padding: 1em; border-radius: 2.5%;" height="480"  class="card-img-top customBorder1" alt="..." (mouseover)="i.src = i.srcBack"
           (mouseout)="i.src = i.srcFront">
-          <div class="card-body pt-2 mt-2 text-white customGameBG" style="border-radius: 2.5%;" >
+          <div class="card-body pt-2 mt-2 text-white customGameBG" style="border-radius: 2.5%; height: 16rem;" >
             <h5 class="card-title text-center">{{i.gameName}}</h5>
             <p class="card-text text-center">{{i.gameDetails?.publisher}}, {{i.gameDetails?.categoryName}}</p>
             <div class="text-center">
@@ -24,8 +24,8 @@
               </label>
             </div>
             <div class="text-center">
-              <h1 *ngIf="i.rating! > 0" class="mt-3 {{i.textColor}}">{{i.rating!.toFixed(0)}}%</h1>
-              <h5 *ngIf="i.rating! == 0" class="mt-3 fst-italic text-white">No Rating Yet</h5>
+              <h1 *ngIf="i.rating! > 0" class="{{i.textColor}}">{{i.rating!.toFixed(0)}}%</h1>
+              <h5 *ngIf="i.rating! == 0" class="fst-italic text-white">No Rating Yet</h5>
             </div>
           </div>
         </div>

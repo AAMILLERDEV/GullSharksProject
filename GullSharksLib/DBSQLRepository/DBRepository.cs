@@ -225,6 +225,48 @@ public class DBRepository : IDBRepository
         return insertedID ?? ins.ID;
     }
 
+    public async Task<IEnumerable<EventRegistry>> GetEventRegistry(int user_ID)
+    {
+        try
+        {
+            using IDbConnection connection = new SqlConnection(connectionString);
+            return await connection.QueryAsync<EventRegistry>("hist.eventRegistry_GET", new { user_ID }, commandType: CommandType.StoredProcedure);
+        }
+        catch (Exception ex)
+        {
+            return default;
+        }
+    }
+
+    public async Task<int?> UpsertEventRegistry(EventRegistry ins)
+    {
+        int? insertedID = 0;
+
+        var parameters = new DynamicParameters(new Dictionary<string, object>
+        {
+            { "@id", ins.ID },
+            { "@User_ID", ins.User_ID },
+            { "@Event_ID", ins.Event_ID },
+            { "@DateAdded", ins.DateAdded },
+            { "@IsDeleted", ins.IsDeleted }
+        });
+
+        parameters.Add("@insertedID", 0, direction: ParameterDirection.Output);
+
+        try
+        {
+            using IDbConnection connection = new SqlConnection(connectionString);
+            await connection.ExecuteAsync("hist.eventRegistry_UPSERT", parameters, commandType: CommandType.StoredProcedure);
+            insertedID = parameters.Get<int?>("@insertedID");
+        }
+        catch (Exception ex)
+        {
+            return default;
+        }
+
+        return insertedID ?? ins.ID;
+    }
+
     // DB methods for the friendsList object
     public async Task<IEnumerable<FriendsList>> GetFriendsList()
     {

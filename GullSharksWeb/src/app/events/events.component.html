@@ -1,0 +1,25 @@
+<app-navbar></app-navbar>
+<ng-container>
+    <div class="form-group container customBorder1 p-5" *ngIf="dataReady">
+        <h5 class="display-6">CVGS Events Listing <span><i class="bi bi-calendar3"></i></span></h5>
+        <hr>
+        <div *ngFor="let x of events" class="pt-4">
+            <div class="card customBorder1">
+                <div class="card-title gradient text-white" style="height:100%">
+                    <div class="float-end pe-5 " style="display: inline;">
+                        <button *ngIf="!x.isRegistered" class="btn btn-success mt-3" (click)="registerUser(x)">Register<i class="bi bi-person-check-fill ps-1"></i></button>
+                        <button *ngIf="x.isRegistered" class="btn btn-success mt-3" disabled>Already Registered<i class="bi bi-person-check-fill ps-1"></i></button>
+                    </div>
+                    <h6 class="display-6 fs-2 ps-3 pt-3 fst-italic">{{x.eventName}}</h6>
+                    <div class="d-flex w-100 ps-3 fst-italic ">
+                        <span>Start Date: {{x.startDate}}</span> <span class="text-end ps-5 pb-2">End Date: {{x.endDate}}</span>
+                    </div>
+                </div>
+                <div class="card-body">
+                    <p class="display-6 fs-6" >{{x.description}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+</ng-container>

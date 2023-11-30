@@ -8,4 +8,6 @@ export interface GameReview {
   review_name?: string;
   isDeleted: boolean;
   dateAdded: Date;
+  username?: string;
+  rating?: number;
 }

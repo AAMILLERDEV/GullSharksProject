@@ -511,8 +511,8 @@ export class AdminComponent implements OnInit {
     
     this.eventsForm.controls['eventNameControl'].setValue(this.selectedEvent.eventName);
     this.eventsForm.controls['descriptionControl'].setValue(this.selectedEvent.description);
-    this.eventsForm.controls['startDateControl'].setValue(this.selectedEvent.startDate.toLocaleString().substring(0, 10));
-    this.eventsForm.controls['endDateControl'].setValue(this.selectedEvent.endDate.toLocaleString().substring(0, 10));
+    this.eventsForm.controls['startDateControl'].setValue(this.selectedEvent.startDate.toLocaleString());
+    this.eventsForm.controls['endDateControl'].setValue(this.selectedEvent.endDate.toLocaleString());
 
   }
 
