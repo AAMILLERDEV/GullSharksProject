@@ -199,7 +199,7 @@ export class AdminComponent implements OnInit {
         x.orderDetails = await this.orderDetailService.getOrderDetailsByID(x.id);
         x.shippingAddress = await this.shippingService.getShippingAddress(x.user_ID);
         x.paymentDetails = this.paymentDetails.find(y => y.order_ID == x.id);
-        x.orderName = this.games.find(y => y.id == x.game_ID)?.gameName + " - " + x.orderDetails?.dateCreated.toLocaleString().substring(0, 10);
+        x.orderName = "User ID: " + x.user_ID + ", " + this.games.find(y => y.id == x.game_ID)?.gameName + " - " + x.orderDetails?.dateCreated.toLocaleString().substring(0, 10);
       }
     }
 

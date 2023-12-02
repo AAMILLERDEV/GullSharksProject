@@ -68,7 +68,7 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    this.user = this.users.find(x => x.username == this.loginForm.controls['usernameControl'].value);
+    this.user = this.users.find(x => x.username == this.loginForm.controls['usernameControl'].value || x.email == this.loginForm.controls['usernameControl'].value);
 
     if (this.user == null || this.user == undefined){
       this.toastr.error("No login found for the details provided.");

@@ -7,38 +7,45 @@
         <hr>
         <h3 class="text-center fw-bold fst-italic">Complete the form below to sign up</h3>
         <hr>
-        <div class="row py-3 text-center">
-            <div class="col-2">
-                <label>Username:</label>
-            </div>
-            <div class="col-8">
-                <input type="input" formControlName="usernameControl" class="form-control" required>
-            </div>
-        </div>
-        <div class="row py-3 text-center">
-          <div class="col-2">
-              <label>Email:</label>
-          </div>
-          <div class="col-8">
-              <input type="input" formControlName="emailControl" class="form-control" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" required>
-          </div>
-      </div>
-        <div class="row py-3 text-center">
-            <div class="col-2">
-                <label>Password:</label>
-            </div>
-            <div class="col-8">
-                <input type="password" formControlName="passwordControl" pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$" class="form-control" required>
+        <div class="row py-3">
+            <div class="input-group col-12">
+                <span class="input-group-text">Username:</span> 
+                <input type="input" minlength="4" [class]="signupForm.controls['usernameControl'].valid && signupForm.controls['usernameControl'].dirty ? 'is-valid' : 'is-invalid'" formControlName="usernameControl" class="form-control" required>
+                <div *ngIf="!signupForm.controls['usernameControl'].valid && signupForm.controls['usernameControl'].dirty" class="invalid-feedback">
+                    4 - 50 characters max
+                </div>
             </div>
         </div>
-        <div class="row py-3 text-center">
-          <div class="col-2">
-              <label>Verify Password:</label>
-          </div>
-          <div class="col-8">
-              <input type="password" formControlName="passwordVerifyControl" pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$" class="form-control" required>
+        <div class="row py-3">
+          <div class="input-group col-12">
+                <span class="input-group-text">Email:</span>   
+                <input type="input" minlength="4" [class]="signupForm.controls['emailControl'].valid && signupForm.controls['emailControl'].dirty ? 'is-valid' : 'is-invalid'" formControlName="emailControl" class="form-control" pattern="^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$" required>
+                <div *ngIf="!signupForm.controls['emailControl'].valid && signupForm.controls['emailControl'].dirty" class="invalid-feedback">
+                    4 - 50 characters max
+                </div>
           </div>
       </div>
+        <div class="row py-3">
+            <div class="col-12 input-group form-floating">
+                <span class="input-group-text">Password:</span>
+                <input type="password" formControlName="passwordControl" pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$" class="form-control" [class]="signupForm.controls['passwordControl'].valid && signupForm.controls['passwordControl'].dirty ? 'is-valid' : 'is-invalid'" required>
+                <div *ngIf="!signupForm.controls['passwordControl'].valid && signupForm.controls['passwordControl'].dirty" class="invalid-feedback">
+                    8 characters minimum, 1 upper, 1 lower, 1 special character is required
+                </div>
+            </div>
+ 
+        </div>
+
+        <div class="row py-3">
+            <div class="col-12 input-group form-floating">
+                <span class="input-group-text">Verify Password:</span>
+                <input type="password" formControlName="passwordVerifyControl" pattern="^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$" class="form-control" (keyup)="checkPassword()" [class]="signupForm.controls['passwordVerifyControl'].valid && signupForm.controls['passwordVerifyControl'].dirty ? 'is-valid' : 'is-invalid'" required>
+                <div *ngIf="!signupForm.controls['passwordVerifyControl'].valid && signupForm.controls['passwordVerifyControl'].dirty" class="invalid-feedback">
+                    Must match first password
+                </div>
+            </div>
+        </div>
+
         <div class="row py-3 ">
             <div class="col-3"></div>
             <div class="col-8 text-left">
@@ -64,20 +71,21 @@
 <div class="modal fade" #successModal id="successModal" data-bs-backdrop="static" tabindex="-1">
     <div class="modal-dialog modal-lg">
       <div class="modal-content">
-        <div class="modal-header text-center row">
+        <div class="modal-header text-center row border-0 m-2">
             <!--Modal Title-->
             <div class="col-12 customBorder2">
                 <img class="text-center" src="/assets/CVGS.png" alt="Logo"  height="100">
             </div>
 
             <div class="col-12">
-                <h1 class="text-center pt-3">Success! Your account has been created!</h1>
+                <h1 class="text-center pt-3 disaply-6">Success! Your account has been created!</h1>
             </div>
         </div>
+        <hr>
         <!--Modal Body/Content-->
         <div class="modal-body">
             <div class="p5">      
-                <p class="text-center fw-bold">Please check your email for an email from us to validate your account</p>
+                <p class="text-center display-6 fs-5">Please check your email for an email from us to validate your account</p>
             </div>
         </div>
         <div class="modal-footer justify-content-center">

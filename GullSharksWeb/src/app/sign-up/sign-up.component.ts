@@ -146,5 +146,13 @@ constructor (public userService: UserService,
     this.router.navigateByUrl('/profile');
   }
 
+  public async checkPassword(){
+    if (this.signupForm.controls['passwordControl'].value == this.signupForm.controls['passwordVerifyControl'].value){
+      this.signupForm.controls['passwordVerifyControl'].setErrors(null);
+    } else {
+      this.signupForm.controls['passwordVerifyControl'].setErrors({'incorrect': true});
+    }
+  }
+
 
 }

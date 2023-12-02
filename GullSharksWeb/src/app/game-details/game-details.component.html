@@ -56,7 +56,7 @@
     <div class="p-2 m-1">
       <h2 class="text-center display-6">Game Reviews</h2>
     </div>
-    <div class="m-1 pb-3">
+    <div class="m-1 pb-3" *ngIf="game.reviews!.length > 0">
       <div *ngFor="let x of game.reviews">
         <div class="card text-white gradient m-3">
           <div class="card-title ms-3 mt-3">
@@ -69,6 +69,11 @@
             <h5 class="display-6 fs-6">{{x.description}}</h5>
           </div>
         </div>
+      </div>
+    </div>
+    <div *ngIf="game.reviews!.length == 0">
+      <div class="display-6 fs-5 text-center pb-2">
+        No Reviews Have Been Submitted For This Product Yet
       </div>
     </div>
 

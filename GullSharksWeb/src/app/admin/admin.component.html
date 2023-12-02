@@ -124,7 +124,19 @@
             <form [formGroup]="gamesForm" class="alignRight">
                 <div class="form-group p-5">
                     <!--Name/Publisher-->
+                    <div class="display-6 text-center fs-3">
+                        Select an asset from the assets list to choose which game to add to the system
+                    </div>
+                    <hr>
                     <div class="row py-3">
+                        <div class="col-2">
+                            <label>Assets:</label>
+                        </div>
+                        <div class="col-4">
+                            <select formControlName="assetControl" class="form-control customBorder2" required>
+                                <option *ngFor="let i of assets" [value]="i.id">{{i.assetName}}</option>
+                            </select>
+                        </div>
                         <div class="col-2">
                             <label>Game Name:</label>
                         </div>
@@ -133,12 +145,6 @@
                         </div>
                         <div class="col-4" *ngIf="gameOperation == 'Add'">
                             <input type="text" formControlName="gameNameControl" class="form-control customBorder2" required>
-                        </div>
-                        <div class="col-2">
-                            <label>Publisher:</label>
-                        </div>
-                        <div class="col-4">
-                            <input type="text" formControlName="publisherControl" class="form-control customBorder2" required>
                         </div>
                     </div>
                     <!--Category/Assets-->
@@ -152,12 +158,10 @@
                             </select>
                         </div>
                         <div class="col-2">
-                            <label>Assets:</label>
+                            <label>Publisher:</label>
                         </div>
                         <div class="col-4">
-                            <select formControlName="assetControl" class="form-control customBorder2" required>
-                                <option *ngFor="let i of assets" [value]="i.id">{{i.assetName}}</option>
-                            </select>
+                            <input type="text" formControlName="publisherControl" class="form-control customBorder2" required>
                         </div>
                     </div>
                     <!--Price/Platforms-->

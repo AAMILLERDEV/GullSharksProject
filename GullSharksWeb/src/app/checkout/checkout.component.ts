@@ -111,7 +111,6 @@ export class CheckoutComponent implements OnInit {
     await this.getUserData();
     this.calculateCartTotal();
     this.viewReady = true;
-    console.log(this.cartItems);
   }
 
   public async getGameData(){

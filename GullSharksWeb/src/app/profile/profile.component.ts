@@ -280,9 +280,9 @@ export class ProfileComponent implements OnInit, OnDestroy {
     }
 
     this.userListForSearch = this.users.filter(x => !friendsListIDList.find(y => y == x.id) && this.user?.id != x.id);
-    
+
     if (this.userDetails){
-      this.billingAddress = await this.billingAddressService.getBillingAddress(this.user!.id);
+      this.billingAddress = await this.billingAddressService.getBillingAddress(this.userDetails!.id);
       this.firstname = this.userDetails.firstName;
       this.lastname = this.userDetails.lastName;
       this.doUserDetailsExist = true;
@@ -298,10 +298,11 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.email = this.user!.email;
 
     this.loadPreferenceData();
-
+    console.log(this.billingAddress)
     if (this.billingAddress){
-      this.loadAddressData();
+      await this.loadAddressData();
       this.doesAddressExist = true;
+
     }
 
     this.loadUserData();
@@ -428,7 +429,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
       birthDate: this.userDetailsForm.controls['birthDateControl'].value,
       firstName: this.userDetailsForm.controls['firstNameControl'].value,
       lastName: this.userDetailsForm.controls['lastNameControl'].value,
-      receivesUpdates: this.userDetailsForm.controls['emailUpdatesControl'].value,
+      receivesUpdates: this.userDetailsForm.controls['emailUpdatesControl'].value == null ? false : true,
       gender: this.userDetailsForm.controls['genderControl'].value,
       isDeleted: false,
       id: 0,
@@ -643,6 +644,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     this.billingAddress.isDeleted = true;
     await this.billingAddressService.upsertBillingAddress(this.billingAddress);
     await this.getUserData();
+    this.addressForm.reset();
     this.addressModal.toggle();
     this.toastr.success("Success, address has been deleted.");
   }
